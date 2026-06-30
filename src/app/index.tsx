@@ -1,98 +1,164 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useCallback, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router, useFocusEffect } from 'expo-router';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
+import { Button, Card, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { AFFIRMATIONS_BY_NUMBER } from '@/data/affirmations';
+import { PERSONAL_DAY_INTERPRETATIONS } from '@/data/personal-day';
+import { PERSONAL_MONTH_INTERPRETATIONS } from '@/data/personal-month';
+import { PERSONAL_YEAR_INTERPRETATIONS } from '@/data/personal-year';
+import { useTheme } from '@/hooks/use-theme';
+import { useProfileStore } from '@/lib/store';
+import { getAllProfiles } from '@/lib/database';
+import {
+  calculateAllPersonalNumbers,
+  calculateAllCoreNumbers,
+} from '@/lib/numerology';
+import { colorForNumber } from '@/lib/numerology/utils';
+import type { Profile } from '@/lib/schema';
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+  const theme = useTheme();
+  const { profiles, setProfiles } = useProfileStore();
+  const [activeProfile, setActiveProfile] = useState<Profile | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      getAllProfiles().then((data) => {
+        setProfiles(data);
+        if (data.length > 0) setActiveProfile(data[0]!);
+      });
+    }, [setProfiles])
+  );
+
+  const now = new Date();
+  const personal = activeProfile
+    ? calculateAllPersonalNumbers(activeProfile.person.dateOfBirth, now)
+    : calculateAllPersonalNumbers(new Date(1990, 0, 1), now);
+
+  const affKey = personal.personalDay;
+  const affirmations = AFFIRMATIONS_BY_NUMBER[affKey] ?? AFFIRMATIONS_BY_NUMBER[1]!;
+  const dailyAffirmation = affirmations[now.getDate() % affirmations.length]!;
+
+  const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: theme.background }}
+      contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
+      <ThemedView style={styles.inner}>
+        {activeProfile && (
+          <Section title={'Welcome, ' + activeProfile.person.firstName}>
+            <Pressable onPress={() => router.push(`/profile/${activeProfile.id}`)}>
+              <Card>
+                <ThemedText type="small">
+                  {activeProfile.person.firstName} {activeProfile.person.lastName}
+                  {' — '}
+                  {activeProfile.person.dateOfBirth.toLocaleDateString()}
+                </ThemedText>
+              </Card>
+            </Pressable>
+          </Section>
+        )}
+
+        {!activeProfile && profiles.length === 0 && (
+          <Section title="Welcome to Numon" subtitle="Create a profile to see your personalized numerology">
+            <Button title="Create Profile" onPress={() => router.push('/profile/new')} />
+          </Section>
+        )}
+
+        <Section title="Today's Numbers" subtitle={now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}>
+          <ThemedView style={styles.numberGrid}>
+            <NumberCircle number={personal.personalDay} label="Personal Day" color={colorForNumber(personal.personalDay, theme)} />
+            <NumberCircle number={personal.personalMonth} label="Personal Month" color={colorForNumber(personal.personalMonth, theme)} />
+            <NumberCircle number={personal.personalYear} label="Personal Year" color={colorForNumber(personal.personalYear, theme)} />
+            <NumberCircle number={personal.universalDay} label="Universal Day" color={colorForNumber(personal.universalDay, theme)} />
+          </ThemedView>
+        </Section>
+
+        <Section title="Daily Affirmation">
+          <Card>
+            <ThemedText style={styles.affirmationText}>{dailyAffirmation}</ThemedText>
+          </Card>
+        </Section>
+
+        <Section title={'Personal Day — ' + PERSONAL_DAY_INTERPRETATIONS[personal.personalDay]?.energy}>
+          <ThemedText type="small">{PERSONAL_DAY_INTERPRETATIONS[personal.personalDay]?.guidance}</ThemedText>
+        </Section>
+
+        <Section title={'Personal Year — ' + PERSONAL_YEAR_INTERPRETATIONS[personal.personalYear]?.overallTheme}>
+          <Card title="Love">
+            <ThemedText type="small">{PERSONAL_YEAR_INTERPRETATIONS[personal.personalYear]?.love}</ThemedText>
+          </Card>
+          <Card title="Career">
+            <ThemedText type="small">{PERSONAL_YEAR_INTERPRETATIONS[personal.personalYear]?.career}</ThemedText>
+          </Card>
+          <Card title="Best Actions">
+            {PERSONAL_YEAR_INTERPRETATIONS[personal.personalYear]?.bestActions.map((a: string) => (
+              <ThemedText key={a} type="small">• {a}</ThemedText>
+            ))}
+          </Card>
+        </Section>
+
+        <Section title={'Personal Month — ' + PERSONAL_MONTH_INTERPRETATIONS[personal.personalMonth]?.focus}>
+          <Card title="Opportunities">
+            {PERSONAL_MONTH_INTERPRETATIONS[personal.personalMonth]?.opportunities.map((o: string) => (
+              <ThemedText key={o} type="small">• {o}</ThemedText>
+            ))}
+          </Card>
+        </Section>
+
+        <ThemedView style={styles.quickLinks}>
+          <Button title="Calculator" onPress={() => router.push('/calculator')} style={{ flex: 1 }} />
+          <Button title="Journal" variant="secondary" onPress={() => router.push('/journal')} style={{ flex: 1 }} />
         </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
+        <ThemedView style={styles.quickLinks}>
+          <Button title="Goals" variant="secondary" onPress={() => router.push('/goals')} style={{ flex: 1 }} />
+          <Button title="Stats" variant="ghost" onPress={() => router.push('/stats')} style={{ flex: 1 }} />
+        </ThemedView>
+        <ThemedView style={styles.quickLinks}>
+          <Button title="Affirmations" variant="ghost" onPress={() => router.push('/affirmations')} style={{ flex: 1 }} />
+          <Button title="Search" variant="ghost" onPress={() => router.push('/search')} style={{ flex: 1 }} />
+          <Button title="Settings" variant="ghost" onPress={() => router.push('/settings')} style={{ flex: 1 }} />
         </ThemedView>
 
         {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      </ThemedView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
-  title: {
+  inner: {
+    maxWidth: MaxContentWidth,
+    flexGrow: 1,
+    gap: Spacing.five,
+    padding: Spacing.four,
+  },
+  numberGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.three,
+    justifyContent: 'center',
+  },
+  affirmationText: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    lineHeight: 26,
     textAlign: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
+  quickLinks: {
+    flexDirection: 'row',
     gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
   },
 });

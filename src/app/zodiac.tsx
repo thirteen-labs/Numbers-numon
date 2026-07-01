@@ -6,7 +6,7 @@ import { Button, Card, Input, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { CHINESE_ZODIAC, getZodiacAnimal, getZodiacElement } from '@/data/chinese-zodiac';
+import { CHINESE_ZODIAC, getZodiacAnimal } from '@/data/chinese-zodiac';
 import { useTheme } from '@/hooks/use-theme';
 import { colorForNumber } from '@/lib/numerology/utils';
 

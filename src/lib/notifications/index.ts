@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
@@ -67,5 +68,3 @@ export async function setupNotificationCategories() {
     ]);
   }
 }
-
-import { Platform } from 'react-native';

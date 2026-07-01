@@ -33,9 +33,10 @@ const TOOLS: ToolLink[] = [
   { title: 'Angel Numbers', description: 'Hundreds of angel number meanings', route: '/angel-numbers', color: '#E74C3C' },
   { title: 'Chinese Zodiac', description: 'Zodiac animals, elements, compatibility', route: '/zodiac', color: '#2ECC71' },
   { title: 'Education', description: 'Learn numerology fundamentals', route: '/education', color: '#9B59B6' },
-  { title: 'Pinnacles', description: 'Four major life stage cycles', route: '/cycles/pinnacles?lp=7', color: '#34495E' },
-  { title: 'Challenges', description: 'Life lessons and growth periods', route: '/cycles/challenges?lp=7', color: '#1ABC9C' },
+  { title: 'Pinnacles', description: 'Four major life stage cycles', route: '/cycles/pinnacles?lp=1', color: '#34495E' },
+  { title: 'Challenges', description: 'Life lessons and growth periods', route: '/cycles/challenges?lp=1', color: '#1ABC9C' },
   { title: 'Statistics', description: 'Track your numerology journey', route: '/stats', color: '#F39C12' },
+  { title: 'Reports', description: 'Generate and export numerology reports', route: '/reports', color: '#7C3AED' },
   { title: 'Backup', description: 'Export/import your data', route: '/backup', color: '#FF6B35' },
 ];
 

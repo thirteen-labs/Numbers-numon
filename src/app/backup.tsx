@@ -12,11 +12,10 @@ import { useTheme } from '@/hooks/use-theme';
 import {
   getAllProfiles, getAllEntries, getAllGoals,
   insertProfile, insertEntry, insertGoal,
-  clearAllData, getProfileCount, getProfileById,
+  clearAllData, getProfileById,
 } from '@/lib/database';
 import type { Profile } from '@/lib/schema';
-import type { JournalEntry } from '@/lib/database';
-import type { Goal } from '@/lib/database';
+import type { JournalEntry, Goal } from '@/lib/database';
 
 function profilesToCSV(profiles: Profile[]): string {
   const header = 'id,name,firstName,middleName,lastName,dateOfBirth,nickname,gender,notes,isFavorite';
@@ -201,7 +200,7 @@ export default function BackupScreen() {
 
 function BackupStat({ label, fetch }: { label: string; fetch: () => Promise<number> }) {
   const [count, setCount] = useState<number | null>(null);
-  useEffect(() => { fetch().then(setCount); }, []);
+  useEffect(() => { fetch().then(setCount); }, [fetch]);
   return (
     <Card title={label}>
       <ThemedText type="small">{count !== null ? `${count} items` : 'Loading...'}</ThemedText>

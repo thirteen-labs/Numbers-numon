@@ -1,4 +1,4 @@
-import { reduceNumber, digitSum } from './reduce';
+import { reduceNumber } from './reduce';
 
 export function calculatePersonalYear(dob: Date, targetYear: number = new Date().getFullYear()): number {
   const month = dob.getMonth() + 1;

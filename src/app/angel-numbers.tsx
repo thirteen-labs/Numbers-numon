@@ -50,7 +50,7 @@ export default function AngelNumbersScreen() {
         ))}
 
         {search.trim() && filtered.length === 0 && (
-          <ThemedText themeColor="textSecondary">No angel numbers found for "{search}"</ThemedText>
+          <ThemedText themeColor="textSecondary">No angel numbers found for {'\u201C'}{search}{'\u201D'}</ThemedText>
         )}
 
         {!search.trim() && (

@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 import { Card, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
@@ -20,10 +20,8 @@ export default function LuckyScreen() {
   const colors = LUCKY_COLORS[num];
   const days = LUCKY_DAYS[num];
 
-  const lifePath = num;
   const expression = num + 1 > 9 ? 1 : num + 1;
   const soulUrge = num - 1 < 1 ? 9 : num - 1;
-  const personality = (num * 2 > 9 ? num * 2 - 9 : num * 2) || 1;
   const luckyNumbers = [num, expression, soulUrge, num + 9, num * 3].map((x) => x > 9 ? x - 9 : x || 1);
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;

@@ -4,9 +4,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 
 import { Button, Card, NumberCircle, Section } from '@/components/ui';
+import { NumberRadar } from '@/components/charts';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { BALANCE_INTERPRETATIONS } from '@/data/balance';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
 import { useTheme } from '@/hooks/use-theme';
 import { getProfileById, deleteProfile, toggleFavorite } from '@/lib/database';
@@ -129,6 +131,13 @@ export default function ProfileDetailScreen() {
               <NumberCircle number={core.maturity} label="Maturity" color={colorForNumber(core.maturity, theme)} />
             </Pressable>
           </ThemedView>
+          <ThemedView style={styles.chartContainer}>
+            <NumberRadar
+              numbers={[core.lifePath, core.expression, core.soulUrge, core.personality, core.birthday, core.attitude, core.maturity]}
+              labels={['Life Path', 'Expression', 'Soul Urge', 'Personality', 'Birthday', 'Attitude', 'Maturity']}
+              size={240}
+            />
+          </ThemedView>
         </Section>
 
         <Section title={'Life Path — ' + (NUMBER_MEANINGS[core.lifePath]?.title ?? '')}>
@@ -161,7 +170,11 @@ export default function ProfileDetailScreen() {
 
         <Section title="Advanced Numbers">
           <Card title={`Balance Number: ${balance}`}>
-            <ThemedText type="small">How you respond under stress.</ThemedText>
+            <ThemedText type="smallBold">{BALANCE_INTERPRETATIONS[balance]?.description}</ThemedText>
+            <ThemedText type="small" style={styles.subtitle}>Under Stress:</ThemedText>
+            <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]?.underStress}</ThemedText>
+            <ThemedText type="small" style={styles.subtitle}>Growth Path:</ThemedText>
+            <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]?.growthPath}</ThemedText>
           </Card>
           {karmicDebt.length > 0 && (
             <Card title="Karmic Debt">
@@ -208,5 +221,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: Spacing.three,
     flexWrap: 'wrap',
+  },
+  subtitle: {
+    fontWeight: '600',
+    marginTop: Spacing.two,
+    opacity: 0.7,
+  },
+  chartContainer: {
+    alignItems: 'center',
+    marginTop: Spacing.four,
   },
 });

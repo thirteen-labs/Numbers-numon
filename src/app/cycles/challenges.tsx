@@ -10,26 +10,18 @@ import { CHALLENGE_INTERPRETATIONS } from '@/data/challenges';
 import { useTheme } from '@/hooks/use-theme';
 import { calculateChallengeNumbers, calculatePinnacleAges } from '@/lib/numerology/cycles';
 import { colorForNumber } from '@/lib/numerology/utils';
-import type { CoreNumbers } from '@/lib/numerology/core';
 
 export default function ChallengesScreen() {
-  const { lp, fn, ln } = useLocalSearchParams<{ lp: string; fn?: string; ln?: string }>();
+  const { lp, y, m, d } = useLocalSearchParams<{ lp: string; y?: string; m?: string; d?: string }>();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   const lifePathNum = parseInt(lp ?? '0', 10);
+  const dob = y && m && d
+    ? new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10))
+    : new Date(2000, 0, 1);
 
-  const dummyCore: CoreNumbers = {
-    lifePath: lifePathNum,
-    expression: parseInt(lp ?? '0', 10),
-    soulUrge: parseInt(lp ?? '0', 10),
-    personality: 0,
-    birthday: 0,
-    attitude: 0,
-    maturity: 0,
-  };
-
-  const challenges = calculateChallengeNumbers(dummyCore);
+  const challenges = calculateChallengeNumbers(dob);
   const ages = calculatePinnacleAges(lifePathNum);
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;

@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
 import { useTheme } from '@/hooks/use-theme';
-import { sumNameNumbers, reduceNumber } from '@/lib/numerology';
+import { reduceNumber } from '@/lib/numerology';
 import { colorForNumber, numberTitle } from '@/lib/numerology/utils';
 
 function reducePlate(plate: string): number {

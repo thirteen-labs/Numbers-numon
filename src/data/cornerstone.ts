@@ -1,5 +1,3 @@
-import { PYTHAGOREAN_MAP } from './pythagorean';
-
 export const CORNERSTONE_MEANINGS: Record<string, { letter: string; meaning: string; trait: string }> = {
   A: { letter: 'A', meaning: 'Leadership and ambition', trait: 'You approach life with confidence and a pioneering spirit.' },
   B: { letter: 'B', meaning: 'Sensitivity and intuition', trait: 'You are emotionally aware and deeply intuitive.' },

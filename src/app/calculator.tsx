@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 
-import { Button, Card, Input, NumberCircle, Section } from '@/components/ui';
+import { Button, Card, DatePickerField, Input, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { BALANCE_INTERPRETATIONS } from '@/data/balance';
-import { CHALLENGE_INTERPRETATIONS } from '@/data/challenges';
 import { HIDDEN_PASSION_INTERPRETATIONS } from '@/data/hidden-passion';
 import { KARMIC_DEBT_INTERPRETATIONS } from '@/data/karmic-debt';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
@@ -40,7 +39,9 @@ export default function CalculatorScreen() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [middleName, setMiddleName] = useState('');
-  const [dobString, setDobString] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
+  const [gender, setGender] = useState('');
+  const [birthTime, setBirthTime] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{
     person: PersonInput;
@@ -57,11 +58,9 @@ export default function CalculatorScreen() {
         setFirstName(profile.person.firstName);
         setLastName(profile.person.lastName);
         setMiddleName(profile.person.middleName ?? '');
-        const dob = profile.person.dateOfBirth;
-        const mm = String(dob.getMonth() + 1).padStart(2, '0');
-        const dd = String(dob.getDate()).padStart(2, '0');
-        const yyyy = dob.getFullYear();
-        setDobString(`${mm}/${dd}/${yyyy}`);
+        setDateOfBirth(profile.person.dateOfBirth);
+        setGender(profile.person.gender ?? '');
+        setBirthTime(profile.person.birthTime ?? '');
         setResult(null);
       });
     }, [id])
@@ -70,23 +69,13 @@ export default function CalculatorScreen() {
   function handleCalculate() {
     if (!firstName.trim()) { setError('First name is required'); return; }
     if (!lastName.trim()) { setError('Last name is required'); return; }
-    if (!dobString.trim()) { setError('Date of birth is required'); return; }
+    if (!dateOfBirth) { setError('Date of birth is required'); return; }
 
-    const parts = dobString.split('/');
-    if (parts.length !== 3) { setError('Use format MM/DD/YYYY'); return; }
-
-    const month = parseInt(parts[0]!, 10) - 1;
-    const day = parseInt(parts[1]!, 10);
-    const year = parseInt(parts[2]!, 10);
-
-    if (isNaN(month) || isNaN(day) || isNaN(year)) { setError('Invalid date'); return; }
-
-    const dateOfBirth = new Date(year, month, day);
     const person: PersonInput = { firstName: firstName.trim(), lastName: lastName.trim(), middleName: middleName.trim() || undefined, dateOfBirth };
 
     const core = calculateAllCoreNumbers(person);
     const personal = calculateAllPersonalNumbers(person.dateOfBirth);
-    const cycles = calculateCycles(core);
+    const cycles = calculateCycles(core, person.dateOfBirth);
 
     setResult({ person, core, personal, cycles });
     setError(null);
@@ -116,7 +105,27 @@ export default function CalculatorScreen() {
           <Input label="First Name" value={firstName} onChangeText={setFirstName} placeholder="John" autoCapitalize="words" />
           <Input label="Middle Name" value={middleName} onChangeText={setMiddleName} placeholder="(optional)" autoCapitalize="words" />
           <Input label="Last Name" value={lastName} onChangeText={setLastName} placeholder="Doe" autoCapitalize="words" />
-          <Input label="Date of Birth" value={dobString} onChangeText={setDobString} placeholder="MM/DD/YYYY" keyboardType="numbers-and-punctuation" />
+          <DatePickerField label="Date of Birth" value={dateOfBirth} onChange={setDateOfBirth} />
+
+          <ThemedText type="smallBold" style={{ marginTop: Spacing.three }}>Gender (optional)</ThemedText>
+          <ThemedView style={styles.genderRow}>
+            {['', 'male', 'female', 'other'].map((key) => (
+              <Pressable
+                key={key}
+                onPress={() => setGender(key)}
+                style={[
+                  styles.genderChip,
+                  { backgroundColor: gender === key ? theme.tint : theme.backgroundElement },
+                ]}>
+                <ThemedText type="small" themeColor={gender === key ? 'background' : 'text'}>
+                  {key ? key.charAt(0).toUpperCase() + key.slice(1) : 'Prefer not to say'}
+                </ThemedText>
+              </Pressable>
+            ))}
+          </ThemedView>
+
+          <Input label="Birth Time (optional)" value={birthTime} onChangeText={setBirthTime} placeholder="HH:MM AM/PM" />
+
           {error && <ThemedText style={styles.error}>{error}</ThemedText>}
           <Button title="Calculate" onPress={handleCalculate} />
         </Section>
@@ -212,8 +221,14 @@ export default function CalculatorScreen() {
                   ))}
                 </Card>
                 <ThemedView style={styles.actions}>
-                  <Button title="View Pinnacles Detail" variant="secondary" onPress={() => router.push(`/cycles/pinnacles?lp=${result.core.lifePath}`)} />
-                  <Button title="View Challenges Detail" variant="ghost" onPress={() => router.push(`/cycles/challenges?lp=${result.core.lifePath}`)} />
+                  <Button title="View Pinnacles Detail" variant="secondary" onPress={() => {
+                    const dob = result.person.dateOfBirth;
+                    router.push(`/cycles/pinnacles?lp=${result.core.lifePath}&y=${dob.getFullYear()}&m=${dob.getMonth()+1}&d=${dob.getDate()}`);
+                  }} />
+                  <Button title="View Challenges Detail" variant="ghost" onPress={() => {
+                    const dob = result.person.dateOfBirth;
+                    router.push(`/cycles/challenges?lp=${result.core.lifePath}&y=${dob.getFullYear()}&m=${dob.getMonth()+1}&d=${dob.getDate()}`);
+                  }} />
                 </ThemedView>
               </Section>
             )}
@@ -307,5 +322,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.three,
+  },
+  genderRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.two,
+  },
+  genderChip: {
+    paddingVertical: Spacing.one,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.three,
   },
 });

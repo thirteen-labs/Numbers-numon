@@ -45,7 +45,6 @@ export default function BabyNameScreen() {
     if (!parentDate || !babyDate) { setError('Invalid date format. Use MM/DD/YYYY'); return; }
 
     const baby: PersonInput = { firstName: babyName.trim(), lastName: '', dateOfBirth: babyDate };
-    const parent: PersonInput = { firstName: '', lastName: '', dateOfBirth: parentDate };
 
     const babyLP = calculateLifePath(babyDate);
     const babyExp = calculateExpression(baby);

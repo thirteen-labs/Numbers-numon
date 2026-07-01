@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 
@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { getAllEntries, deleteEntry, searchEntries } from '@/lib/database';
+import { getAllEntries, searchEntries } from '@/lib/database';
 import type { JournalEntry } from '@/lib/database';
 
 export default function JournalListScreen() {
@@ -26,13 +26,6 @@ export default function JournalListScreen() {
   async function loadEntries(q?: string) {
     const data = q ? await searchEntries(q) : await getAllEntries();
     setEntries(data);
-  }
-
-  async function handleDelete(id: string) {
-    Alert.alert('Delete Entry', 'Delete this journal entry?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', style: 'destructive', onPress: () => deleteEntry(id).then(() => loadEntries()) },
-    ]);
   }
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;

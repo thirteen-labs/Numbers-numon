@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { getAllProfiles, getAllEntries, getAllGoals } from '@/lib/database';
+import { getAllEntries, getAllGoals } from '@/lib/database';
 import { useProfileStore } from '@/lib/store';
 
 export default function StatsScreen() {

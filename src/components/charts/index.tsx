@@ -1,20 +1,16 @@
-import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Dimensions } from 'react-native';
 import Svg, { Circle, Line, Rect, Text as SvgText } from 'react-native-svg';
 
-import { Card, Section } from '@/components/ui';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { calculatePinnacleAges } from '@/lib/numerology/cycles';
 import { colorForNumber } from '@/lib/numerology/utils';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 export function PinnacleTimeline({ lifePath, pinnacleNumbers }: { lifePath: number; pinnacleNumbers: number[] }) {
   const ages = calculatePinnacleAges(lifePath);
   const theme = useTheme();
-  const width = 300;
+  const width = Math.min(SCREEN_WIDTH - 48, 400);
   const height = 80;
   const padding = 20;
   const barHeight = 20;

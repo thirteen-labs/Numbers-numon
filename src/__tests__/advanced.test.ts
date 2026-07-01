@@ -30,7 +30,6 @@ describe('personal year/month/day', () => {
 
   it('calculates personal day', () => {
     const pd = calculatePersonalDay(5, 15);
-    const reduced = pd <= 9 ? pd : (pd === 11 || pd === 22 ? pd : null);
     expect(pd).toBeGreaterThanOrEqual(1);
   });
 
@@ -52,10 +51,10 @@ describe('universal year', () => {
 });
 
 describe('cycles', () => {
+  const testDob = new Date(1990, 5, 15);
+
   it('calculates pinnacle numbers', () => {
-    // We need a CoreNumbers object
-    const core = { lifePath: 7, expression: 3, soulUrge: 6, personality: 6, birthday: 6, attitude: 3, maturity: 1 };
-    const pinnacles = calculatePinnacleNumbers(core);
+    const pinnacles = calculatePinnacleNumbers(testDob);
     expect(pinnacles).toHaveLength(4);
   });
 
@@ -66,8 +65,7 @@ describe('cycles', () => {
   });
 
   it('calculates challenge numbers', () => {
-    const core = { lifePath: 7, expression: 3, soulUrge: 6, personality: 6, birthday: 6, attitude: 3, maturity: 1 };
-    const challenges = calculateChallengeNumbers(core);
+    const challenges = calculateChallengeNumbers(testDob);
     expect(challenges).toHaveLength(4);
   });
 });

@@ -7,10 +7,9 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { THEMES } from '@/constants/themes';
-import type { ThemeMode } from '@/lib/store';
 import { useTheme } from '@/hooks/use-theme';
-import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification } from '@/lib/notifications';
 import { useAppStore } from '@/lib/store';
+import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification } from '@/lib/notifications';
 
 const THEME_OPTIONS: { key: string; label: string }[] = [
   { key: 'system', label: 'System' },

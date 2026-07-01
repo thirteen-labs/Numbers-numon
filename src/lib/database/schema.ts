@@ -10,6 +10,7 @@ export const CREATE_TABLES = `
     date_of_birth TEXT NOT NULL,
     nickname TEXT DEFAULT '',
     gender TEXT,
+    birth_time TEXT DEFAULT '',
     notes TEXT DEFAULT '',
     is_favorite INTEGER DEFAULT 0,
     created_at TEXT NOT NULL,

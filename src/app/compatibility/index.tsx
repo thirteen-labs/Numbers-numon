@@ -6,7 +6,7 @@ import { Button, Card, Input, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { COMPATIBILITY_INTERPRETATIONS, getCompatibilityDescription } from '@/data/name-compatibility';
+import { getCompatibilityDescription } from '@/data/name-compatibility';
 import { useTheme } from '@/hooks/use-theme';
 import { calculateExpression } from '@/lib/numerology';
 import { colorForNumber } from '@/lib/numerology/utils';

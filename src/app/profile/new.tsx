@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { Button, Input, Section } from '@/components/ui';
+import { Button, DatePickerField, Input, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
@@ -11,6 +11,13 @@ import { useTheme } from '@/hooks/use-theme';
 import { insertProfile } from '@/lib/database';
 import { useProfileStore } from '@/lib/store';
 import type { Profile } from '@/lib/schema';
+
+const GENDER_OPTIONS = [
+  { key: '', label: 'Prefer not to say' },
+  { key: 'male', label: 'Male' },
+  { key: 'female', label: 'Female' },
+  { key: 'other', label: 'Other' },
+] as const;
 
 export default function NewProfileScreen() {
   const insets = useSafeAreaInsets();
@@ -21,8 +28,10 @@ export default function NewProfileScreen() {
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [dobString, setDobString] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
   const [nickname, setNickname] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthTime, setBirthTime] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -31,17 +40,7 @@ export default function NewProfileScreen() {
     if (!name.trim()) { setError('Profile name is required'); return; }
     if (!firstName.trim()) { setError('First name is required'); return; }
     if (!lastName.trim()) { setError('Last name is required'); return; }
-    if (!dobString.trim()) { setError('Date of birth is required'); return; }
-
-    const parts = dobString.split('/');
-    if (parts.length !== 3) { setError('Use format MM/DD/YYYY'); return; }
-
-    const month = parseInt(parts[0]!, 10) - 1;
-    const day = parseInt(parts[1]!, 10);
-    const year = parseInt(parts[2]!, 10);
-    if (isNaN(month) || isNaN(day) || isNaN(year)) { setError('Invalid date'); return; }
-
-    const dateOfBirth = new Date(year, month, day);
+    if (!dateOfBirth) { setError('Date of birth is required'); return; }
     const now = new Date();
 
     const profile: Profile = {
@@ -53,6 +52,8 @@ export default function NewProfileScreen() {
         lastName: lastName.trim(),
         dateOfBirth,
         nickname: nickname.trim(),
+        gender: (gender || undefined) as 'male' | 'female' | 'other' | undefined,
+        birthTime: birthTime.trim() || '',
         notes: '',
       },
       isFavorite: false,
@@ -65,7 +66,7 @@ export default function NewProfileScreen() {
       await insertProfile(profile);
       addProfile(profile);
       router.back();
-    } catch (e) {
+    } catch {
       setError('Failed to save profile');
     } finally {
       setSaving(false);
@@ -84,8 +85,27 @@ export default function NewProfileScreen() {
           <Input label="First Name" value={firstName} onChangeText={setFirstName} placeholder="John" autoCapitalize="words" />
           <Input label="Middle Name" value={middleName} onChangeText={setMiddleName} placeholder="(optional)" autoCapitalize="words" />
           <Input label="Last Name" value={lastName} onChangeText={setLastName} placeholder="Doe" autoCapitalize="words" />
-          <Input label="Date of Birth" value={dobString} onChangeText={setDobString} placeholder="MM/DD/YYYY" keyboardType="numbers-and-punctuation" />
+          <DatePickerField label="Date of Birth" value={dateOfBirth} onChange={setDateOfBirth} />
           <Input label="Nickname" value={nickname} onChangeText={setNickname} placeholder="(optional)" autoCapitalize="words" />
+
+          <ThemedText type="smallBold" style={{ marginTop: Spacing.three }}>Gender (optional)</ThemedText>
+          <ThemedView style={styles.genderRow}>
+            {GENDER_OPTIONS.map((opt) => (
+              <Pressable
+                key={opt.key}
+                onPress={() => setGender(opt.key)}
+                style={[
+                  styles.genderChip,
+                  { backgroundColor: gender === opt.key ? theme.tint : theme.backgroundElement },
+                ]}>
+                <ThemedText type="small" themeColor={gender === opt.key ? 'background' : 'text'}>
+                  {opt.label}
+                </ThemedText>
+              </Pressable>
+            ))}
+          </ThemedView>
+
+          <Input label="Birth Time (optional)" value={birthTime} onChangeText={setBirthTime} placeholder="HH:MM AM/PM" />
 
           {error && <ThemedText style={styles.error}>{error}</ThemedText>}
 
@@ -117,5 +137,15 @@ const styles = StyleSheet.create({
   },
   error: {
     color: '#ff4444',
+  },
+  genderRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.two,
+  },
+  genderChip: {
+    paddingVertical: Spacing.one,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.three,
   },
 });

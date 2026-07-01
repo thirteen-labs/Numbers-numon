@@ -40,7 +40,7 @@ export default function PersonalDayScreen() {
               <ThemedText type="small">{interpretation.guidance}</ThemedText>
             </Card>
             <Card title="Affirmation">
-              <ThemedText type="small" style={styles.affirmation}>"{interpretation.affirmation}"</ThemedText>
+              <ThemedText type="small" style={styles.affirmation}>{'\u201C'}{interpretation.affirmation}{'\u201D'}</ThemedText>
             </Card>
           </>
         )}

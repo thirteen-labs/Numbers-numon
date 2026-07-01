@@ -1,13 +1,10 @@
-import { reduceNumber, digitSum } from './reduce';
-import { sumNameNumbers, getVowels, getConsonants } from './mapping';
-import type { PersonInput, CoreNumbers } from './core';
-import { getFullName } from './core';
+import { reduceNumber } from './reduce';
+import type { CoreNumbers } from './core';
 
-export function calculatePinnacleNumbers(core: CoreNumbers): number[] {
-  const lp = core.lifePath;
-  const month = digitSum(lp);
-  const day = digitSum(lp * 2);
-  const year = digitSum(lp * 3);
+export function calculatePinnacleNumbers(dob: Date): number[] {
+  const month = reduceNumber(dob.getMonth() + 1);
+  const day = reduceNumber(dob.getDate());
+  const year = reduceNumber(dob.getFullYear());
   const firstPinnacle = reduceNumber(month + day);
   const secondPinnacle = reduceNumber(day + year);
   const thirdPinnacle = reduceNumber(firstPinnacle + secondPinnacle);
@@ -31,12 +28,14 @@ export function calculatePinnacleAges(lifePath: number): { start: number; end: n
   ];
 }
 
-export function calculateChallengeNumbers(core: CoreNumbers): number[] {
-  const lp = core.lifePath;
-  const firstChallenge = reduceNumber(digitSum(lp));
-  const secondChallenge = reduceNumber(digitSum(lp * 2));
+export function calculateChallengeNumbers(dob: Date): number[] {
+  const month = reduceNumber(dob.getMonth() + 1);
+  const day = reduceNumber(dob.getDate());
+  const year = reduceNumber(dob.getFullYear());
+  const firstChallenge = reduceNumber(Math.abs(day - month));
+  const secondChallenge = reduceNumber(Math.abs(year - day));
   const thirdChallenge = reduceNumber(Math.abs(firstChallenge - secondChallenge));
-  const fourthChallenge = reduceNumber(digitSum(lp * 3));
+  const fourthChallenge = reduceNumber(Math.abs(month - year));
   return [firstChallenge, secondChallenge, thirdChallenge, fourthChallenge];
 }
 
@@ -54,13 +53,13 @@ export interface ChallengeData {
   ages: { start: number; end: number };
 }
 
-export function calculateCycles(core: CoreNumbers): {
+export function calculateCycles(core: CoreNumbers, dob: Date): {
   pinnacles: PinnacleData[];
   challenges: ChallengeData[];
 } {
-  const pinnacleNumbers = calculatePinnacleNumbers(core);
+  const pinnacleNumbers = calculatePinnacleNumbers(dob);
   const pinnacleAges = calculatePinnacleAges(core.lifePath);
-  const challengeNumbers = calculateChallengeNumbers(core);
+  const challengeNumbers = calculateChallengeNumbers(dob);
   const challengeAges = calculateChallengeAges(core.lifePath);
 
   return {

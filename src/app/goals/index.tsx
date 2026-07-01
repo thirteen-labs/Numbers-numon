@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 
@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { getAllGoals, deleteGoal, updateGoal } from '@/lib/database';
+import { getAllGoals } from '@/lib/database';
 import type { Goal } from '@/lib/database';
 
 const STATUS_COLORS: Record<string, string> = { active: '#4ECDC4', completed: '#2ECC71', cancelled: '#E74C3C' };
@@ -19,19 +19,6 @@ export default function GoalsListScreen() {
   const [goals, setGoals] = useState<Goal[]>([]);
 
   useFocusEffect(useCallback(() => { getAllGoals().then(setGoals); }, []));
-
-  async function handleToggleStatus(goal: Goal) {
-    const next = goal.status === 'active' ? 'completed' : goal.status === 'completed' ? 'active' : 'active';
-    await updateGoal(goal.id, { status: next as Goal['status'] });
-    getAllGoals().then(setGoals);
-  }
-
-  async function handleDelete(id: string) {
-    Alert.alert('Delete Goal', 'Delete this goal?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', style: 'destructive', onPress: () => deleteGoal(id).then(() => getAllGoals().then(setGoals)) },
-    ]);
-  }
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;
   const active = goals.filter((g) => g.status === 'active');

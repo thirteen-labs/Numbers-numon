@@ -3,10 +3,10 @@ import { FlatList, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { Input, Section } from '@/components/ui';
+import { Input } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { BottomTabInset, Spacing } from '@/constants/theme';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
 import { ANGEL_NUMBERS } from '@/data/angel-numbers';
 import { CHINESE_ZODIAC } from '@/data/chinese-zodiac';

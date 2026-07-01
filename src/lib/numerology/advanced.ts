@@ -1,5 +1,5 @@
 import { reduceNumber } from './reduce';
-import { sumNameNumbers, getVowels, getConsonants, getFirstLetter, getLastLetter, getFirstVowel, getFirstConsonant } from './mapping';
+import { sumNameNumbers, getConsonants, getFirstLetter, getLastLetter, getFirstVowel, getFirstConsonant } from './mapping';
 import type { PersonInput } from './core';
 import { getFullName } from './core';
 

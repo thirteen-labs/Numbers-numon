@@ -1,7 +1,7 @@
 import {
   calculateLifePath, calculateExpression, calculateSoulUrge,
   calculatePersonality, calculateBirthday, calculateAttitude,
-  calculateMaturity, calculateAllCoreNumbers,
+  calculateAllCoreNumbers,
 } from '@/lib/numerology/core';
 import type { PersonInput } from '@/lib/numerology/core';
 

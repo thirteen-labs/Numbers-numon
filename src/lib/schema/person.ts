@@ -8,6 +8,7 @@ export const PersonSchema = z.object({
   dateOfBirth: z.coerce.date(),
   nickname: z.string().max(100).optional().default(''),
   gender: z.enum(['male', 'female', 'other']).optional(),
+  birthTime: z.string().optional().default(''),
   notes: z.string().max(1000).optional().default(''),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

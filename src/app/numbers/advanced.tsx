@@ -1,14 +1,20 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 import { Card, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { BALANCE_INTERPRETATIONS } from '@/data/balance';
+import { getCapstoneMeaning } from '@/data/capstone';
+import { getCornerstoneMeaning } from '@/data/cornerstone';
+import { getFirstConsonantMeaning } from '@/data/consonants';
+import { getFirstVowelMeaning } from '@/data/vowels';
 import { HIDDEN_PASSION_INTERPRETATIONS } from '@/data/hidden-passion';
 import { KARMIC_DEBT_INTERPRETATIONS } from '@/data/karmic-debt';
+import { RATIONAL_THOUGHT_INTERPRETATIONS } from '@/data/rational-thought';
+import { SUBCONSCIOUS_SELF_INTERPRETATIONS } from '@/data/subconscious-self';
 import { useTheme } from '@/hooks/use-theme';
 import { colorForNumber } from '@/lib/numerology/utils';
 import type { PersonInput } from '@/lib/numerology/core';
@@ -133,50 +139,60 @@ export default function AdvancedNumbersScreen() {
         <Section title="Rational Thought">
           <ThemedView style={styles.numberRow}>
             <NumberCircle number={rationalThought} size={48} color={colorForNumber(rationalThought, theme)} />
-            <ThemedText type="small" style={{ flex: 1 }}>
-              Your rational thought number is {rationalThought}. This reflects your logical thinking pattern and how you process information.
-            </ThemedText>
+            <ThemedView style={{ flex: 1, gap: Spacing.two }}>
+              <ThemedText type="smallBold">{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.description}</ThemedText>
+              <ThemedText type="small">{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.thinkingPattern}</ThemedText>
+            </ThemedView>
           </ThemedView>
         </Section>
 
         <Section title="Subconscious Self">
           <ThemedView style={styles.numberRow}>
             <NumberCircle number={subconsciousSelf} size={48} color={colorForNumber(subconsciousSelf, theme)} />
-            <ThemedText type="small" style={{ flex: 1 }}>
-              This measures your inner confidence and subconscious patterns based on the diversity of letters in your name.
-            </ThemedText>
+            <ThemedView style={{ flex: 1, gap: Spacing.two }}>
+              <ThemedText type="smallBold">{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.confidenceLevel}</ThemedText>
+              <ThemedText type="small">{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.description}</ThemedText>
+            </ThemedView>
           </ThemedView>
         </Section>
 
         <Section title="Letter Analysis">
-          {cornerstone && (
-            <Card title={`Cornerstone — ${cornerstone}`}>
-              <ThemedText type="small">
-                The first letter of your name reveals your approach to life and first impressions.
-              </ThemedText>
-            </Card>
-          )}
-          {capstone && (
-            <Card title={`Capstone — ${capstone}`}>
-              <ThemedText type="small">
-                The last letter of your name reveals how you complete things and leave lasting impressions.
-              </ThemedText>
-            </Card>
-          )}
-          {firstVowel && (
-            <Card title={`First Vowel — ${firstVowel}`}>
-              <ThemedText type="small">
-                Your first vowel reveals your emotional nature and inner motivations.
-              </ThemedText>
-            </Card>
-          )}
-          {firstConsonant && (
-            <Card title={`First Consonant — ${firstConsonant}`}>
-              <ThemedText type="small">
-                Your first consonant reveals how others perceive you at first meeting.
-              </ThemedText>
-            </Card>
-          )}
+          {cornerstone && (() => {
+            const cm = getCornerstoneMeaning(cornerstone);
+            return (
+              <Card title={`Cornerstone — ${cornerstone}`}>
+                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
+                <ThemedText type="small">{cm.trait}</ThemedText>
+              </Card>
+            );
+          })()}
+          {capstone && (() => {
+            const cm = getCapstoneMeaning(capstone);
+            return (
+              <Card title={`Capstone — ${capstone}`}>
+                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
+                <ThemedText type="small">{cm.trait}</ThemedText>
+              </Card>
+            );
+          })()}
+          {firstVowel && (() => {
+            const vm = getFirstVowelMeaning(firstVowel);
+            return (
+              <Card title={`First Vowel — ${firstVowel}`}>
+                <ThemedText type="smallBold">{vm.meaning}</ThemedText>
+                <ThemedText type="small">{vm.emotionalTendency}</ThemedText>
+              </Card>
+            );
+          })()}
+          {firstConsonant && (() => {
+            const cm = getFirstConsonantMeaning(firstConsonant);
+            return (
+              <Card title={`First Consonant — ${firstConsonant}`}>
+                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
+                <ThemedText type="small">{cm.outwardPersonality}</ThemedText>
+              </Card>
+            );
+          })()}
         </Section>
       </ThemedView>
     </ScrollView>

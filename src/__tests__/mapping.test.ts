@@ -1,5 +1,5 @@
 import {
-  letterToNumber, nameToNumbers, sumNameNumbers,
+  letterToNumber, sumNameNumbers,
   isVowel, isConsonant, getVowels, getConsonants,
   getFirstLetter, getLastLetter, getFirstVowel, getFirstConsonant,
 } from '@/lib/numerology/mapping';

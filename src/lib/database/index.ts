@@ -15,3 +15,8 @@ export {
 } from './goals';
 export type { Goal } from './goals';
 export { clearAllProfiles, clearAllEntries, clearAllGoals, clearAllData } from './clear';
+export {
+  getAllReports, getReportsByProfile, getReportById,
+  insertReport, deleteReport, clearAllReports,
+} from './reports';
+export type { Report } from './reports';

@@ -12,6 +12,7 @@ function rowToProfile(row: any): Profile {
       dateOfBirth: new Date(row.date_of_birth),
       nickname: row.nickname ?? '',
       gender: row.gender ?? undefined,
+      birthTime: row.birth_time ?? '',
       notes: row.notes ?? '',
     },
     isFavorite: !!row.is_favorite,
@@ -37,8 +38,8 @@ export async function getProfileById(id: string): Promise<Profile | null> {
 export async function insertProfile(profile: Profile): Promise<void> {
   const db = await getDb();
   await db.runAsync(
-    `INSERT INTO profiles (id, name, first_name, middle_name, last_name, date_of_birth, nickname, gender, notes, is_favorite, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO profiles (id, name, first_name, middle_name, last_name, date_of_birth, nickname, gender, birth_time, notes, is_favorite, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     profile.id,
     profile.name,
     profile.person.firstName,
@@ -47,6 +48,7 @@ export async function insertProfile(profile: Profile): Promise<void> {
     profile.person.dateOfBirth.toISOString(),
     profile.person.nickname ?? '',
     profile.person.gender ?? null,
+    profile.person.birthTime ?? '',
     profile.person.notes ?? '',
     profile.isFavorite ? 1 : 0,
     profile.createdAt.toISOString(),
@@ -57,7 +59,7 @@ export async function insertProfile(profile: Profile): Promise<void> {
 export async function updateProfile(id: string, profile: Profile): Promise<void> {
   const db = await getDb();
   await db.runAsync(
-    `UPDATE profiles SET name = ?, first_name = ?, middle_name = ?, last_name = ?, date_of_birth = ?, nickname = ?, gender = ?, notes = ?, is_favorite = ?, updated_at = ?
+    `UPDATE profiles SET name = ?, first_name = ?, middle_name = ?, last_name = ?, date_of_birth = ?, nickname = ?, gender = ?, birth_time = ?, notes = ?, is_favorite = ?, updated_at = ?
      WHERE id = ?`,
     profile.name,
     profile.person.firstName,
@@ -66,6 +68,7 @@ export async function updateProfile(id: string, profile: Profile): Promise<void>
     profile.person.dateOfBirth.toISOString(),
     profile.person.nickname ?? '',
     profile.person.gender ?? null,
+    profile.person.birthTime ?? '',
     profile.person.notes ?? '',
     profile.isFavorite ? 1 : 0,
     new Date().toISOString(),

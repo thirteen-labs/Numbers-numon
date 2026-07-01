@@ -42,7 +42,7 @@ export default function AffirmationsScreen() {
           <Section title={`Affirmations for ${selectedNumber}`}>
             {AFFIRMATIONS_BY_NUMBER[selectedNumber]?.map((a, i) => (
               <Card key={i}>
-                <ThemedText style={styles.affirmationText}>"{a}"</ThemedText>
+                <ThemedText style={styles.affirmationText}>{'\u201C'}{a}{'\u201D'}</ThemedText>
               </Card>
             ))}
           </Section>

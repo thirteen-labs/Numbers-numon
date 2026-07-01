@@ -1,30 +1,28 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 import { Card, NumberCircle, Section } from '@/components/ui';
+import { PinnacleTimeline } from '@/components/charts';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { PINNACLE_INTERPRETATIONS } from '@/data/pinnacles';
-import { calculatePinnacleAges } from '@/lib/numerology/cycles';
+import { calculatePinnacleAges, calculatePinnacleNumbers } from '@/lib/numerology/cycles';
 import { useTheme } from '@/hooks/use-theme';
 import { colorForNumber } from '@/lib/numerology/utils';
 
 export default function PinnaclesScreen() {
-  const { lp } = useLocalSearchParams<{ lp: string }>();
+  const { lp, y, m, d } = useLocalSearchParams<{ lp: string; y?: string; m?: string; d?: string }>();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   const lifePath = parseInt(lp ?? '0', 10);
+  const dob = y && m && d
+    ? new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10))
+    : new Date(2000, 0, 1);
+  const pinnacleNumbers = calculatePinnacleNumbers(dob);
   const ages = calculatePinnacleAges(lifePath);
-
-  const pinnacleNumbers = [
-    reduceSimple(lifePath),
-  ];
-
-  const p1 = reduceSimple(lifePath);
-  const p2 = reduceSimple(lifePath);
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;
 
   return (
@@ -38,8 +36,12 @@ export default function PinnaclesScreen() {
           </ThemedText>
         </Section>
 
+        <ThemedView style={styles.timelineContainer}>
+          <PinnacleTimeline lifePath={lifePath} pinnacleNumbers={pinnacleNumbers} />
+        </ThemedView>
+
         {ages.map((age, i) => {
-          const num = reduceSimple(lifePath + i + 1);
+          const num = pinnacleNumbers[i] ?? 1;
           const interpretation = PINNACLE_INTERPRETATIONS[num];
 
           return (
@@ -64,13 +66,6 @@ export default function PinnaclesScreen() {
       </ThemedView>
     </ScrollView>
   );
-
-  function reduceSimple(n: number): number {
-    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
-      n = String(n).split('').reduce((a, d) => a + parseInt(d, 10), 0);
-    }
-    return n;
-  }
 }
 
 const styles = StyleSheet.create({
@@ -97,5 +92,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginTop: Spacing.two,
     opacity: 0.7,
+  },
+  timelineContainer: {
+    alignItems: 'center',
+    marginVertical: Spacing.three,
   },
 });

@@ -9,6 +9,8 @@ import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { AFFIRMATIONS_BY_NUMBER } from '@/data/affirmations';
+import { LUCKY_COLORS } from '@/data/lucky-colors';
+import { LUCKY_DAYS } from '@/data/lucky-days';
 import { PERSONAL_DAY_INTERPRETATIONS } from '@/data/personal-day';
 import { PERSONAL_MONTH_INTERPRETATIONS } from '@/data/personal-month';
 import { PERSONAL_YEAR_INTERPRETATIONS } from '@/data/personal-year';
@@ -32,9 +34,15 @@ export default function HomeScreen() {
     useCallback(() => {
       getAllProfiles().then((data) => {
         setProfiles(data);
-        if (data.length > 0) setActiveProfile(data[0]!);
+        if (data.length > 0) {
+          if (!activeProfile || !data.find((p) => p.id === activeProfile.id)) {
+            setActiveProfile(data[0]!);
+          }
+        } else {
+          setActiveProfile(null);
+        }
       });
-    }, [setProfiles])
+    }, [setProfiles, activeProfile])
   );
 
   const now = new Date();
@@ -46,15 +54,39 @@ export default function HomeScreen() {
   const affirmations = AFFIRMATIONS_BY_NUMBER[affKey] ?? AFFIRMATIONS_BY_NUMBER[1]!;
   const dailyAffirmation = affirmations[now.getDate() % affirmations.length]!;
 
+  const mainNumber = activeProfile
+    ? calculateAllCoreNumbers(activeProfile.person).lifePath
+    : 1;
+  const luckyColors = LUCKY_COLORS[mainNumber];
+  const luckyDays = LUCKY_DAYS[mainNumber];
+
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;
+
+  function switchProfile(id: string) {
+    const found = profiles.find((p) => p.id === id);
+    if (found) setActiveProfile(found);
+  }
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
-        {activeProfile && (
+        {activeProfile ? (
           <Section title={'Welcome, ' + activeProfile.person.firstName}>
+            {profiles.length > 1 && (
+              <ThemedView style={styles.profileRow}>
+                {profiles.map((p) => (
+                  <Pressable key={p.id} onPress={() => switchProfile(p.id)}>
+                    <ThemedView
+                      type={p.id === activeProfile.id ? 'backgroundSelected' : 'backgroundElement'}
+                      style={styles.profileChip}>
+                      <ThemedText type="small">{p.person.firstName}</ThemedText>
+                    </ThemedView>
+                  </Pressable>
+                ))}
+              </ThemedView>
+            )}
             <Pressable onPress={() => router.push(`/profile/${activeProfile.id}`)}>
               <Card>
                 <ThemedText type="small">
@@ -65,9 +97,7 @@ export default function HomeScreen() {
               </Card>
             </Pressable>
           </Section>
-        )}
-
-        {!activeProfile && profiles.length === 0 && (
+        ) : (
           <Section title="Welcome to Numon" subtitle="Create a profile to see your personalized numerology">
             <Button title="Create Profile" onPress={() => router.push('/profile/new')} />
           </Section>
@@ -81,6 +111,34 @@ export default function HomeScreen() {
             <NumberCircle number={personal.universalDay} label="Universal Day" color={colorForNumber(personal.universalDay, theme)} />
           </ThemedView>
         </Section>
+
+        {activeProfile && luckyColors && (
+          <Section title="Lucky Numbers & Colors">
+            <ThemedView style={styles.luckyRow}>
+              <Pressable onPress={() => router.push(`/lucky?n=${mainNumber}`)}>
+                <Card style={styles.luckyCard}>
+                  <ThemedText type="smallBold">Lucky Number</ThemedText>
+                  <ThemedText type="subtitle">{mainNumber}</ThemedText>
+                </Card>
+              </Pressable>
+              <Card style={styles.luckyCard}>
+                <ThemedText type="smallBold">Lucky Color</ThemedText>
+                <ThemedView style={styles.colorRow}>
+                  {luckyColors.hex.slice(0, 3).map((hex, i) => (
+                    <ThemedView key={hex + i} style={[styles.colorSwatch, { backgroundColor: hex }]} />
+                  ))}
+                </ThemedView>
+                <ThemedText type="small">{luckyColors.primary}</ThemedText>
+              </Card>
+              {luckyDays && (
+                <Card style={styles.luckyCard}>
+                  <ThemedText type="smallBold">Lucky Day</ThemedText>
+                  <ThemedText type="small">{luckyDays.weekdays[0]}</ThemedText>
+                </Card>
+              )}
+            </ThemedView>
+          </Section>
+        )}
 
         <Section title="Daily Affirmation">
           <Card>
@@ -160,5 +218,35 @@ const styles = StyleSheet.create({
   quickLinks: {
     flexDirection: 'row',
     gap: Spacing.three,
+  },
+  profileRow: {
+    flexDirection: 'row',
+    gap: Spacing.two,
+    marginBottom: Spacing.three,
+  },
+  profileChip: {
+    paddingVertical: Spacing.one,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.three,
+  },
+  luckyRow: {
+    flexDirection: 'row',
+    gap: Spacing.three,
+    flexWrap: 'wrap',
+  },
+  luckyCard: {
+    flex: 1,
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  colorRow: {
+    flexDirection: 'row',
+    gap: Spacing.one,
+    marginVertical: Spacing.two,
+  },
+  colorSwatch: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
   },
 });

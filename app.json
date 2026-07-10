@@ -11,13 +11,18 @@
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.numon.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#202020",
         "foregroundImage": "./assets/images/favicon.png",
         "backgroundImage": "./assets/images/favicon.png",
         "monochromeImage": "./assets/images/favicon.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS"
+      ]
     },
     "web": {
       "output": "static",
@@ -38,8 +43,7 @@
       "expo-image"
     ],
     "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+      "typedRoutes": true
     }
   }
 }

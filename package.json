@@ -55,7 +55,9 @@
     "test": "jest --passWithNoTests"
   },
   "overrides": {
-    "es-abstract": "1.24.1"
+    "es-abstract": "1.24.1",
+    "source-map": "0.5.7",
+    "source-map-js": "1.2.1"
   },
   "private": true
 }

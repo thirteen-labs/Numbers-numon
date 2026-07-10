@@ -62,8 +62,4 @@ export const PINNACLE_INTERPRETATIONS: Record<number, PinnacleInterpretation> = 
   },
 };
 
-export function calculatePinnacleAges(lifePathNumber: number): number[] {
-  const firstEnd = 36 - lifePathNumber;
-  if (firstEnd <= 0) return [0, 27, 54, 81];
-  return [0, firstEnd, firstEnd + 27, firstEnd + 54, firstEnd + 81];
-}
+

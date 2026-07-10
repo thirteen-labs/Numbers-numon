@@ -53,6 +53,40 @@ export async function scheduleDailyAffirmationNotification(hour: number, minute:
   });
 }
 
+export async function scheduleGoalReminderNotification(hour: number, minute: number) {
+  await Notifications.cancelScheduledNotificationAsync('goal-reminder');
+
+  await Notifications.scheduleNotificationAsync({
+    identifier: 'goal-reminder',
+    content: {
+      title: 'Goal Reminder',
+      body: 'Check in on your goals and track your progress today.',
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
+      hour,
+      minute,
+    },
+  });
+}
+
+export async function schedulePersonalYearReminderNotification(hour: number, minute: number) {
+  await Notifications.cancelScheduledNotificationAsync('personal-year');
+
+  await Notifications.scheduleNotificationAsync({
+    identifier: 'personal-year',
+    content: {
+      title: 'Personal Year Update',
+      body: 'Reflect on your personal year energy and how it shapes your journey.',
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
+      hour,
+      minute,
+    },
+  });
+}
+
 export async function cancelAllNotifications() {
   await Notifications.cancelAllScheduledNotificationsAsync();
 }

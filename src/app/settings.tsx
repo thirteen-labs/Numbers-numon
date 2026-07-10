@@ -9,7 +9,7 @@ import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { THEMES } from '@/constants/themes';
 import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/lib/store';
-import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification } from '@/lib/notifications';
+import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification, scheduleGoalReminderNotification, schedulePersonalYearReminderNotification } from '@/lib/notifications';
 
 const THEME_OPTIONS: { key: string; label: string }[] = [
   { key: 'system', label: 'System' },
@@ -40,6 +40,7 @@ export default function SettingsScreen() {
       }
       if (key === 'dailyNumber') await scheduleDailyNumberNotification(8, 0);
       else if (key === 'dailyAffirmation') await scheduleDailyAffirmationNotification(8, 0);
+      else if (key === 'goalReminders') await scheduleGoalReminderNotification(12, 0);
       setNotificationPrefs({ [key]: true });
       setNotifStatus('Notifications enabled');
     } else {

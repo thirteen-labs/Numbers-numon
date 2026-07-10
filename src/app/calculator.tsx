@@ -8,10 +8,17 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { ATTITUDE_INTERPRETATIONS } from '@/data/attitude';
 import { BALANCE_INTERPRETATIONS } from '@/data/balance';
+import { BIRTHDAY_INTERPRETATIONS } from '@/data/birthday';
+import { EXPRESSION_INTERPRETATIONS } from '@/data/expression';
 import { HIDDEN_PASSION_INTERPRETATIONS } from '@/data/hidden-passion';
 import { KARMIC_DEBT_INTERPRETATIONS } from '@/data/karmic-debt';
+import { LIFE_PATH_INTERPRETATIONS } from '@/data/life-path';
+import { MATURITY_INTERPRETATIONS } from '@/data/maturity';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
+import { PERSONALITY_INTERPRETATIONS } from '@/data/personality';
+import { SOUL_URGE_INTERPRETATIONS } from '@/data/soul-urge';
 import { PERSONAL_DAY_INTERPRETATIONS } from '@/data/personal-day';
 import { PERSONAL_MONTH_INTERPRETATIONS } from '@/data/personal-month';
 import { PERSONAL_YEAR_INTERPRETATIONS } from '@/data/personal-year';
@@ -158,31 +165,61 @@ export default function CalculatorScreen() {
               </ThemedView>
             </Section>
 
-            <Section title={'Life Path — ' + (NUMBER_MEANINGS[result.core.lifePath]?.title ?? '')}>
-              <ThemedText type="small">{NUMBER_MEANINGS[result.core.lifePath]?.description}</ThemedText>
+            <Section title={'Life Path — ' + (LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.title ?? NUMBER_MEANINGS[result.core.lifePath]?.title ?? '')}>
+              <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.overview ?? NUMBER_MEANINGS[result.core.lifePath]?.description}</ThemedText>
               <Card title="Strengths">
-                {NUMBER_MEANINGS[result.core.lifePath]?.positive.map((s: string) => (
+                {(LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.strengths ?? NUMBER_MEANINGS[result.core.lifePath]?.positive ?? []).map((s: string) => (
                   <ThemedText key={s} type="small">• {s}</ThemedText>
                 ))}
               </Card>
               <Card title="Challenges">
-                {NUMBER_MEANINGS[result.core.lifePath]?.negative.map((s: string) => (
+                {(LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.challenges ?? NUMBER_MEANINGS[result.core.lifePath]?.negative ?? []).map((s: string) => (
                   <ThemedText key={s} type="small">• {s}</ThemedText>
                 ))}
               </Card>
               <Card title="Career Paths">
-                {NUMBER_MEANINGS[result.core.lifePath]?.career.map((c: string) => (
+                {(LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.career ?? NUMBER_MEANINGS[result.core.lifePath]?.career ?? []).map((c: string) => (
                   <ThemedText key={c} type="small">• {c}</ThemedText>
                 ))}
               </Card>
+              <Card title="Relationships">
+                <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.relationships}</ThemedText>
+              </Card>
+              <Card title="Spiritual Growth">
+                <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.spiritualGrowth}</ThemedText>
+              </Card>
+              {LIFE_PATH_INTERPRETATIONS[result.core.lifePath]?.famousExamples && (
+                <Card title="Famous Examples">
+                  {LIFE_PATH_INTERPRETATIONS[result.core.lifePath]!.famousExamples.map((name: string) => (
+                    <ThemedText key={name} type="small">• {name}</ThemedText>
+                  ))}
+                </Card>
+              )}
             </Section>
 
-            <Section title={'Expression — ' + (NUMBER_MEANINGS[result.core.expression]?.title ?? '')}>
-              <ThemedText type="small">{NUMBER_MEANINGS[result.core.expression]?.description}</ThemedText>
+            <Section title={'Expression — ' + (EXPRESSION_INTERPRETATIONS[result.core.expression]?.title ?? NUMBER_MEANINGS[result.core.expression]?.title ?? '')}>
+              <ThemedText type="small">{EXPRESSION_INTERPRETATIONS[result.core.expression]?.potential ?? NUMBER_MEANINGS[result.core.expression]?.description}</ThemedText>
+              <Card title="Natural Talents">
+                {(EXPRESSION_INTERPRETATIONS[result.core.expression]?.naturalTalents ?? []).map((t: string) => (
+                  <ThemedText key={t} type="small">• {t}</ThemedText>
+                ))}
+              </Card>
+              <Card title="Personal Development">
+                <ThemedText type="small">{EXPRESSION_INTERPRETATIONS[result.core.expression]?.personalDevelopment}</ThemedText>
+              </Card>
             </Section>
 
-            <Section title={'Soul Urge — ' + (NUMBER_MEANINGS[result.core.soulUrge]?.title ?? '')}>
-              <ThemedText type="small">{NUMBER_MEANINGS[result.core.soulUrge]?.description}</ThemedText>
+            <Section title={'Soul Urge — ' + (SOUL_URGE_INTERPRETATIONS[result.core.soulUrge]?.title ?? NUMBER_MEANINGS[result.core.soulUrge]?.title ?? '')}>
+              <ThemedText type="small">{SOUL_URGE_INTERPRETATIONS[result.core.soulUrge]?.innerDesire ?? NUMBER_MEANINGS[result.core.soulUrge]?.description}</ThemedText>
+              <Card title="Emotional Motivation">
+                <ThemedText type="small">{SOUL_URGE_INTERPRETATIONS[result.core.soulUrge]?.emotionalMotivation}</ThemedText>
+              </Card>
+              <Card title="Hidden Dreams">
+                <ThemedText type="small">{SOUL_URGE_INTERPRETATIONS[result.core.soulUrge]?.hiddenDreams}</ThemedText>
+              </Card>
+              <Card title="Personal Fulfillment">
+                <ThemedText type="small">{SOUL_URGE_INTERPRETATIONS[result.core.soulUrge]?.personalFulfillment}</ThemedText>
+              </Card>
             </Section>
 
             <Section title="Today's Numbers">

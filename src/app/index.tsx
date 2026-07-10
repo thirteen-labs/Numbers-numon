@@ -35,14 +35,17 @@ export default function HomeScreen() {
       getAllProfiles().then((data) => {
         setProfiles(data);
         if (data.length > 0) {
-          if (!activeProfile || !data.find((p) => p.id === activeProfile.id)) {
-            setActiveProfile(data[0]!);
-          }
+          setActiveProfile((prev) => {
+            if (!prev || !data.find((p) => p.id === prev.id)) {
+              return data[0]!;
+            }
+            return prev;
+          });
         } else {
           setActiveProfile(null);
         }
       });
-    }, [setProfiles, activeProfile])
+    }, [setProfiles])
   );
 
   const now = new Date();

@@ -6,7 +6,14 @@ import { Card, NumberCircle, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { ATTITUDE_INTERPRETATIONS } from '@/data/attitude';
+import { BIRTHDAY_INTERPRETATIONS } from '@/data/birthday';
+import { EXPRESSION_INTERPRETATIONS } from '@/data/expression';
+import { LIFE_PATH_INTERPRETATIONS } from '@/data/life-path';
+import { MATURITY_INTERPRETATIONS } from '@/data/maturity';
 import { NUMBER_MEANINGS } from '@/data/number-meanings';
+import { PERSONALITY_INTERPRETATIONS } from '@/data/personality';
+import { SOUL_URGE_INTERPRETATIONS } from '@/data/soul-urge';
 import { useTheme } from '@/hooks/use-theme';
 import { colorForNumber } from '@/lib/numerology/utils';
 
@@ -28,6 +35,14 @@ export default function NumberDetailScreen() {
   const num = parseInt(n ?? '0', 10);
   const label = LABELS[type] ?? type;
   const meaning = NUMBER_MEANINGS[num];
+
+  const lp = LIFE_PATH_INTERPRETATIONS[num];
+  const expr = EXPRESSION_INTERPRETATIONS[num];
+  const su = SOUL_URGE_INTERPRETATIONS[num];
+  const pers = PERSONALITY_INTERPRETATIONS[num];
+  const bday = BIRTHDAY_INTERPRETATIONS[num];
+  const att = ATTITUDE_INTERPRETATIONS[num];
+  const mat = MATURITY_INTERPRETATIONS[num];
 
   if (!meaning) {
     return (
@@ -54,6 +69,128 @@ export default function NumberDetailScreen() {
         <Section title="Description">
           <ThemedText type="small">{meaning.description}</ThemedText>
         </Section>
+
+        {type === 'life-path' && lp && (
+          <>
+            <Card title="Overview">
+              <ThemedText type="small">{lp.overview}</ThemedText>
+            </Card>
+            <Card title="Famous Examples">
+              {lp.famousExamples.map((name: string) => (
+                <ThemedText key={name} type="small">• {name}</ThemedText>
+              ))}
+            </Card>
+          </>
+        )}
+
+        {type === 'expression' && expr && (
+          <>
+            <Card title="Potential">
+              <ThemedText type="small">{expr.potential}</ThemedText>
+            </Card>
+            <Card title="Natural Talents">
+              {expr.naturalTalents.map((t: string) => (
+                <ThemedText key={t} type="small">• {t}</ThemedText>
+              ))}
+            </Card>
+            <Card title="Personal Development">
+              <ThemedText type="small">{expr.personalDevelopment}</ThemedText>
+            </Card>
+            <Card title="Hidden Abilities">
+              {expr.hiddenAbilities.map((a: string) => (
+                <ThemedText key={a} type="small">• {a}</ThemedText>
+              ))}
+            </Card>
+          </>
+        )}
+
+        {type === 'soul-urge' && su && (
+          <>
+            <Card title="Inner Desire">
+              <ThemedText type="small">{su.innerDesire}</ThemedText>
+            </Card>
+            <Card title="Emotional Motivation">
+              <ThemedText type="small">{su.emotionalMotivation}</ThemedText>
+            </Card>
+            <Card title="Hidden Dreams">
+              <ThemedText type="small">{su.hiddenDreams}</ThemedText>
+            </Card>
+            <Card title="Personal Fulfillment">
+              <ThemedText type="small">{su.personalFulfillment}</ThemedText>
+            </Card>
+          </>
+        )}
+
+        {type === 'personality' && pers && (
+          <>
+            <Card title="First Impressions">
+              <ThemedText type="small">{pers.firstImpressions}</ThemedText>
+            </Card>
+            <Card title="Public Persona">
+              <ThemedText type="small">{pers.publicPersona}</ThemedText>
+            </Card>
+            <Card title="Communication Style">
+              <ThemedText type="small">{pers.communicationStyle}</ThemedText>
+            </Card>
+            <Card title="Social Image">
+              <ThemedText type="small">{pers.socialImage}</ThemedText>
+            </Card>
+          </>
+        )}
+
+        {type === 'birthday' && bday && (
+          <>
+            <Card title="Your Gift">
+              <ThemedText type="small">{bday.gift}</ThemedText>
+            </Card>
+            <Card title="Learning Style">
+              <ThemedText type="small">{bday.learningStyle}</ThemedText>
+            </Card>
+            <Card title="Strengths">
+              {bday.strengths.map((s: string) => (
+                <ThemedText key={s} type="small">• {s}</ThemedText>
+              ))}
+            </Card>
+            <Card title="Challenges">
+              {bday.challenges.map((s: string) => (
+                <ThemedText key={s} type="small">• {s}</ThemedText>
+              ))}
+            </Card>
+          </>
+        )}
+
+        {type === 'attitude' && att && (
+          <>
+            <Card title="Initial Reactions">
+              <ThemedText type="small">{att.initialReactions}</ThemedText>
+            </Card>
+            <Card title="Daily Mindset">
+              <ThemedText type="small">{att.dailyMindset}</ThemedText>
+            </Card>
+            <Card title="Approach to Life">
+              <ThemedText type="small">{att.approachToLife}</ThemedText>
+            </Card>
+            <Card title="Decision Making">
+              <ThemedText type="small">{att.decisionMaking}</ThemedText>
+            </Card>
+          </>
+        )}
+
+        {type === 'maturity' && mat && (
+          <>
+            <Card title="Future Direction">
+              <ThemedText type="small">{mat.futureDirection}</ThemedText>
+            </Card>
+            <Card title="Growth Milestones">
+              {mat.growthMilestones.map((m: string) => (
+                <ThemedText key={m} type="small">• {m}</ThemedText>
+              ))}
+            </Card>
+            <Card title="Wisdom Gained">
+              <ThemedText type="small">{mat.wisdomGained}</ThemedText>
+            </Card>
+          </>
+        )}
 
         <Card title="Strengths">
           {meaning.positive.map((s: string) => (

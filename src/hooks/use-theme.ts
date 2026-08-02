@@ -12,5 +12,6 @@ export function useTheme(): ThemeColors {
     return THEMES[resolved];
   }
 
-  return THEMES[theme as ThemeName] ?? Colors[theme];
+  const key = theme as keyof typeof Colors;
+  return THEMES[key as ThemeName] ?? Colors[key];
 }

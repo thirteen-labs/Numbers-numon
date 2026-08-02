@@ -4,7 +4,7 @@
     "slug": "Numon",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/app.png",
     "scheme": "numon",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -15,9 +15,9 @@
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#202020",
-        "foregroundImage": "./assets/images/favicon.png",
-        "backgroundImage": "./assets/images/favicon.png",
-        "monochromeImage": "./assets/images/favicon.png"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundImage": "./assets/images/icon.png",
+        "monochromeImage": "./assets/images/icon.png"
       },
       "predictiveBackGestureEnabled": false,
       "permissions": [
@@ -26,7 +26,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/app.png"
     },
     "plugins": [
       "expo-router",
@@ -36,7 +36,7 @@
           "backgroundColor": "#202020",
           "android": {
             "image": "./assets/images/splash.png",
-            "imageWidth": 76
+            "imageWidth": 120
           }
         }
       ],

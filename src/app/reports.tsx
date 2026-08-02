@@ -13,6 +13,7 @@ import { getAllProfiles, getAllReports, insertReport, deleteReport, getProfileBy
 import { calculateAllCoreNumbers, calculateAllPersonalNumbers, calculateCycles } from '@/lib/numerology';
 import { calculateKarmicDebt, calculateKarmicLessons, calculateHiddenPassion, calculateBalance } from '@/lib/numerology/advanced';
 import { colorForNumber } from '@/lib/numerology/utils';
+import { exportReportAsPdf, exportReportAsCsv } from '@/lib/reports/export';
 import type { Profile } from '@/lib/schema';
 import type { Report } from '@/lib/database';
 
@@ -92,6 +93,28 @@ export default function ReportsScreen() {
     }
   }
 
+  async function handleExportPdf(report: Report) {
+    try {
+      const reportData = JSON.parse(report.data);
+      const profile = await getProfileById(report.profileId);
+      const path = await exportReportAsPdf({ ...reportData, profileName: profile?.name ?? reportData.profileName });
+      Alert.alert('PDF Report Exported', `Saved to: ${path}`);
+    } catch (e) {
+      Alert.alert('Export Failed', String(e));
+    }
+  }
+
+  async function handleExportCsv(report: Report) {
+    try {
+      const reportData = JSON.parse(report.data);
+      const profile = await getProfileById(report.profileId);
+      const path = await exportReportAsCsv({ ...reportData, profileName: profile?.name ?? reportData.profileName });
+      Alert.alert('CSV Report Exported', `Saved to: ${path}`);
+    } catch (e) {
+      Alert.alert('Export Failed', String(e));
+    }
+  }
+
   async function handleDelete(id: string) {
     Alert.alert('Delete Report', 'Remove this saved report?', [
       { text: 'Cancel', style: 'cancel' },
@@ -114,7 +137,7 @@ export default function ReportsScreen() {
       <ThemedView style={styles.inner}>
         <Section title="Reports" subtitle="Generate and export numerology reports">
           <ThemedText type="small">
-            Create comprehensive numerology reports for your saved profiles and export them as JSON files.
+            Create comprehensive numerology reports for your saved profiles and export them as PDF, JSON, or CSV files.
           </ThemedText>
         </Section>
 
@@ -159,7 +182,9 @@ export default function ReportsScreen() {
                     </ThemedView>
                   )}
                   <ThemedView style={styles.actions}>
-                    <Button title="Export JSON" variant="secondary" onPress={() => handleExportJSON(r)} />
+                    <Button title="PDF" variant="primary" onPress={() => handleExportPdf(r)} />
+                    <Button title="JSON" variant="secondary" onPress={() => handleExportJSON(r)} />
+                    <Button title="CSV" variant="secondary" onPress={() => handleExportCsv(r)} />
                     <Button title="Delete" variant="ghost" onPress={() => handleDelete(r.id)} />
                   </ThemedView>
                 </Card>

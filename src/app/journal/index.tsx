@@ -6,6 +6,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { Button, Card, Input, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { RichTextDisplay } from '@/components/rich-text-display';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { getAllEntries, searchEntries } from '@/lib/database';
@@ -47,7 +48,7 @@ export default function JournalListScreen() {
         {entries.map((entry) => (
           <Pressable key={entry.id} onPress={() => router.push(`/journal/${entry.id}`)}>
             <Card title={entry.title}>
-              <ThemedText type="small" numberOfLines={2}>{entry.content}</ThemedText>
+              <ThemedText type="small" numberOfLines={2}>{entry.content.replace(/[*#•—]/g, '').slice(0, 100)}</ThemedText>
               <ThemedView style={styles.meta}>
                 {entry.mood && <ThemedText type="small">Mood: {entry.mood}</ThemedText>}
                 <ThemedText type="small">{entry.createdAt.toLocaleDateString()}</ThemedText>

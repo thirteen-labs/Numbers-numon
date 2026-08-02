@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 
 import { Button, Input, Section } from '@/components/ui';
 import { ThemedView } from '@/components/themed-view';
+import { RichTextInput } from '@/components/rich-text-input';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { insertEntry } from '@/lib/database';
@@ -43,7 +44,7 @@ export default function NewJournalEntryScreen() {
       <ThemedView style={styles.inner}>
         <Section title="New Journal Entry">
           <Input label="Title" value={title} onChangeText={setTitle} placeholder="Entry title" autoCapitalize="words" />
-          <Input label="Content" value={content} onChangeText={setContent} placeholder="Write your thoughts..." multiline />
+          <RichTextInput value={content} onChangeText={setContent} placeholder="Write your thoughts..." />
           <Input label="Mood" value={mood} onChangeText={setMood} placeholder="e.g. happy, reflective, anxious" autoCapitalize="none" />
           <Input label="Tags (comma-separated)" value={tags} onChangeText={setTags} placeholder="e.g. gratitude, insight, dream" autoCapitalize="none" />
           <Button title="Save Entry" onPress={handleSave} />

@@ -7,6 +7,19 @@ export interface KarmicDebtInterpretation {
 }
 
 export const KARMIC_DEBT_INTERPRETATIONS: Record<number, KarmicDebtInterpretation> = {
+  9: {
+    number: 9,
+    title: 'The Debt of Selfishness',
+    historicalMeaning: 'In past lives, you carried forward unresolved patterns of selfishness and ego. You may have been self-absorbed, neglecting the needs of others and your own spiritual growth.',
+    modernInterpretation: 'This life brings opportunities to release old patterns and embrace a more compassionate, globally-minded perspective. You are called to serve others and let go of self-centered behaviors.',
+    practicalAdvice: [
+      'Practice compassion and empathy for others daily',
+      'Let go of old grudges and resentments',
+      'Engage in service work or community involvement',
+      'Practice forgiveness of yourself and others',
+      'Focus on spiritual growth and universal love',
+    ],
+  },
   13: {
     number: 13,
     title: 'The Debt of Laziness',

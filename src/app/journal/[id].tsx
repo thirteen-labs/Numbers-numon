@@ -6,6 +6,8 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { Button, Card, Input, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { RichTextDisplay } from '@/components/rich-text-display';
+import { RichTextInput } from '@/components/rich-text-input';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { getEntryById, updateEntry, deleteEntry } from '@/lib/database';
@@ -66,7 +68,7 @@ export default function JournalDetailScreen() {
         {editing ? (
           <Section title="Edit Entry">
             <Input label="Title" value={editTitle} onChangeText={setEditTitle} autoCapitalize="words" />
-            <Input label="Content" value={editContent} onChangeText={setEditContent} multiline />
+            <RichTextInput value={editContent} onChangeText={setEditContent} placeholder="Write your thoughts..." />
             <Input label="Mood" value={editMood} onChangeText={setEditMood} autoCapitalize="none" />
             <Button title="Save Changes" onPress={handleSave} />
             <Button title="Cancel" variant="ghost" onPress={() => setEditing(false)} />
@@ -75,7 +77,7 @@ export default function JournalDetailScreen() {
           <>
             <Section title={entry.title} subtitle={entry.createdAt.toLocaleString()}>
               <Card>
-                <ThemedText type="small">{entry.content}</ThemedText>
+                <RichTextDisplay content={entry.content} />
               </Card>
               {entry.mood && <Card title="Mood"><ThemedText type="small">{entry.mood}</ThemedText></Card>}
               {entry.tags.length > 0 && (

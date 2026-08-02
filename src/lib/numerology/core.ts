@@ -6,6 +6,7 @@ export interface PersonInput {
   lastName: string;
   middleName?: string;
   dateOfBirth: Date;
+  birthTime?: string;
 }
 
 export function getFullName(person: PersonInput): string {
@@ -56,6 +57,24 @@ export function calculateMaturity(lifePath: number, expression: number): number 
   return reduceNumber(lifePath + expression);
 }
 
+export function calculateBirthTimeNumber(birthTime: string): number | null {
+  if (!birthTime) return null;
+  const timeMatch = birthTime.match(/^(\d{1,2}):(\d{2})/);
+  if (!timeMatch) return null;
+  const hours = parseInt(timeMatch[1]!, 10);
+  const minutes = parseInt(timeMatch[2]!, 10);
+  if (isNaN(hours) || isNaN(minutes)) return null;
+  const totalMinutes = hours * 60 + minutes;
+  return reduceNumber(totalMinutes);
+}
+
+export function calculateLifePathWithTime(dob: Date, birthTime: string): number {
+  const baseLifePath = calculateLifePath(dob);
+  const timeNumber = calculateBirthTimeNumber(birthTime);
+  if (timeNumber === null) return baseLifePath;
+  return reduceNumber(baseLifePath + timeNumber);
+}
+
 export interface CoreNumbers {
   lifePath: number;
   expression: number;
@@ -64,6 +83,7 @@ export interface CoreNumbers {
   birthday: number;
   attitude: number;
   maturity: number;
+  birthTimeNumber: number | null;
 }
 
 export function calculateAllCoreNumbers(person: PersonInput): CoreNumbers {
@@ -77,5 +97,6 @@ export function calculateAllCoreNumbers(person: PersonInput): CoreNumbers {
     birthday: calculateBirthday(person.dateOfBirth),
     attitude: calculateAttitude(person.dateOfBirth),
     maturity: calculateMaturity(lifePath, expression),
+    birthTimeNumber: person.birthTime ? calculateBirthTimeNumber(person.birthTime) : null,
   };
 }

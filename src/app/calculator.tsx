@@ -78,7 +78,7 @@ export default function CalculatorScreen() {
     if (!lastName.trim()) { setError('Last name is required'); return; }
     if (!dateOfBirth) { setError('Date of birth is required'); return; }
 
-    const person: PersonInput = { firstName: firstName.trim(), lastName: lastName.trim(), middleName: middleName.trim() || undefined, dateOfBirth };
+    const person: PersonInput = { firstName: firstName.trim(), lastName: lastName.trim(), middleName: middleName.trim() || undefined, dateOfBirth, birthTime: birthTime.trim() || undefined };
 
     const core = calculateAllCoreNumbers(person);
     const personal = calculateAllPersonalNumbers(person.dateOfBirth);
@@ -162,6 +162,11 @@ export default function CalculatorScreen() {
                 <Pressable onPress={() => goToNumberDetail('maturity', result.core.maturity)}>
                   <NumberCircle number={result.core.maturity} label="Maturity" color={colorForNumber(result.core.maturity, theme)} />
                 </Pressable>
+                {result.core.birthTimeNumber !== null && (
+                  <Pressable onPress={() => goToNumberDetail('birth-time', result.core.birthTimeNumber!)}>
+                    <NumberCircle number={result.core.birthTimeNumber!} label="Birth Time" color={colorForNumber(result.core.birthTimeNumber!, theme)} />
+                  </Pressable>
+                )}
               </ThemedView>
             </Section>
 

@@ -3,13 +3,13 @@ import { sumNameNumbers, getConsonants, getFirstLetter, getLastLetter, getFirstV
 import type { PersonInput } from './core';
 import { getFullName } from './core';
 
-const KARMIC_DEBT_NUMBERS = new Set([13, 14, 16, 19]);
+const KARMIC_DEBT_NUMBERS = new Set([9, 13, 14, 16, 19]);
 
 export function calculateKarmicDebt(person: PersonInput): number[] {
   const fullName = getFullName(person);
   const total = sumNameNumbers(fullName);
   const debts: number[] = [];
-  for (const n of [13, 14, 16, 19]) {
+  for (const n of [9, 13, 14, 16, 19]) {
     if (total === n || reduceNumber(total) === reduceNumber(n)) {
       debts.push(n);
     }

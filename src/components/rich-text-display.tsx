@@ -1,4 +1,3 @@
-import type { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -8,8 +7,8 @@ interface RichTextDisplayProps {
   content: string;
 }
 
-function parseRichText(text: string): Array<{ type: 'text' | 'bold' | 'italic' | 'heading' | 'bullet' | 'divider'; value: string }> {
-  const segments: Array<{ type: 'text' | 'bold' | 'italic' | 'heading' | 'bullet' | 'divider'; value: string }> = [];
+function parseRichText(text: string): { type: 'text' | 'bold' | 'italic' | 'heading' | 'bullet' | 'divider'; value: string }[] {
+  const segments: { type: 'text' | 'bold' | 'italic' | 'heading' | 'bullet' | 'divider'; value: string }[] = [];
   const lines = text.split('\n');
 
   for (const line of lines) {
@@ -28,8 +27,7 @@ function parseRichText(text: string): Array<{ type: 'text' | 'bold' | 'italic' |
 }
 
 function renderInlineFormatting(text: string) {
-  const parts: Array<{ text: string; bold?: boolean; italic?: boolean }> = [];
-  let remaining = text;
+  const parts: { text: string; bold?: boolean; italic?: boolean }[] = [];
 
   const regex = /(\*\*(.+?)\*\*)|(\*(.+?)\*)/g;
   let lastIndex = 0;

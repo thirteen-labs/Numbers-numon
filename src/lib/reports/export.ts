@@ -22,8 +22,8 @@ interface ReportData {
     universalDay: number;
   };
   cycles: {
-    pinnacles: Array<{ number: number; startAge: number; endAge: number }>;
-    challenges: Array<{ number: number; startAge: number; endAge: number }>;
+    pinnacles: { number: number; startAge: number; endAge: number }[];
+    challenges: { number: number; startAge: number; endAge: number }[];
   };
   advanced: {
     karmicDebt: number[];

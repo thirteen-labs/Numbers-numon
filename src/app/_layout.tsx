@@ -9,7 +9,7 @@ import { isOnboardingDone } from '@/lib/storage';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { theme, setLastOpenedScreen, isOnboarded, setOnboarded } = useAppStore();
+  const { theme, setLastOpenedScreen, setOnboarded } = useAppStore();
   const segments = useSegments();
 
   const resolvedTheme = theme === 'system' ? colorScheme ?? 'light' : theme;

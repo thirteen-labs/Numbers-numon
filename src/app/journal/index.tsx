@@ -6,7 +6,6 @@ import { router, useFocusEffect } from 'expo-router';
 import { Button, Card, Input, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { RichTextDisplay } from '@/components/rich-text-display';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { getAllEntries, searchEntries } from '@/lib/database';

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -18,10 +17,6 @@ export function DatePickerField({
   placeholder?: string;
 }) {
   const theme = useTheme();
-
-  const formatted = value
-    ? `${String(value.getMonth() + 1).padStart(2, '0')}/${String(value.getDate()).padStart(2, '0')}/${value.getFullYear()}`
-    : '';
 
   return (
     <ThemedView>

@@ -9,7 +9,7 @@ import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { THEMES } from '@/constants/themes';
 import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/lib/store';
-import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification, scheduleGoalReminderNotification, schedulePersonalYearReminderNotification } from '@/lib/notifications';
+import { requestPermissions, cancelAllNotifications, scheduleDailyNumberNotification, scheduleDailyAffirmationNotification, scheduleGoalReminderNotification } from '@/lib/notifications';
 
 const THEME_OPTIONS: { key: string; label: string }[] = [
   { key: 'system', label: 'System' },

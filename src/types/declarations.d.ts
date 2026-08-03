@@ -54,7 +54,7 @@ declare module 'react-native-screens' {}
 declare module 'react-native-web' {}
 declare module 'react-native-gesture-handler' {}
 declare module 'react-native-svg' {
-  import type { ComponentType, ReactNode } from 'react';
+  import type { ReactNode } from 'react';
   interface SvgProps { viewBox?: string; width?: number | string; height?: number | string; children?: ReactNode; style?: any; }
   export default function Svg(props: SvgProps): any;
   export function Circle(props: Record<string, any>): any;
@@ -104,7 +104,6 @@ declare module 'expo-router/ui' {
   export const TabTrigger: ComponentType<{ children?: ReactNode; name: string; href?: string; asChild?: boolean; style?: any }>;
   export const TabSlot: ComponentType<{ style?: any }>;
   export type TabTriggerSlotProps = { href?: string; isFocused?: boolean; children?: ReactNode; style?: any; onPress?: (e: any) => void };
-  export type TabListProps = { children?: ReactNode; style?: any };
   export type TabListProps = { children?: ReactNode; style?: any };
 }
 declare module 'expo-sqlite' {
@@ -172,4 +171,4 @@ declare module '*.module.css' { const classes: { readonly [key: string]: string 
 declare namespace NodeJS { interface ProcessEnv { EXPO_OS?: string } }
 declare const process: { env: NodeJS.ProcessEnv };
 declare const crypto: { randomUUID: () => string };
-declare var require: (module: string) => any;
+declare const require: (module: string) => any;

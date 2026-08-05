@@ -5,7 +5,8 @@ import { Colors } from '@/constants/theme';
 
 export default function AppTabs() {
   const scheme = useColorScheme();
-  const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
+  const resolvedScheme = scheme === 'unspecified' || scheme === null ? 'light' : scheme;
+  const colors = Colors[resolvedScheme];
 
   return (
     <NativeTabs

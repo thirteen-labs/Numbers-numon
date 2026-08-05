@@ -8,10 +8,10 @@ export function useTheme(): ThemeColors {
   const { theme } = useAppStore();
 
   if (theme === 'system') {
-    const resolved: ThemeName = scheme === 'unspecified' ? 'light' : (scheme as ThemeName);
-    return THEMES[resolved];
+    const resolved: ThemeName = scheme === 'unspecified' || scheme === null ? 'light' : (scheme as ThemeName);
+    return THEMES[resolved] ?? THEMES.dark;
   }
 
   const key = theme as keyof typeof Colors;
-  return THEMES[key as ThemeName] ?? Colors[key];
+  return THEMES[key as ThemeName] ?? Colors[key] ?? THEMES.dark;
 }

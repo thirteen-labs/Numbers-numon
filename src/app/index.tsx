@@ -32,19 +32,25 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      getAllProfiles().then((data) => {
-        setProfiles(data);
-        if (data.length > 0) {
-          setActiveProfile((prev) => {
-            if (!prev || !data.find((p) => p.id === prev.id)) {
-              return data[0]!;
-            }
-            return prev;
-          });
-        } else {
+      getAllProfiles()
+        .then((data) => {
+          setProfiles(data);
+          if (data.length > 0) {
+            setActiveProfile((prev) => {
+              if (!prev || !data.find((p) => p.id === prev.id)) {
+                return data[0]!;
+              }
+              return prev;
+            });
+          } else {
+            setActiveProfile(null);
+          }
+        })
+        .catch((e) => {
+          console.error('Failed to load profiles', e);
+          setProfiles([]);
           setActiveProfile(null);
-        }
-      });
+        });
     }, [setProfiles])
   );
 

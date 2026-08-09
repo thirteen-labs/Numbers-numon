@@ -51,7 +51,9 @@ export function calculateHiddenPassion(person: PersonInput): number[] {
     const num = map[letter];
     if (num) counts[num] = (counts[num] ?? 0) + 1;
   }
-  const maxCount = Math.max(...Object.values(counts));
+  const countValues = Object.values(counts);
+  if (countValues.length === 0) return [];
+  const maxCount = Math.max(...countValues);
   return Object.entries(counts)
     .filter(([, count]) => count === maxCount)
     .map(([num]) => parseInt(num, 10));

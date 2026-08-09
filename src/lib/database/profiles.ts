@@ -1,6 +1,12 @@
 import { getDb } from './db';
 import type { Profile } from '@/lib/schema';
 
+function safeParseDate(value: string | null | undefined): Date {
+	if (!value) return new Date();
+	const parsed = new Date(value);
+	return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
 function rowToProfile(row: any): Profile {
   return {
     id: row.id,
@@ -9,15 +15,15 @@ function rowToProfile(row: any): Profile {
       firstName: row.first_name,
       middleName: row.middle_name ?? '',
       lastName: row.last_name,
-      dateOfBirth: new Date(row.date_of_birth),
+      dateOfBirth: safeParseDate(row.date_of_birth),
       nickname: row.nickname ?? '',
       gender: row.gender ?? undefined,
       birthTime: row.birth_time ?? '',
       notes: row.notes ?? '',
     },
     isFavorite: !!row.is_favorite,
-    createdAt: new Date(row.created_at),
-    updatedAt: new Date(row.updated_at),
+    createdAt: safeParseDate(row.created_at),
+    updatedAt: safeParseDate(row.updated_at),
   };
 }
 

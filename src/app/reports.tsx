@@ -32,7 +32,9 @@ export default function ReportsScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      loadData();
+      loadData().catch((e) => {
+        console.error('Failed to load reports data', e);
+      });
     }, [])
   );
 

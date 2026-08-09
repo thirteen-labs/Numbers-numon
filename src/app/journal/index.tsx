@@ -24,8 +24,13 @@ export default function JournalListScreen() {
   );
 
   async function loadEntries(q?: string) {
-    const data = q ? await searchEntries(q) : await getAllEntries();
-    setEntries(data);
+    try {
+      const data = q ? await searchEntries(q) : await getAllEntries();
+      setEntries(data);
+    } catch (e) {
+      console.error('Failed to load journal entries', e);
+      setEntries([]);
+    }
   }
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;

@@ -34,10 +34,16 @@ export default function ProfileDetailScreen() {
   useFocusEffect(
     useCallback(() => {
       if (!id) return;
-      getProfileById(id).then((p) => {
-        setProfile(p);
-        setLoaded(true);
-      });
+      getProfileById(id)
+        .then((p) => {
+          setProfile(p);
+          setLoaded(true);
+        })
+        .catch((e) => {
+          console.error('Failed to load profile', e);
+          setProfile(null);
+          setLoaded(true);
+        });
     }, [id])
   );
 

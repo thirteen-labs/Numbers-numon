@@ -18,7 +18,16 @@ export default function GoalsListScreen() {
   const theme = useTheme();
   const [goals, setGoals] = useState<Goal[]>([]);
 
-  useFocusEffect(useCallback(() => { getAllGoals().then(setGoals); }, []));
+  useFocusEffect(
+    useCallback(() => {
+      getAllGoals()
+        .then(setGoals)
+        .catch((e) => {
+          console.error('Failed to load goals', e);
+          setGoals([]);
+        });
+    }, [])
+  );
 
   const bottomPadding = insets.bottom + BottomTabInset + Spacing.three;
   const active = goals.filter((g) => g.status === 'active');

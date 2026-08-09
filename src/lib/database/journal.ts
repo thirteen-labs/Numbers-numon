@@ -22,6 +22,12 @@ export interface JournalEntry {
   updatedAt: Date;
 }
 
+function safeParseDate(value: string | null | undefined): Date {
+	if (!value) return new Date();
+	const parsed = new Date(value);
+	return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
 function rowToEntry(row: JournalRow): JournalEntry {
   return {
     id: row.id,
@@ -30,8 +36,8 @@ function rowToEntry(row: JournalRow): JournalEntry {
     content: row.content,
     mood: row.mood,
     tags: row.tags ? row.tags.split(',').filter(Boolean) : [],
-    createdAt: new Date(row.created_at),
-    updatedAt: new Date(row.updated_at),
+    createdAt: safeParseDate(row.created_at),
+    updatedAt: safeParseDate(row.updated_at),
   };
 }
 

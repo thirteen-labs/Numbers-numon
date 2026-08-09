@@ -26,18 +26,24 @@ export interface Goal {
   updatedAt: Date;
 }
 
+function safeParseDate(value: string | null | undefined): Date {
+	if (!value) return new Date();
+	const parsed = new Date(value);
+	return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
 function rowToGoal(row: GoalRow): Goal {
   return {
     id: row.id,
     profileId: row.profile_id,
     title: row.title,
     description: row.description,
-    targetDate: row.target_date ? new Date(row.target_date) : null,
+    targetDate: row.target_date ? safeParseDate(row.target_date) : null,
     status: row.status as Goal['status'],
     progress: row.progress,
     favorableNumber: row.favorable_number,
-    createdAt: new Date(row.created_at),
-    updatedAt: new Date(row.updated_at),
+    createdAt: safeParseDate(row.created_at),
+    updatedAt: safeParseDate(row.updated_at),
   };
 }
 

@@ -6,10 +6,17 @@
     "moduleResolution": "bundler",
     "module": "esnext",
     "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/assets/*": ["./assets/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/assets/*": [
+        "./assets/*"
+      ]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
@@ -20,9 +27,12 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
   ],
   "exclude": [
     "src/__tests__"
-  ]
+  ],
+  "extends": "expo/tsconfig.base"
 }

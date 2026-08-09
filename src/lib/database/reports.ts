@@ -56,12 +56,18 @@ export async function clearAllReports(): Promise<void> {
   await db.runAsync('DELETE FROM reports');
 }
 
+function safeParseDate(value: string | null | undefined): Date {
+	if (!value) return new Date();
+	const parsed = new Date(value);
+	return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
 function mapRow(row: { id: string; profile_id: string; type: string; data: string; created_at: string }): Report {
   return {
     id: row.id,
     profileId: row.profile_id,
     type: row.type,
     data: row.data,
-    createdAt: new Date(row.created_at),
+    createdAt: safeParseDate(row.created_at),
   };
 }

@@ -21,12 +21,12 @@ export function Input({ label, error, style, ...rest }: InputProps) {
       )}
       <ThemedView
         type="backgroundElement"
-        style={[styles.inputContainer, error && { borderColor: '#ff4444', borderWidth: 1 }]}>
+        style={[styles.inputContainer, error ? { borderColor: '#ff4444', borderWidth: 1 } : undefined]}>
         <TextInput
           style={[
             styles.input,
             { color: theme.text },
-            style,
+            style as object,
           ]}
           placeholderTextColor={theme.textSecondary}
           {...rest}

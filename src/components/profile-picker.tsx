@@ -60,6 +60,6 @@ export default function ProfilePicker({ onSelect }: Props) {
 
 const styles = StyleSheet.create({
   trigger: { paddingVertical: Spacing.one },
-  dropdown: { position: 'absolute', top: 24, left: 0, right: 0, zIndex: 100, borderRadius: Spacing.two, padding: Spacing.two, elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4 },
-  item: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: Spacing.two, paddingHorizontal: Spacing.two },
+  dropdown: { position: 'absolute' as const, top: 24, left: 0, right: 0, zIndex: 100, borderRadius: Spacing.two, padding: Spacing.two, elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 } as const, shadowOpacity: 0.2, shadowRadius: 4 },
+  item: { flexDirection: 'row' as const, justifyContent: 'space-between', paddingVertical: Spacing.two, paddingHorizontal: Spacing.two },
 });

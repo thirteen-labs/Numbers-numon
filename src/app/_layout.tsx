@@ -18,20 +18,46 @@ export default function TabLayout() {
 	const navTheme = resolvedTheme === 'dark' ? DarkTheme : DefaultTheme;
 
 	useEffect(() => {
-		registerGlobalErrorHandler();
+		try { registerGlobalErrorHandler(); } catch (e) { console.warn('[Layout] registerGlobalErrorHandler failed', e); }
 	}, []);
 
 	useEffect(() => {
-		const done = isOnboardingDone();
+		let done = false;
+		try { done = isOnboardingDone(); } catch (e) { console.warn('[Layout] isOnboardingDone failed', e); done = false; }
 		setOnboarded(done);
 		if (!done) {
-			router.replace('/onboarding');
+			const current = segments.join('/');
+			if (!current.includes('onboarding')) {
+				try { router.replace('/onboarding'); } catch (e) { console.warn('[Layout] router.replace failed', e); }
+			}
 		}
+		// segments intentionally omitted to avoid loop; run once on mount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setOnboarded]);
 
 	useEffect(() => {
-		setLastOpenedScreen(segments.join('/'));
+		try {
+			const path = segments.join('/');
+			if (path) setLastOpenedScreen(path);
+		} catch (e) { console.warn('[Layout] setLastOpenedScreen failed', e); }
 	}, [segments, setLastOpenedScreen]);
+
+	useEffect(() => {
+		// @ts-ignore AppState may be missing in some RN type builds - use runtime require
+		const AppState = (require('react-native') as any).AppState as { addEventListener: (t: string, cb: (s: string) => void) => { remove: () => void } } | undefined;
+		if (!AppState?.addEventListener) return;
+		const sub = AppState.addEventListener('change', (state: string) => {
+			if (state === 'background') {
+				try {
+					import('@/lib/database/db').then(({ closeDb }) => {
+						const t = setTimeout(() => {}, 0);
+						closeDb().finally(() => clearTimeout(t));
+					}).catch(() => {});
+				} catch {}
+			}
+		});
+		return () => sub.remove();
+	}, []);
 
 	return (
 		<ErrorBoundary>

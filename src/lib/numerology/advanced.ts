@@ -1,16 +1,23 @@
-import { reduceNumber } from './reduce';
+import { reduceNumber, digitSum } from './reduce';
 import { sumNameNumbers, getConsonants, getFirstLetter, getLastLetter, getFirstVowel, getFirstConsonant } from './mapping';
 import type { PersonInput } from './core';
 import { getFullName } from './core';
 
-const KARMIC_DEBT_NUMBERS = new Set([9, 13, 14, 16, 19]);
+const KARMIC_DEBT_NUMBERS = new Set([13, 14, 16, 19]);
+
+function toSingleDigit(n: number): number {
+  let v = n;
+  while (v > 9) v = digitSum(v);
+  if (v === 0) return n === 0 ? 0 : 9;
+  return v;
+}
 
 export function calculateKarmicDebt(person: PersonInput): number[] {
   const fullName = getFullName(person);
   const total = sumNameNumbers(fullName);
   const debts: number[] = [];
-  for (const n of [9, 13, 14, 16, 19]) {
-    if (total === n || reduceNumber(total) === reduceNumber(n)) {
+  for (const n of [13, 14, 16, 19]) {
+    if (total === n) {
       debts.push(n);
     }
   }
@@ -67,21 +74,25 @@ export function calculateBalance(person: PersonInput): number {
     .map((n) => n.charAt(0))
     .join('');
   const sum = sumNameNumbers(initialLetters);
-  return reduceNumber(sum);
+  const reduced = reduceNumber(sum);
+  return reduced > 9 ? toSingleDigit(reduced) : reduced;
 }
 
 export function calculateRationalThought(person: PersonInput): number {
   const fullName = getFullName(person);
   const consonants = getConsonants(fullName);
   const sum = sumNameNumbers(consonants) + fullName.replace(/[^A-Za-z]/g, '').length;
-  return reduceNumber(sum);
+  const reduced = reduceNumber(sum);
+  return reduced > 9 ? toSingleDigit(reduced) : reduced;
 }
 
 export function calculateSubconsciousSelf(person: PersonInput): number {
   const fullName = getFullName(person);
   const name = fullName.toUpperCase().replace(/[^A-Z]/g, '');
+  if (name.length === 0) return 0;
   const uniqueLetters = new Set(name.split('')).size;
-  return reduceNumber(uniqueLetters);
+  const reduced = reduceNumber(uniqueLetters);
+  return reduced > 9 ? toSingleDigit(reduced) : reduced;
 }
 
 export function calculateCornerstone(person: PersonInput): string {

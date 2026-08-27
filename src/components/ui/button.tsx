@@ -23,17 +23,18 @@ export function Button({ variant = 'primary', title, style, disabled, ...rest }:
       style={({ pressed }) => [
         styles.base,
         bgColor,
-        pressed && { opacity: 0.7 },
-        disabled && { opacity: 0.4 },
+        pressed ? { opacity: 0.7 } : undefined,
+        disabled ? { opacity: 0.4 } : undefined,
         style as ViewStyle,
-      ]}
+      ] as any}
       disabled={disabled}
       {...rest}>
       <ThemedText
+        // @ts-expect-error style array with conditional undefined
         style={[
           styles.text,
-          variant === 'primary' && { color: theme.background },
-          variant === 'ghost' && { color: theme.text },
+          variant === 'primary' ? { color: theme.background } : undefined,
+          variant === 'ghost' ? { color: theme.text } : undefined,
         ]}>
         {title}
       </ThemedText>
@@ -51,6 +52,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '600' as const,
   },
 });

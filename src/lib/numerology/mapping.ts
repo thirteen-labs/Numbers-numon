@@ -4,6 +4,10 @@ import { CHALDEAN_MAP } from '@/data/chaldean';
 const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
 const VOWEL_Y_PATTERN = /[aeiou]/i;
 
+function containsStandardVowel(name: string): boolean {
+  return VOWEL_Y_PATTERN.test(name);
+}
+
 export function letterToNumber(letter: string, system: 'pythagorean' | 'chaldean' = 'pythagorean'): number {
   const map = system === 'pythagorean' ? PYTHAGOREAN_MAP : CHALDEAN_MAP;
   return map[letter.toUpperCase()] ?? 0;
@@ -33,20 +37,29 @@ export function isConsonant(letter: string): boolean {
 }
 
 export function getVowels(name: string): string {
-  return name
-    .toUpperCase()
-    .replace(/[^A-Z]/g, '')
+  const clean = name.toUpperCase().replace(/[^A-Z]/g, '');
+  const hasStandard = containsStandardVowel(clean);
+  return clean
     .split('')
-    .filter(isVowel)
+    .filter((ch) => {
+      if (VOWELS.has(ch)) return true;
+      if (ch === 'Y' && !hasStandard) return true;
+      return false;
+    })
     .join('');
 }
 
 export function getConsonants(name: string): string {
-  return name
-    .toUpperCase()
-    .replace(/[^A-Z]/g, '')
+  const clean = name.toUpperCase().replace(/[^A-Z]/g, '');
+  const hasStandard = containsStandardVowel(clean);
+  return clean
     .split('')
-    .filter(isConsonant)
+    .filter((ch) => {
+      if (!/^[A-Z]$/.test(ch)) return false;
+      if (VOWELS.has(ch)) return false;
+      if (ch === 'Y' && !hasStandard) return false;
+      return true;
+    })
     .join('');
 }
 
@@ -72,15 +85,23 @@ export function getLastLetter(name: string): string {
 }
 
 export function getFirstVowel(name: string): string | null {
-  const match = name.match(VOWEL_Y_PATTERN);
-  return match ? match[0].toUpperCase() : null;
+  const clean = name.toUpperCase().replace(/[^A-Z]/g, '');
+  const hasStandard = containsStandardVowel(clean);
+  for (const ch of clean) {
+    if (VOWELS.has(ch)) return ch;
+    if (ch === 'Y' && !hasStandard) return ch;
+  }
+  return null;
 }
 
 export function getFirstConsonant(name: string): string | null {
-  for (const char of name) {
-    if (/^[A-Za-z]$/.test(char) && !VOWEL_Y_PATTERN.test(char)) {
-      return char.toUpperCase();
-    }
+  const clean = name.toUpperCase().replace(/[^A-Z]/g, '');
+  const hasStandard = containsStandardVowel(clean);
+  for (const ch of clean) {
+    if (!/^[A-Z]$/.test(ch)) continue;
+    if (VOWELS.has(ch)) continue;
+    if (ch === 'Y' && !hasStandard) continue;
+    return ch;
   }
   return null;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -52,10 +52,13 @@ export default function OnboardingScreen() {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const { setOnboarded } = useAppStore();
+  const scrollRef = useRef<any>(null);
 
   function handleNext() {
     if (currentIndex < SLIDES.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      const next = currentIndex + 1;
+      setCurrentIndex(next);
+      try { scrollRef.current?.scrollTo({ x: next * SCREEN_WIDTH, animated: true }); } catch {}
     } else {
       finishOnboarding();
     }
@@ -74,10 +77,15 @@ export default function OnboardingScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView
+        ref={scrollRef}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}>
+        contentContainerStyle={styles.scrollContent}
+        onMomentumScrollEnd={(e) => {
+          const idx = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+          if (idx >= 0 && idx < SLIDES.length) setCurrentIndex(idx);
+        }}>
         {SLIDES.map((slide, i) => (
           <ThemedView key={i} style={[styles.slide, { width: SCREEN_WIDTH }]}>
             <ThemedView style={styles.slideInner}>

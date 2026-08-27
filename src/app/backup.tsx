@@ -17,12 +17,17 @@ import {
 import type { Profile } from '@/lib/schema';
 import type { JournalEntry, Goal } from '@/lib/database';
 
+function csvEscape(v: string): string {
+  if (v.includes(',') || v.includes('"') || v.includes('\n')) return `"${v.replace(/"/g, '""')}"`;
+  return v;
+}
+
 function profilesToCSV(profiles: Profile[]): string {
   const header = 'id,name,firstName,middleName,lastName,dateOfBirth,nickname,gender,notes,isFavorite';
   const rows = profiles.map((p) =>
-    [p.id, p.name, p.person.firstName, p.person.middleName ?? '', p.person.lastName,
-      p.person.dateOfBirth.toISOString(), p.person.nickname ?? '', p.person.gender ?? '',
-      p.person.notes ?? '', p.isFavorite ? 'true' : 'false'].join(',')
+    [p.id, csvEscape(p.name), csvEscape(p.person.firstName), csvEscape(p.person.middleName ?? ''), csvEscape(p.person.lastName),
+      p.person.dateOfBirth.toISOString(), csvEscape(p.person.nickname ?? ''), p.person.gender ?? '',
+      csvEscape(p.person.notes ?? ''), p.isFavorite ? 'true' : 'false'].join(',')
   );
   return [header, ...rows].join('\n');
 }

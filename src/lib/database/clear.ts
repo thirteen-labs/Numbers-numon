@@ -1,4 +1,5 @@
 import { getDb } from './db';
+import { clearAllReports } from './reports';
 
 export async function clearAllProfiles(): Promise<void> {
   const db = await getDb();
@@ -18,5 +19,6 @@ export async function clearAllGoals(): Promise<void> {
 export async function clearAllData(): Promise<void> {
   await clearAllGoals();
   await clearAllEntries();
+  await clearAllReports();
   await clearAllProfiles();
 }

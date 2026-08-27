@@ -32,8 +32,15 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      getAllProfiles()
-        .then((data) => {
+      let cancelled = false;
+      let timeout: ReturnType<typeof setTimeout> | null = null;
+      const load = async () => {
+        try {
+          const data = await Promise.race([
+            getAllProfiles(),
+            new Promise<never>((_, reject) => { timeout = setTimeout(() => reject(new Error('Load profiles timed out')), 5000); }),
+          ]) as Profile[];
+          if (cancelled) return;
           setProfiles(data);
           if (data.length > 0) {
             setActiveProfile((prev) => {
@@ -45,12 +52,17 @@ export default function HomeScreen() {
           } else {
             setActiveProfile(null);
           }
-        })
-        .catch((e) => {
+        } catch (e) {
+          if (cancelled) return;
           console.error('Failed to load profiles', e);
           setProfiles([]);
           setActiveProfile(null);
-        });
+        } finally {
+          if (timeout) clearTimeout(timeout);
+        }
+      };
+      load();
+      return () => { cancelled = true; if (timeout) clearTimeout(timeout); };
     }, [setProfiles])
   );
 

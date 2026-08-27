@@ -19,6 +19,12 @@ export function AnimatedSplashOverlay() {
     return () => clearTimeout(timer);
   }, [visible]);
 
+  // Failsafe: never keep splash beyond 3s even if reanimated crashes
+  useEffect(() => {
+    const hardFallback = setTimeout(() => setVisible(false), 3000);
+    return () => clearTimeout(hardFallback);
+  }, []);
+
   if (!visible) return null;
 
   const splashKeyframe = new Keyframe({
@@ -45,7 +51,7 @@ export function AnimatedSplashOverlay() {
 			entering={splashKeyframe.duration(DURATION).withCallback((finished: boolean) => {
 				'worklet';
 				if (finished) {
-					scheduleOnRN(setVisible, false);
+					try { scheduleOnRN(setVisible, false); } catch { /* fallback timer handles */ }
 				}
 			})}
 			style={styles.backgroundSolidColor}

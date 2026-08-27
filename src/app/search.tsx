@@ -77,12 +77,12 @@ export default function SearchScreen() {
         </ThemedView>
       )}
 
-      <FlatList
+      <FlatList<SearchResult>
         data={results}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: SearchResult) => item.id}
         contentContainerStyle={{ paddingBottom: bottomPadding, paddingHorizontal: Spacing.four }}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => router.push(item.route as any)} style={({ pressed }) => [styles.result, pressed && { opacity: 0.7 }]}>
+        renderItem={({ item }: { item: SearchResult }) => (
+          <Pressable onPress={() => router.push(item.route as never)} style={({ pressed }) => [styles.result, pressed ? { opacity: 0.7 } : undefined]}>
             <ThemedText type="smallBold">{item.title}</ThemedText>
             <ThemedText type="small" themeColor="textSecondary" numberOfLines={2}>{item.subtitle}</ThemedText>
           </Pressable>

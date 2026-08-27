@@ -56,16 +56,27 @@ export default function CalculatorScreen() {
   useFocusEffect(
     useCallback(() => {
       if (!id) return;
-      getProfileById(id).then((profile) => {
-        if (!profile) return;
-        setFirstName(profile.person.firstName);
-        setLastName(profile.person.lastName);
-        setMiddleName(profile.person.middleName ?? '');
-        setDateOfBirth(profile.person.dateOfBirth);
-        setGender(profile.person.gender ?? '');
-        setBirthTime(profile.person.birthTime ?? '');
-        setResult(null);
-      });
+      let cancelled = false;
+      let timeout: ReturnType<typeof setTimeout> | null = null;
+      const load = async () => {
+        try {
+          const profile = await Promise.race([
+            getProfileById(id),
+            new Promise<never>((_, reject) => { timeout = setTimeout(() => reject(new Error('Load timed out')), 5000); }),
+          ]) as Awaited<ReturnType<typeof getProfileById>>;
+          if (cancelled || !profile) return;
+          setFirstName(profile.person.firstName);
+          setLastName(profile.person.lastName);
+          setMiddleName(profile.person.middleName ?? '');
+          setDateOfBirth(profile.person.dateOfBirth);
+          setGender(profile.person.gender ?? '');
+          setBirthTime(profile.person.birthTime ?? '');
+          setResult(null);
+        } catch (e) { if (!cancelled) console.warn('[Calculator] load profile failed', e); }
+        finally { if (timeout) clearTimeout(timeout); }
+      };
+      load();
+      return () => { cancelled = true; if (timeout) clearTimeout(timeout); };
     }, [id])
   );
 

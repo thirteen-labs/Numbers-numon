@@ -13,16 +13,17 @@ export function ThemedText({ style, type = 'default', themeColor, ...rest }: The
 
   return (
     <Text
+      // @ts-expect-error style array with conditional undefined handled by RN runtime
       style={[
         { color: theme[themeColor ?? 'text'] },
-        type === 'default' && styles.default,
-        type === 'title' && styles.title,
-        type === 'small' && styles.small,
-        type === 'smallBold' && styles.smallBold,
-        type === 'subtitle' && styles.subtitle,
-        type === 'link' && styles.link,
-        type === 'linkPrimary' && styles.linkPrimary,
-        type === 'code' && styles.code,
+        type === 'default' ? styles.default : undefined,
+        type === 'title' ? styles.title : undefined,
+        type === 'small' ? styles.small : undefined,
+        type === 'smallBold' ? styles.smallBold : undefined,
+        type === 'subtitle' ? styles.subtitle : undefined,
+        type === 'link' ? styles.link : undefined,
+        type === 'linkPrimary' ? styles.linkPrimary : undefined,
+        type === 'code' ? styles.code : undefined,
         style,
       ]}
       {...rest}
@@ -34,27 +35,27 @@ const styles = StyleSheet.create({
   small: {
     fontSize: 14,
     lineHeight: 20,
-    fontWeight: 500,
+    fontWeight: '500' as const,
   },
   smallBold: {
     fontSize: 14,
     lineHeight: 20,
-    fontWeight: 700,
+    fontWeight: '700' as const,
   },
   default: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 500,
+    fontWeight: '500' as const,
   },
   title: {
     fontSize: 48,
-    fontWeight: 600,
+    fontWeight: '600' as const,
     lineHeight: 52,
   },
   subtitle: {
     fontSize: 32,
     lineHeight: 44,
-    fontWeight: 600,
+    fontWeight: '600' as const,
   },
   link: {
     lineHeight: 30,
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
   },
   code: {
     fontFamily: Fonts.mono,
-    fontWeight: Platform.select({ android: 700 }) ?? 500,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fontWeight: (Platform.select({ ios: '500', android: '700', default: '500' }) ?? '500') as any,
     fontSize: 12,
   },
 });

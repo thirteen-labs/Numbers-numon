@@ -34,16 +34,28 @@ export default function ProfileDetailScreen() {
   useFocusEffect(
     useCallback(() => {
       if (!id) return;
-      getProfileById(id)
-        .then((p) => {
+      let cancelled = false;
+      let timeout: ReturnType<typeof setTimeout> | null = null;
+      const load = async () => {
+        try {
+          const p = await Promise.race([
+            getProfileById(id),
+            new Promise<never>((_, reject) => { timeout = setTimeout(() => reject(new Error('Load profile timed out')), 5000); }),
+          ]) as Profile | null;
+          if (cancelled) return;
           setProfile(p);
           setLoaded(true);
-        })
-        .catch((e) => {
+        } catch (e) {
+          if (cancelled) return;
           console.error('Failed to load profile', e);
           setProfile(null);
           setLoaded(true);
-        });
+        } finally {
+          if (timeout) clearTimeout(timeout);
+        }
+      };
+      load();
+      return () => { cancelled = true; if (timeout) clearTimeout(timeout); };
     }, [id])
   );
 

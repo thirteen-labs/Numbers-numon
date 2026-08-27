@@ -77,7 +77,7 @@ export function RichTextInput({ value, onChangeText, placeholder, minHeight = 20
             key={btn.action}
             style={[styles.toolbarBtn, { borderColor: theme.textSecondary }]}
             onPress={() => handleToolbar(btn.action)}>
-            <ThemedText style={[styles.toolbarLabel, btn.action === 'bold' && styles.bold, btn.action === 'italic' && styles.italic]}>
+            <ThemedText style={[styles.toolbarLabel, btn.action === 'bold' ? styles.bold : undefined, btn.action === 'italic' ? styles.italic : undefined] as any}>
               {btn.label}
             </ThemedText>
           </Pressable>
@@ -96,7 +96,7 @@ export function RichTextInput({ value, onChangeText, placeholder, minHeight = 20
         multiline
         textAlignVertical="top"
       />
-      <ThemedText type="small" style={[styles.hint, { color: theme.textSecondary }]}>
+      <ThemedText type="small" style={[styles.hint, { color: theme.textSecondary }] as any}>
         **bold** · *italic* · ## heading · • bullet
       </ThemedText>
     </ThemedView>
@@ -105,7 +105,7 @@ export function RichTextInput({ value, onChangeText, placeholder, minHeight = 20
 
 const styles = StyleSheet.create({
   container: { gap: Spacing.one },
-  toolbar: { flexDirection: 'row', padding: Spacing.one, borderRadius: Spacing.two },
+  toolbar: { flexDirection: 'row' as const, padding: Spacing.one, borderRadius: Spacing.two },
   toolbarBtn: {
     paddingHorizontal: Spacing.two,
     paddingVertical: Spacing.one,
@@ -113,9 +113,9 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.one,
     marginRight: Spacing.one,
   },
-  toolbarLabel: { fontSize: 14, fontWeight: '500' },
-  bold: { fontWeight: '700' },
-  italic: { fontStyle: 'italic' },
+  toolbarLabel: { fontSize: 14, fontWeight: '500' as const },
+  bold: { fontWeight: '700' as const },
+  italic: { fontStyle: 'italic' as const },
   input: {
     fontSize: 15,
     lineHeight: 22,

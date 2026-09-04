@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Switch } from 'react-native';
+import { Image } from 'expo-image';
+import { Pressable, ScrollView, StyleSheet, Switch } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import { Button, Card, Section } from '@/components/ui';
 import { ThemedText } from '@/components/themed-text';
@@ -114,9 +116,22 @@ export default function SettingsScreen() {
 
         <Section title="About">
           <Card>
-            <ThemedText type="small">Numon v1.0.0</ThemedText>
+            <ThemedText type="small">Numera v1.0.0</ThemedText>
             <ThemedText type="small">Complete Offline Numerology Platform</ThemedText>
             <ThemedText type="small">All calculations are performed locally on your device.</ThemedText>
+            <Pressable onPress={() => router.push('/about')} style={({ pressed }) => [pressed && { opacity: 0.7 }]}>
+              <ThemedView style={styles.aboutPreview}>
+                <ThemedView style={styles.aboutLogos}>
+                  <Image source={require('@/assets/images/thirteen-labs.png')} style={styles.aboutLogo} contentFit="contain" />
+                  <ThemedText type="small" themeColor="textSecondary">×</ThemedText>
+                  <Image source={require('@/assets/images/obsidian-northern.png')} style={styles.aboutLogo} contentFit="contain" />
+                </ThemedView>
+                <ThemedText type="small" themeColor="textSecondary" style={styles.aboutHint}>
+                  Developed by Thirteen Labs & Obsidian Northern — tap to learn more →
+                </ThemedText>
+              </ThemedView>
+            </Pressable>
+            <Button title="View About & Developers" onPress={() => router.push('/about')} variant="secondary" style={styles.aboutBtn} />
           </Card>
         </Section>
       </ThemedView>
@@ -133,4 +148,9 @@ const styles = StyleSheet.create({
   swatch: { width: 28, height: 28, borderRadius: 14 },
   switchRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: Spacing.one },
   status: { textAlign: 'center', marginTop: Spacing.two },
+  aboutPreview: { marginTop: Spacing.three, gap: Spacing.two, alignItems: 'center' },
+  aboutLogos: { flexDirection: 'row', alignItems: 'center', gap: Spacing.three },
+  aboutLogo: { width: 90, height: 36 },
+  aboutHint: { textAlign: 'center', fontSize: 12, lineHeight: 16 },
+  aboutBtn: { marginTop: Spacing.three },
 });

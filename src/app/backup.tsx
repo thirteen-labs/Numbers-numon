@@ -64,7 +64,7 @@ export default function BackupScreen() {
       const goals = await getAllGoals();
       const backup = { version: '1.0', exportedAt: new Date().toISOString(), profiles, entries, goals };
       const json = JSON.stringify(backup, null, 2);
-      const filename = `numon-backup-${Date.now()}.json`;
+      const filename = `numera-backup-${Date.now()}.json`;
       const dir = Paths.cache;
       const path = `${dir}/${filename}`;
       const file = new File(path);
@@ -111,7 +111,7 @@ export default function BackupScreen() {
       const data = JSON.parse(content);
 
       if (!data.version) {
-        Alert.alert('Invalid File', 'Not a valid Numon backup file.');
+        Alert.alert('Invalid File', 'Not a valid Numera backup file.');
         setImporting(false);
         return;
       }
@@ -174,7 +174,7 @@ export default function BackupScreen() {
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
-        <Section title="Backup & Restore" subtitle="Export or import your Numon data">
+        <Section title="Backup & Restore" subtitle="Export or import your Numera data">
           <Card title="Export as JSON">
             <ThemedText type="small">Creates a complete JSON backup of all profiles, journal entries, and goals.</ThemedText>
           </Card>
@@ -188,7 +188,7 @@ export default function BackupScreen() {
           {lastExport && <ThemedText type="small" themeColor="textSecondary">Last export: {lastExport}</ThemedText>}
 
           <Card title="Import from JSON">
-            <ThemedText type="small">Pick a previously exported Numon backup file to restore all data. Existing data will be replaced.</ThemedText>
+            <ThemedText type="small">Pick a previously exported Numera backup file to restore all data. Existing data will be replaced.</ThemedText>
           </Card>
           <Button title={importing ? 'Importing...' : 'Import JSON Backup'} variant="secondary" onPress={handleImport} disabled={importing} />
         </Section>

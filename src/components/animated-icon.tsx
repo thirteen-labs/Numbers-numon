@@ -2,7 +2,14 @@ import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+
+// scheduleOnRN is optional — guard against worklets native module missing (crash on some devices)
+let scheduleOnRN: ((fn: (...args: any[]) => void, ...args: any[]) => void) | null = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const worklets = require('react-native-worklets') as { scheduleOnRN?: typeof scheduleOnRN };
+  if (worklets?.scheduleOnRN) scheduleOnRN = worklets.scheduleOnRN;
+} catch {}
 
 const INITIAL_SCALE_FACTOR = 1.5;
 const DURATION = 600;
@@ -51,7 +58,7 @@ export function AnimatedSplashOverlay() {
 			entering={splashKeyframe.duration(DURATION).withCallback((finished: boolean) => {
 				'worklet';
 				if (finished) {
-					try { scheduleOnRN(setVisible, false); } catch { /* fallback timer handles */ }
+					try { if (scheduleOnRN) scheduleOnRN(setVisible as any, false); } catch { /* fallback timer handles */ }
 				}
 			})}
 			style={styles.backgroundSolidColor}

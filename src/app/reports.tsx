@@ -78,7 +78,7 @@ export default function ReportsScreen() {
 
   async function handleExportJSON(report: Report) {
     try {
-      const filename = `numon-report-${report.id.slice(0, 8)}.json`;
+      const filename = `numera-report-${report.id.slice(0, 8)}.json`;
       const path = `${Paths.cache}/${filename}`;
       const file = new File(path);
       const profile = await getProfileById(report.profileId);

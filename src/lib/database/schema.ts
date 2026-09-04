@@ -1,4 +1,4 @@
-export const DATABASE_NAME = 'numon.db';
+export const DATABASE_NAME = 'numera.db';
 
 export const CREATE_TABLES = `
   CREATE TABLE IF NOT EXISTS profiles (

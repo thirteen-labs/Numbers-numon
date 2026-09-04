@@ -119,7 +119,7 @@ export default function HomeScreen() {
             </Pressable>
           </Section>
         ) : (
-          <Section title="Welcome to Numon" subtitle="Create a profile to see your personalized numerology">
+          <Section title="Welcome to Numera" subtitle="Create a profile to see your personalized numerology">
             <Button title="Create Profile" onPress={() => router.push('/profile/new')} />
           </Section>
         )}

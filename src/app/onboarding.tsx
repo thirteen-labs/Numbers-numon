@@ -22,7 +22,7 @@ interface Slide {
 
 const SLIDES: Slide[] = [
   {
-    title: 'Numon',
+    title: 'Numera',
     subtitle: 'Your Personal Numerology Companion',
     description: 'Discover the hidden meanings behind numbers and unlock insights about your life path, personality, and destiny.',
     color: '#BB86FC',

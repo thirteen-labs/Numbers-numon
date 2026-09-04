@@ -3,15 +3,22 @@ import { createMMKV } from 'react-native-mmkv';
 let storageInstance: ReturnType<typeof createMMKV> | null = null;
 const memoryFallback = new Map<string, string | boolean>();
 let mmkvFailed = false;
+let initAttempted = false;
 
-try {
-  storageInstance = createMMKV({ id: 'numon-storage' });
-} catch (e) {
-  console.warn('[Storage] MMKV init failed, using memory fallback', e);
-  mmkvFailed = true;
+function ensureInit() {
+  if (initAttempted) return;
+  initAttempted = true;
+  // Lazy init — avoids crash during JS bundle evaluation if native module not ready (common cold-start crash).
+  try {
+    storageInstance = createMMKV({ id: 'numera-storage' });
+  } catch (e) {
+    console.warn('[Storage] MMKV init failed, using memory fallback', e);
+    mmkvFailed = true;
+  }
 }
 
 function getStorage() {
+  ensureInit();
   if (!mmkvFailed && storageInstance) return storageInstance;
   return null;
 }

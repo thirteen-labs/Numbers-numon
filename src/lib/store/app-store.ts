@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark' | 'system' | ThemeName;
 export type ThemeName = 'light' | 'dark' | 'amoled' | 'mystic' | 'cosmic' | 'emerald' | 'royal' | 'glass';
 
 interface NotificationPrefs {
@@ -39,7 +39,14 @@ const initialState: AppState = {
 
 export const useAppStore = create<AppState & AppActions>((set) => ({
   ...initialState,
-  setTheme: (theme) => set({ theme }),
+  setTheme: (theme) => set((state) => {
+    // Keep selectedThemeName in sync when a concrete theme is chosen (e.g. 'mystic')
+    const isCustom = theme !== 'system' && theme !== 'light' && theme !== 'dark';
+    if (isCustom) {
+      return { theme, selectedThemeName: theme as ThemeName };
+    }
+    return { theme };
+  }),
   setSelectedThemeName: (selectedThemeName) => set({ selectedThemeName }),
   setOnboarded: (isOnboarded) => set({ isOnboarded }),
   setCurrentProfileId: (currentProfileId) => set({ currentProfileId }),

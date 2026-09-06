@@ -166,7 +166,7 @@ function DrawerContent({ navigation }: { navigation: any }) {
           </ThemedView>
         ))}
         <ThemedText type="small" themeColor="textSecondary" style={[styles.version, { color: theme.textSecondary }]}>
-          Numera v1.0.0
+          Numera v1.1.0
         </ThemedText>
       </ScrollView>
     </ThemedView>

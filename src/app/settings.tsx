@@ -123,7 +123,7 @@ export default function SettingsScreen() {
 
         <Section title="About">
           <Card>
-            <ThemedText type="small">Numera v1.0.0</ThemedText>
+            <ThemedText type="small">Numera v1.1.0</ThemedText>
             <ThemedText type="small">Complete Offline Numerology Platform</ThemedText>
             <ThemedText type="small">All calculations are performed locally on your device.</ThemedText>
             <Pressable onPress={() => router.push('/about')} style={({ pressed }) => [pressed && { opacity: 0.7 }]}>

@@ -46,7 +46,7 @@ export default function AboutScreen() {
         <ThemedView style={styles.header}>
           <Image source={require('@/assets/images/icon.png')} style={styles.appIcon} contentFit="contain" />
           <ThemedText type="subtitle" style={styles.appName}>Numera</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">v1.0.0 — Complete Offline Numerology Platform</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary">v1.1.0 — Complete Offline Numerology Platform</ThemedText>
           <ThemedText type="small" style={styles.tagline} selectable>
             The most comprehensive offline numerology & personal insight platform. All calculations happen locally on your device — private, fast, and beautiful.
           </ThemedText>

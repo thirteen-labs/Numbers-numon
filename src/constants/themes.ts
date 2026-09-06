@@ -6,6 +6,7 @@ export interface ThemeColors {
   textSecondary: string;
   tint: string;
   tabBar: string;
+  error: string;
 }
 
 export type ThemeName = 'light' | 'dark' | 'amoled' | 'mystic' | 'cosmic' | 'emerald' | 'royal' | 'glass';
@@ -19,6 +20,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#60646C',
     tint: '#0a7ea4',
     tabBar: '#ffffff',
+    error: '#d32f2f',
   },
   dark: {
     text: '#ffffff',
@@ -28,6 +30,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#B0B4BA',
     tint: '#0a7ea4',
     tabBar: '#000000',
+    error: '#ff8a80',
   },
   amoled: {
     text: '#ffffff',
@@ -37,6 +40,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#808080',
     tint: '#00FF88',
     tabBar: '#000000',
+    error: '#ff8a80',
   },
   mystic: {
     text: '#E8D5F5',
@@ -46,6 +50,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#A890D0',
     tint: '#BB86FC',
     tabBar: '#1A0A2E',
+    error: '#ff8a80',
   },
   cosmic: {
     text: '#C8E6FF',
@@ -55,6 +60,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#8090B0',
     tint: '#448AFF',
     tabBar: '#0A1628',
+    error: '#ff8a80',
   },
   emerald: {
     text: '#D4F5E0',
@@ -64,6 +70,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#80B090',
     tint: '#00E676',
     tabBar: '#0A1F14',
+    error: '#ff8a80',
   },
   royal: {
     text: '#F5E6D0',
@@ -73,6 +80,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: '#B09070',
     tint: '#FFD700',
     tabBar: '#1A0F0A',
+    error: '#ff8a80',
   },
   glass: {
     text: '#ffffff',
@@ -82,6 +90,7 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
     textSecondary: 'rgba(255, 255, 255, 0.6)',
     tint: '#00D4FF',
     tabBar: 'rgba(10, 10, 26, 0.9)',
+    error: '#ff8a80',
   },
 };
 

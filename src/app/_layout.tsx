@@ -11,7 +11,7 @@ if (Platform.OS === 'web') {
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import { ErrorBoundary } from '@/components/error-boundary';
-import AppTabs from '@/components/app-tabs';
+import AppDrawer from '@/components/app-drawer';
 import { useAppStore } from '@/lib/store';
 import { isOnboardingDone } from '@/lib/storage';
 import { registerGlobalErrorHandler } from '@/lib/error-handler';
@@ -100,7 +100,7 @@ export default function TabLayout() {
 			<ErrorBoundary>
 				<ThemeProvider value={navTheme}>
 					<AnimatedSplashOverlay />
-					<AppTabs />
+					<AppDrawer />
 				</ThemeProvider>
 			</ErrorBoundary>
 		</GestureHandlerRootView>

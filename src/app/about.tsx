@@ -38,6 +38,7 @@ export default function AboutScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -46,7 +47,7 @@ export default function AboutScreen() {
           <Image source={require('@/assets/images/icon.png')} style={styles.appIcon} contentFit="contain" />
           <ThemedText type="subtitle" style={styles.appName}>Numera</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">v1.0.0 — Complete Offline Numerology Platform</ThemedText>
-          <ThemedText type="small" style={styles.tagline}>
+          <ThemedText type="small" style={styles.tagline} selectable>
             The most comprehensive offline numerology & personal insight platform. All calculations happen locally on your device — private, fast, and beautiful.
           </ThemedText>
         </ThemedView>
@@ -61,9 +62,9 @@ export default function AboutScreen() {
                   <Image source={dev.image} style={styles.devImage} contentFit="contain" transition={200} />
                 </ThemedView>
                 <ThemedView style={styles.devInfo}>
-                  <ThemedText type="smallBold" style={styles.devName}>{dev.name}</ThemedText>
-                  <ThemedText type="small" themeColor="textSecondary" style={styles.devRole}>{dev.role}</ThemedText>
-                  <ThemedText type="small" style={styles.devDesc}>{dev.description}</ThemedText>
+                  <ThemedText type="smallBold" style={styles.devName} selectable>{dev.name}</ThemedText>
+                  <ThemedText type="small" themeColor="textSecondary" style={styles.devRole} selectable>{dev.role}</ThemedText>
+                  <ThemedText type="small" style={styles.devDesc} selectable>{dev.description}</ThemedText>
                 </ThemedView>
               </Card>
             ))}
@@ -73,14 +74,14 @@ export default function AboutScreen() {
         {/* App info */}
         <Card>
           <ThemedText type="smallBold">Privacy by Design</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary" style={styles.infoText}>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.infoText} selectable>
             Every calculation is performed offline on your device. No accounts, no tracking, no data leaves your phone unless you explicitly export it.
           </ThemedText>
         </Card>
 
         <Card>
           <ThemedText type="smallBold">Offline First</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary" style={styles.infoText}>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.infoText} selectable>
             20+ numerology systems, angel numbers, Chinese zodiac, compatibility, lucky colors & more — fully functional without internet.
           </ThemedText>
         </Card>

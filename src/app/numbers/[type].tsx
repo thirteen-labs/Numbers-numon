@@ -47,7 +47,7 @@ export default function NumberDetailScreen() {
   if (!meaning) {
     return (
       <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ThemedText>Number not found</ThemedText>
+        <ThemedText selectable>Number not found</ThemedText>
       </ThemedView>
     );
   }
@@ -56,28 +56,29 @@ export default function NumberDetailScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title={`${label} — ${meaning.title}`}>
           <ThemedView style={styles.center}>
             <NumberCircle number={num} size={80} color={colorForNumber(num, theme)} />
-            <ThemedText type="small" style={styles.keywords}>{meaning.keywords.join(' · ')}</ThemedText>
+            <ThemedText type="small" selectable style={styles.keywords}>{meaning.keywords.join(' · ')}</ThemedText>
           </ThemedView>
         </Section>
 
         <Section title="Description">
-          <ThemedText type="small">{meaning.description}</ThemedText>
+          <ThemedText type="small" selectable>{meaning.description}</ThemedText>
         </Section>
 
         {type === 'life-path' && lp && (
           <>
             <Card title="Overview">
-              <ThemedText type="small">{lp.overview}</ThemedText>
+              <ThemedText type="small" selectable>{lp.overview}</ThemedText>
             </Card>
             <Card title="Famous Examples">
               {lp.famousExamples.map((name: string) => (
-                <ThemedText key={name} type="small">• {name}</ThemedText>
+                <ThemedText key={name} type="small" selectable>• {name}</ThemedText>
               ))}
             </Card>
           </>
@@ -86,19 +87,19 @@ export default function NumberDetailScreen() {
         {type === 'expression' && expr && (
           <>
             <Card title="Potential">
-              <ThemedText type="small">{expr.potential}</ThemedText>
+              <ThemedText type="small" selectable>{expr.potential}</ThemedText>
             </Card>
             <Card title="Natural Talents">
               {expr.naturalTalents.map((t: string) => (
-                <ThemedText key={t} type="small">• {t}</ThemedText>
+                <ThemedText key={t} type="small" selectable>• {t}</ThemedText>
               ))}
             </Card>
             <Card title="Personal Development">
-              <ThemedText type="small">{expr.personalDevelopment}</ThemedText>
+              <ThemedText type="small" selectable>{expr.personalDevelopment}</ThemedText>
             </Card>
             <Card title="Hidden Abilities">
               {expr.hiddenAbilities.map((a: string) => (
-                <ThemedText key={a} type="small">• {a}</ThemedText>
+                <ThemedText key={a} type="small" selectable>• {a}</ThemedText>
               ))}
             </Card>
           </>
@@ -107,16 +108,16 @@ export default function NumberDetailScreen() {
         {type === 'soul-urge' && su && (
           <>
             <Card title="Inner Desire">
-              <ThemedText type="small">{su.innerDesire}</ThemedText>
+              <ThemedText type="small" selectable>{su.innerDesire}</ThemedText>
             </Card>
             <Card title="Emotional Motivation">
-              <ThemedText type="small">{su.emotionalMotivation}</ThemedText>
+              <ThemedText type="small" selectable>{su.emotionalMotivation}</ThemedText>
             </Card>
             <Card title="Hidden Dreams">
-              <ThemedText type="small">{su.hiddenDreams}</ThemedText>
+              <ThemedText type="small" selectable>{su.hiddenDreams}</ThemedText>
             </Card>
             <Card title="Personal Fulfillment">
-              <ThemedText type="small">{su.personalFulfillment}</ThemedText>
+              <ThemedText type="small" selectable>{su.personalFulfillment}</ThemedText>
             </Card>
           </>
         )}
@@ -124,16 +125,16 @@ export default function NumberDetailScreen() {
         {type === 'personality' && pers && (
           <>
             <Card title="First Impressions">
-              <ThemedText type="small">{pers.firstImpressions}</ThemedText>
+              <ThemedText type="small" selectable>{pers.firstImpressions}</ThemedText>
             </Card>
             <Card title="Public Persona">
-              <ThemedText type="small">{pers.publicPersona}</ThemedText>
+              <ThemedText type="small" selectable>{pers.publicPersona}</ThemedText>
             </Card>
             <Card title="Communication Style">
-              <ThemedText type="small">{pers.communicationStyle}</ThemedText>
+              <ThemedText type="small" selectable>{pers.communicationStyle}</ThemedText>
             </Card>
             <Card title="Social Image">
-              <ThemedText type="small">{pers.socialImage}</ThemedText>
+              <ThemedText type="small" selectable>{pers.socialImage}</ThemedText>
             </Card>
           </>
         )}
@@ -141,19 +142,19 @@ export default function NumberDetailScreen() {
         {type === 'birthday' && bday && (
           <>
             <Card title="Your Gift">
-              <ThemedText type="small">{bday.gift}</ThemedText>
+              <ThemedText type="small" selectable>{bday.gift}</ThemedText>
             </Card>
             <Card title="Learning Style">
-              <ThemedText type="small">{bday.learningStyle}</ThemedText>
+              <ThemedText type="small" selectable>{bday.learningStyle}</ThemedText>
             </Card>
             <Card title="Strengths">
               {bday.strengths.map((s: string) => (
-                <ThemedText key={s} type="small">• {s}</ThemedText>
+                <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
               ))}
             </Card>
             <Card title="Challenges">
               {bday.challenges.map((s: string) => (
-                <ThemedText key={s} type="small">• {s}</ThemedText>
+                <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
               ))}
             </Card>
           </>
@@ -162,16 +163,16 @@ export default function NumberDetailScreen() {
         {type === 'attitude' && att && (
           <>
             <Card title="Initial Reactions">
-              <ThemedText type="small">{att.initialReactions}</ThemedText>
+              <ThemedText type="small" selectable>{att.initialReactions}</ThemedText>
             </Card>
             <Card title="Daily Mindset">
-              <ThemedText type="small">{att.dailyMindset}</ThemedText>
+              <ThemedText type="small" selectable>{att.dailyMindset}</ThemedText>
             </Card>
             <Card title="Approach to Life">
-              <ThemedText type="small">{att.approachToLife}</ThemedText>
+              <ThemedText type="small" selectable>{att.approachToLife}</ThemedText>
             </Card>
             <Card title="Decision Making">
-              <ThemedText type="small">{att.decisionMaking}</ThemedText>
+              <ThemedText type="small" selectable>{att.decisionMaking}</ThemedText>
             </Card>
           </>
         )}
@@ -179,43 +180,43 @@ export default function NumberDetailScreen() {
         {type === 'maturity' && mat && (
           <>
             <Card title="Future Direction">
-              <ThemedText type="small">{mat.futureDirection}</ThemedText>
+              <ThemedText type="small" selectable>{mat.futureDirection}</ThemedText>
             </Card>
             <Card title="Growth Milestones">
               {mat.growthMilestones.map((m: string) => (
-                <ThemedText key={m} type="small">• {m}</ThemedText>
+                <ThemedText key={m} type="small" selectable>• {m}</ThemedText>
               ))}
             </Card>
             <Card title="Wisdom Gained">
-              <ThemedText type="small">{mat.wisdomGained}</ThemedText>
+              <ThemedText type="small" selectable>{mat.wisdomGained}</ThemedText>
             </Card>
           </>
         )}
 
         <Card title="Strengths">
           {meaning.positive.map((s: string) => (
-            <ThemedText key={s} type="small">• {s}</ThemedText>
+            <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
           ))}
         </Card>
 
         <Card title="Challenges">
           {meaning.negative.map((s: string) => (
-            <ThemedText key={s} type="small">• {s}</ThemedText>
+            <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
           ))}
         </Card>
 
         <Card title="Career Paths">
           {meaning.career.map((c: string) => (
-            <ThemedText key={c} type="small">• {c}</ThemedText>
+            <ThemedText key={c} type="small" selectable>• {c}</ThemedText>
           ))}
         </Card>
 
         <Card title="Relationships">
-          <ThemedText type="small">{meaning.relationships}</ThemedText>
+          <ThemedText type="small" selectable>{meaning.relationships}</ThemedText>
         </Card>
 
         <Card title="Spiritual Growth">
-          <ThemedText type="small">{meaning.spiritual}</ThemedText>
+          <ThemedText type="small" selectable>{meaning.spiritual}</ThemedText>
         </Card>
       </ThemedView>
     </ScrollView>

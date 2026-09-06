@@ -28,6 +28,7 @@ export default function LuckyScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -37,7 +38,7 @@ export default function LuckyScreen() {
               <NumberCircle key={ln} number={ln} size={56} color={colorForNumber(ln, theme)} />
             ))}
           </ThemedView>
-          <ThemedText type="small">
+          <ThemedText type="small" selectable>
             Based on your Life Path number {num}. These numbers resonate with your personal energy.
           </ThemedText>
         </Section>
@@ -53,10 +54,10 @@ export default function LuckyScreen() {
             </Card>
             <Card title="Secondary Colors">
               {colors.secondary.map((c) => (
-                <ThemedText key={c} type="small">• {c}</ThemedText>
+                <ThemedText key={c} type="small" selectable>• {c}</ThemedText>
               ))}
             </Card>
-            <ThemedText type="small">
+            <ThemedText type="small" selectable>
               Wearing or surrounding yourself with these colors amplifies your natural energy.
             </ThemedText>
           </Section>
@@ -66,15 +67,15 @@ export default function LuckyScreen() {
           <Section title="Lucky Days">
             <Card title="Favorable Weekdays">
               {days.weekdays.map((d) => (
-                <ThemedText key={d} type="small">• {d}</ThemedText>
+                <ThemedText key={d} type="small" selectable>• {d}</ThemedText>
               ))}
             </Card>
             <Card title="Favorable Dates">
               {days.dates.map((d) => (
-                <ThemedText key={d} type="small">• {d}th of each month</ThemedText>
+                <ThemedText key={d} type="small" selectable>• {d}th of each month</ThemedText>
               ))}
             </Card>
-            <ThemedText type="small">{days.explanation}</ThemedText>
+            <ThemedText type="small" selectable>{days.explanation}</ThemedText>
           </Section>
         )}
       </ThemedView>

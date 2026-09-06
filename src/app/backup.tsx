@@ -171,6 +171,7 @@ export default function BackupScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -185,7 +186,7 @@ export default function BackupScreen() {
           </Card>
           <Button title="Export CSV Files" variant="secondary" onPress={handleExportCSV} />
 
-          {lastExport && <ThemedText type="small" themeColor="textSecondary">Last export: {lastExport}</ThemedText>}
+          {lastExport && <ThemedText type="small" themeColor="textSecondary" selectable>Last export: {lastExport}</ThemedText>}
 
           <Card title="Import from JSON">
             <ThemedText type="small">Pick a previously exported Numera backup file to restore all data. Existing data will be replaced.</ThemedText>
@@ -208,7 +209,7 @@ function BackupStat({ label, fetch }: { label: string; fetch: () => Promise<numb
   useEffect(() => { fetch().then(setCount); }, [fetch]);
   return (
     <Card title={label}>
-      <ThemedText type="small">{count !== null ? `${count} items` : 'Loading...'}</ThemedText>
+      <ThemedText type="small" selectable>{count !== null ? `${count} items` : 'Loading...'}</ThemedText>
     </Card>
   );
 }

@@ -77,6 +77,7 @@ export default function NewProfileScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -94,6 +95,9 @@ export default function NewProfileScreen() {
               <Pressable
                 key={opt.key}
                 onPress={() => setGender(opt.key)}
+                accessibilityRole="button"
+                accessibilityLabel={`Select gender ${opt.label}`}
+                android_ripple={{ color: theme.textSecondary }}
                 style={[
                   styles.genderChip,
                   { backgroundColor: gender === opt.key ? theme.tint : theme.backgroundElement },
@@ -107,7 +111,7 @@ export default function NewProfileScreen() {
 
           <Input label="Birth Time (optional)" value={birthTime} onChangeText={setBirthTime} placeholder="HH:MM AM/PM" />
 
-          {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+          {error && <ThemedText themeColor="error" accessibilityRole="alert" accessibilityLiveRegion="assertive" selectable>{error}</ThemedText>}
 
           <ThemedView style={styles.buttons}>
             <Button title="Cancel" variant="secondary" onPress={() => router.back()} />
@@ -135,17 +139,17 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
     marginTop: Spacing.three,
   },
-  error: {
-    color: '#ff4444',
-  },
   genderRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: Spacing.two,
   },
   genderChip: {
-    paddingVertical: Spacing.one,
+    paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.three,
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
+    minHeight: 44,
+    justifyContent: 'center',
   },
 });

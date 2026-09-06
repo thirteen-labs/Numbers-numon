@@ -34,12 +34,13 @@ export default function BusinessNameScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Business Name Analysis" subtitle="Evaluate the numerological energy of your business name">
           <Input label="Business Name" value={name} onChangeText={setName} placeholder="Enter business name" autoCapitalize="words" />
-          {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+          {error && <ThemedText themeColor="error" accessibilityRole="alert" accessibilityLiveRegion="assertive" selectable>{error}</ThemedText>}
           <Button title="Analyze" onPress={handleAnalyze} />
         </Section>
 
@@ -52,17 +53,17 @@ export default function BusinessNameScreen() {
             </Section>
 
             <Card title="Energy">
-              <ThemedText type="small">{result.interpretation.energy}</ThemedText>
+              <ThemedText type="small" selectable>{result.interpretation.energy}</ThemedText>
             </Card>
             <Card title="Branding Vibration">
-              <ThemedText type="small">{result.interpretation.brandingVibration}</ThemedText>
+              <ThemedText type="small" selectable>{result.interpretation.brandingVibration}</ThemedText>
             </Card>
             <Card title="Prosperity">
-              <ThemedText type="small">{result.interpretation.prosperity}</ThemedText>
+              <ThemedText type="small" selectable>{result.interpretation.prosperity}</ThemedText>
             </Card>
             <Card title="Best For">
               {result.interpretation.bestFor.map((b: string) => (
-                <ThemedText key={b} type="small">• {b}</ThemedText>
+                <ThemedText key={b} type="small" selectable>• {b}</ThemedText>
               ))}
             </Card>
           </>
@@ -76,5 +77,4 @@ const styles = StyleSheet.create({
   container: { flexDirection: 'row', justifyContent: 'center' },
   inner: { maxWidth: MaxContentWidth, flexGrow: 1, gap: Spacing.five, padding: Spacing.four },
   center: { alignItems: 'center', gap: Spacing.three },
-  error: { color: '#ff4444' },
 });

@@ -11,9 +11,9 @@ export type SectionProps = PropsWithChildren & {
 
 export function Section({ title, subtitle, children }: SectionProps) {
   return (
-    <ThemedView style={styles.section}>
+    <ThemedView style={styles.section} accessibilityRole="header">
       <ThemedView style={styles.header}>
-        <ThemedText type="subtitle">{title}</ThemedText>
+        <ThemedText type="heading">{title}</ThemedText>
         {subtitle && (
           <ThemedText type="small" themeColor="textSecondary">
             {subtitle}

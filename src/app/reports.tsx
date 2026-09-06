@@ -134,6 +134,7 @@ export default function ReportsScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -147,7 +148,7 @@ export default function ReportsScreen() {
           <Section title="Generate New Report">
             {profiles.map((p) => (
               <Card key={p.id} title={p.name}>
-                <ThemedText type="small">
+                <ThemedText type="small" selectable>
                   {p.person.firstName} {p.person.lastName} — {p.person.dateOfBirth.toLocaleDateString()}
                 </ThemedText>
                 <Button
@@ -172,7 +173,7 @@ export default function ReportsScreen() {
               const parsed = JSON.parse(r.data);
               return (
                 <Card key={r.id} title={parsed.profileName ?? 'Report'}>
-                  <ThemedText type="small">
+                  <ThemedText type="small" selectable>
                     Generated: {r.createdAt.toLocaleDateString()} at {r.createdAt.toLocaleTimeString()}
                   </ThemedText>
                   {parsed.core && (

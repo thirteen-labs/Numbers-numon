@@ -7,10 +7,12 @@ import { useTheme } from '@/hooks/use-theme';
 export type InputProps = TextInputProps & {
   label?: string;
   error?: string;
+  hint?: string;
 };
 
-export function Input({ label, error, style, ...rest }: InputProps) {
+export function Input({ label, error, hint, style, ...rest }: InputProps) {
   const theme = useTheme();
+  const describedBy = error ? `${label ?? 'input'}-error` : undefined;
 
   return (
     <ThemedView style={styles.container}>
@@ -21,7 +23,7 @@ export function Input({ label, error, style, ...rest }: InputProps) {
       )}
       <ThemedView
         type="backgroundElement"
-        style={[styles.inputContainer, error ? { borderColor: '#ff4444', borderWidth: 1 } : undefined]}>
+        style={[styles.inputContainer, error ? { borderColor: theme.error, borderWidth: 1 } : undefined]}>
         <TextInput
           style={[
             styles.input,
@@ -29,11 +31,20 @@ export function Input({ label, error, style, ...rest }: InputProps) {
             style as object,
           ]}
           placeholderTextColor={theme.textSecondary}
+          accessibilityLabel={label ?? rest.placeholder}
+          accessibilityHint={hint}
+          accessibilityState={{ disabled: rest.editable === false }}
+          {...(describedBy ? ({ 'aria-describedby': describedBy } as object) : {})}
           {...rest}
         />
       </ThemedView>
       {error && (
-        <ThemedText type="small" style={styles.error}>
+        <ThemedText
+          type="small"
+          themeColor="error"
+          style={styles.error}
+          accessibilityRole="alert"
+          accessibilityLiveRegion="assertive">
           {error}
         </ThemedText>
       )}
@@ -50,15 +61,17 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderRadius: Spacing.two,
+    borderCurve: 'continuous',
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.two,
+    minHeight: 48,
+    justifyContent: 'center',
   },
   input: {
     fontSize: 16,
     lineHeight: 22,
   },
   error: {
-    color: '#ff4444',
     marginLeft: Spacing.one,
   },
 });

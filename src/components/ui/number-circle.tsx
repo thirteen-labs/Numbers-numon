@@ -15,7 +15,10 @@ export function NumberCircle({ number, size = 64, label, color }: NumberCirclePr
   const theme = useTheme();
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView
+      style={styles.container}
+      accessibilityLabel={label ? `${label}: ${number}` : `Number ${number}`}
+      accessibilityRole="text">
       <ThemedView
         style={[
           styles.circle,
@@ -30,15 +33,18 @@ export function NumberCircle({ number, size = 64, label, color }: NumberCirclePr
           style={[
             styles.number,
             {
-              fontSize: size * 0.45,
-              color: color ? theme.background : theme.background,
+              fontSize: size * 0.4,
+              lineHeight: size * 0.5,
+              color: theme.background,
+              fontVariant: 'tabular-nums',
             },
-          ]}>
+          ]}
+          maxFontSizeMultiplier={1.5}>
           {number}
         </ThemedText>
       </ThemedView>
       {label && (
-        <ThemedText type="small" style={styles.label}>
+        <ThemedText type="small" style={styles.label} maxFontSizeMultiplier={2}>
           {label}
         </ThemedText>
       )}
@@ -50,6 +56,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     gap: Spacing.one,
+    minWidth: 72,
+    minHeight: 72,
   },
   circle: {
     alignItems: 'center',
@@ -57,6 +65,7 @@ const styles = StyleSheet.create({
   },
   number: {
     fontWeight: '700',
+    textAlign: 'center',
   },
   label: {
     textAlign: 'center',

@@ -15,32 +15,33 @@ declare module 'react-native' {
 
   export interface GestureResponderEvent { preventDefault(): void; }
 
-  export interface ViewProps { style?: StyleProp<ViewStyle>; children?: ReactNode; }
+  export interface ViewProps { style?: StyleProp<ViewStyle>; children?: ReactNode; accessibilityLabel?: string; accessibilityHint?: string; accessibilityRole?: string; accessibilityState?: { disabled?: boolean; selected?: boolean; busy?: boolean; expanded?: boolean }; accessibilityLiveRegion?: 'none' | 'polite' | 'assertive'; }
   export const View: ComponentType<ViewProps>;
 
-  export interface TextProps { style?: StyleProp<TextStyle>; children?: ReactNode; numberOfLines?: number; onPress?: () => void; }
+  export interface TextProps { style?: StyleProp<TextStyle>; children?: ReactNode; numberOfLines?: number; onPress?: () => void; selectable?: boolean; accessibilityLabel?: string; accessibilityRole?: string; accessibilityLiveRegion?: 'none' | 'polite' | 'assertive'; adjustsFontSizeToFit?: boolean; minimumFontScale?: number; maxFontSizeMultiplier?: number; }
   export const Text: ComponentType<TextProps>;
 
-  export interface ScrollViewProps { style?: StyleProp<ViewStyle>; contentContainerStyle?: StyleProp<ViewStyle>; contentInset?: { top?: number; bottom?: number; left?: number; right?: number }; children?: ReactNode; horizontal?: boolean; pagingEnabled?: boolean; showsHorizontalScrollIndicator?: boolean; onMomentumScrollEnd?: (event: any) => void; ref?: any; }
+  export interface ScrollViewProps { style?: StyleProp<ViewStyle>; contentContainerStyle?: StyleProp<ViewStyle>; contentInset?: { top?: number; bottom?: number; left?: number; right?: number }; contentInsetAdjustmentBehavior?: 'automatic' | 'scrollableAxes' | 'never' | 'always'; keyboardShouldPersistTaps?: 'always' | 'never' | 'handled'; children?: ReactNode; horizontal?: boolean; pagingEnabled?: boolean; showsHorizontalScrollIndicator?: boolean; onMomentumScrollEnd?: (event: any) => void; ref?: any; accessibilityRole?: string; }
   export const ScrollView: ComponentType<ScrollViewProps>;
 
-  export interface PressableProps { onPress?: ((event: GestureResponderEvent) => void); style?: ((state: { pressed: boolean }) => StyleProp<ViewStyle>) | StyleProp<ViewStyle>; children?: ReactNode | ((state: { pressed: boolean }) => ReactNode); disabled?: boolean; }
+  export interface PressableProps { onPress?: ((event: GestureResponderEvent) => void); style?: ((state: { pressed: boolean }) => StyleProp<ViewStyle>) | StyleProp<ViewStyle>; children?: ReactNode | ((state: { pressed: boolean }) => ReactNode); disabled?: boolean; accessibilityRole?: string; accessibilityLabel?: string; accessibilityHint?: string; accessibilityState?: { disabled?: boolean; selected?: boolean; busy?: boolean; expanded?: boolean }; android_ripple?: { color?: string }; }
   export const Pressable: ComponentType<PressableProps>;
 
   export const StyleSheet: { create: <T>(styles: T) => T; absoluteFill: ViewStyle; hairlineWidth: number; };
   export const Platform: { OS: string; select: <T>(spec: { default?: T; ios?: T; android?: T; web?: T }) => T; };
   export const Dimensions: { get: (dim: 'window' | 'screen') => { width: number; height: number; scale: number } };
+  export function useWindowDimensions(): { width: number; height: number; scale: number; fontScale: number };
   export const Alert: { alert: (title: string, message?: string, buttons?: { text: string; style?: string; onPress?: () => void }[]) => void };
 
   export function useColorScheme(): 'light' | 'dark' | 'unspecified';
 
-  export interface FlatListProps<T> { data: T[]; renderItem: (info: { item: T; index: number }) => ReactNode; style?: StyleProp<ViewStyle>; keyExtractor?: (item: T, index: number) => string; contentContainerStyle?: StyleProp<ViewStyle>; ItemSeparatorComponent?: ComponentType<any>; }
+  export interface FlatListProps<T> { data: T[]; renderItem: (info: { item: T; index: number }) => ReactNode; style?: StyleProp<ViewStyle>; keyExtractor?: (item: T, index: number) => string; contentContainerStyle?: StyleProp<ViewStyle>; ItemSeparatorComponent?: ComponentType<any>; ListEmptyComponent?: ComponentType<any> | ReactNode; contentInsetAdjustmentBehavior?: 'automatic' | 'never' | 'always' | 'scrollableAxes'; keyboardShouldPersistTaps?: 'always' | 'never' | 'handled'; initialNumToRender?: number; maxToRenderPerBatch?: number; windowSize?: number; removeClippedSubviews?: boolean; }
   export class FlatList<T = any> extends React.Component<FlatListProps<T>> {}
 
-  export interface SwitchProps { value?: boolean; onValueChange?: (value: boolean) => void; trackColor?: { false: string; true: string }; }
+  export interface SwitchProps { value?: boolean; onValueChange?: (value: boolean) => void; trackColor?: { false: string; true: string }; accessibilityLabel?: string; accessibilityHint?: string; }
   export const Switch: ComponentType<SwitchProps>;
 
-  export interface TextInputProps { value?: string; onChangeText?: (text: string) => void; placeholder?: string; autoCapitalize?: string; style?: StyleProp<TextStyle>; keyboardType?: string; multiline?: boolean; autoFocus?: boolean; placeholderTextColor?: string; textAlignVertical?: string; onSelectionChange?: (event: any) => void; }
+  export interface TextInputProps { value?: string; onChangeText?: (text: string) => void; placeholder?: string; autoCapitalize?: string; style?: StyleProp<TextStyle>; keyboardType?: string; multiline?: boolean; autoFocus?: boolean; placeholderTextColor?: string; textAlignVertical?: string; onSelectionChange?: (event: any) => void; accessibilityLabel?: string; accessibilityHint?: string; accessibilityState?: { disabled?: boolean }; editable?: boolean; }
   export const TextInput: ComponentType<TextInputProps>;
 
   export type ImageSourcePropType = number | { uri: string };
@@ -87,6 +88,13 @@ declare module 'expo-router' {
   export const DarkTheme: { colors: { [key: string]: string } };
   export const DefaultTheme: { colors: { [key: string]: string } };
   export const ThemeProvider: ComponentType<{ children: ReactNode; value: any }>;
+}
+declare module 'expo-router/drawer' {
+  import type { ComponentType, ReactNode } from 'react';
+  export const Drawer: ComponentType<{ children?: ReactNode; drawerContent?: (props: any) => ReactNode; screenOptions?: any; }> & {
+    Screen: ComponentType<{ name: string; options?: any }>;
+  };
+  export const DrawerToggleButton: ComponentType<{ tintColor?: string; accessibilityLabel?: string; style?: any }>;
 }
 declare module 'expo-router/unstable-native-tabs' {
   import type { ComponentType, ReactNode } from 'react';
@@ -141,7 +149,7 @@ declare module 'expo-file-system' {
 }
 declare module 'expo-image' {
   import type { ComponentType } from 'react';
-  export const Image: ComponentType<{ source: any; style?: any }>;
+  export const Image: ComponentType<{ source: any; style?: any; contentFit?: string; transition?: number; accessibilityLabel?: string }>;
 }
 declare module 'expo-notifications' {
   export function setNotificationHandler(handler: { handleNotification: () => Promise<{ shouldShowAlert?: boolean; shouldPlaySound?: boolean; shouldSetBadge?: boolean; shouldShowBanner?: boolean; shouldShowList?: boolean }> }): void;
@@ -162,7 +170,11 @@ declare module 'expo-splash-screen' {}
 declare module 'expo-status-bar' {}
 declare module 'expo-system-ui' {}
 declare module 'expo-glass-effect' {}
-declare module '@expo/ui' {}
+declare module '@expo/ui/community/datetime-picker' {
+  import type { ComponentType } from 'react';
+  export interface DateTimePickerProps { value: Date; mode?: 'date' | 'time' | 'datetime'; display?: 'default' | 'spinner' | 'compact' | 'inline' | 'calendar' | 'clock'; minimumDate?: Date; maximumDate?: Date; accentColor?: string; onValueChange?: (event: { nativeEvent: { timestamp: number; utcOffset: number } }, date: Date) => void; onDismiss?: () => void; testID?: string; style?: any; }
+  export const DateTimePicker: ComponentType<DateTimePickerProps>;
+}
 declare module '@hookform/resolvers' {}
 declare module 'react-hook-form' {}
 declare module 'expo/package.json' { export const version: string; }

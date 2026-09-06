@@ -109,6 +109,7 @@ export default function CalculatorScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.background }}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Numerology Calculator" subtitle={id ? 'Loaded from profile' : 'Enter details or load a profile'}>
@@ -122,11 +123,15 @@ export default function CalculatorScreen() {
           <DatePickerField label="Date of Birth" value={dateOfBirth} onChange={setDateOfBirth} />
 
           <ThemedText type="smallBold" style={{ marginTop: Spacing.three }}>Gender (optional)</ThemedText>
-          <ThemedView style={styles.genderRow}>
+          <ThemedView style={styles.genderRow} accessibilityRole="radiogroup">
             {['', 'male', 'female', 'other'].map((key) => (
               <Pressable
                 key={key}
                 onPress={() => setGender(key)}
+                accessibilityRole="radio"
+                accessibilityLabel={key ? `Gender ${key}` : 'Prefer not to say'}
+                accessibilityState={{ selected: gender === key }}
+                android_ripple={{ color: theme.textSecondary }}
                 style={[
                   styles.genderChip,
                   { backgroundColor: gender === key ? theme.tint : theme.backgroundElement },
@@ -140,7 +145,7 @@ export default function CalculatorScreen() {
 
           <Input label="Birth Time (optional)" value={birthTime} onChangeText={setBirthTime} placeholder="HH:MM AM/PM" />
 
-          {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+          {error && <ThemedText themeColor="error" accessibilityRole="alert" accessibilityLiveRegion="assertive" selectable>{error}</ThemedText>}
           <Button title="Calculate" onPress={handleCalculate} />
         </Section>
 
@@ -359,9 +364,6 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
     justifyContent: 'center',
   },
-  error: {
-    color: '#ff4444',
-  },
   actions: {
     flexDirection: 'row',
     gap: Spacing.three,
@@ -378,8 +380,11 @@ const styles = StyleSheet.create({
     gap: Spacing.two,
   },
   genderChip: {
-    paddingVertical: Spacing.one,
+    paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.three,
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
+    minHeight: 44,
+    justifyContent: 'center',
   },
 });

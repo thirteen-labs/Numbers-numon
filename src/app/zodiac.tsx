@@ -28,6 +28,7 @@ export default function ChineseZodiacScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -47,8 +48,8 @@ export default function ChineseZodiacScreen() {
             <ThemedView style={styles.zodiacGrid}>
               {Object.entries(CHINESE_ZODIAC).map(([key, data]) => (
                 <Card key={key} title={data.animal}>
-                  <ThemedText type="small">Element: {data.element}</ThemedText>
-                  <ThemedText type="small">Lucky: {data.luckyNumbers.join(', ')}</ThemedText>
+                  <ThemedText type="small" selectable>Element: {data.element}</ThemedText>
+                  <ThemedText type="small" selectable>Lucky: {data.luckyNumbers.join(', ')}</ThemedText>
                 </Card>
               ))}
             </ThemedView>
@@ -59,23 +60,23 @@ export default function ChineseZodiacScreen() {
           <>
             <Section title={animalData.animal}>
               <Card title="Element">
-                <ThemedText type="small">{animalData.element}</ThemedText>
+                <ThemedText type="small" selectable>{animalData.element}</ThemedText>
               </Card>
               <Card title="Personality">
                 {animalData.personality.map((t: string) => (
-                  <ThemedText key={t} type="small">• {t}</ThemedText>
+                  <ThemedText key={t} type="small" selectable>• {t}</ThemedText>
                 ))}
               </Card>
               <Card title="Career">
                 {animalData.careers.map((c: string) => (
-                  <ThemedText key={c} type="small">• {c}</ThemedText>
+                  <ThemedText key={c} type="small" selectable>• {c}</ThemedText>
                 ))}
               </Card>
               <Card title="Love">
-                <ThemedText type="small">{animalData.love}</ThemedText>
+                <ThemedText type="small" selectable>{animalData.love}</ThemedText>
               </Card>
               <Card title="Health">
-                <ThemedText type="small">{animalData.health}</ThemedText>
+                <ThemedText type="small" selectable>{animalData.health}</ThemedText>
               </Card>
               <Card title="Lucky Numbers">
                 <ThemedView style={styles.numberRow}>
@@ -86,17 +87,17 @@ export default function ChineseZodiacScreen() {
               </Card>
               <Card title="Lucky Colors">
                 {animalData.luckyColors.map((c) => (
-                  <ThemedText key={c} type="small">• {c}</ThemedText>
+                  <ThemedText key={c} type="small" selectable>• {c}</ThemedText>
                 ))}
               </Card>
               <Card title="Compatible With">
                 {animalData.compatibleWith.map((a: string) => (
-                  <ThemedText key={a} type="small">• {a.charAt(0).toUpperCase() + a.slice(1)}</ThemedText>
+                  <ThemedText key={a} type="small" selectable>• {a.charAt(0).toUpperCase() + a.slice(1)}</ThemedText>
                 ))}
               </Card>
               <Card title="Enemy Signs">
                 {animalData.enemySigns.map((a: string) => (
-                  <ThemedText key={a} type="small">• {a.charAt(0).toUpperCase() + a.slice(1)}</ThemedText>
+                  <ThemedText key={a} type="small" selectable>• {a.charAt(0).toUpperCase() + a.slice(1)}</ThemedText>
                 ))}
               </Card>
             </Section>

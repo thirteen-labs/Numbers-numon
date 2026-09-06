@@ -57,6 +57,7 @@ export default function SettingsScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.background }}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Theme" subtitle="Choose your appearance">
@@ -90,6 +91,8 @@ export default function SettingsScreen() {
               <ThemedText type="small">Daily Number Reminder</ThemedText>
               <Switch
                 value={notificationPrefs.dailyNumber}
+                accessibilityLabel="Daily number reminder"
+                accessibilityHint="Toggles daily numerology notification"
                 onValueChange={(v) => handleToggleNotifications('dailyNumber', v)}
                 trackColor={{ false: theme.textSecondary, true: theme.tint }}
               />
@@ -98,6 +101,8 @@ export default function SettingsScreen() {
               <ThemedText type="small">Daily Affirmation</ThemedText>
               <Switch
                 value={notificationPrefs.dailyAffirmation}
+                accessibilityLabel="Daily affirmation notification"
+                accessibilityHint="Toggles daily affirmation notification"
                 onValueChange={(v) => handleToggleNotifications('dailyAffirmation', v)}
                 trackColor={{ false: theme.textSecondary, true: theme.tint }}
               />
@@ -106,12 +111,14 @@ export default function SettingsScreen() {
               <ThemedText type="small">Goal Reminders</ThemedText>
               <Switch
                 value={notificationPrefs.goalReminders}
+                accessibilityLabel="Goal reminders"
+                accessibilityHint="Toggles goal reminder notifications"
                 onValueChange={(v) => handleToggleNotifications('goalReminders', v)}
                 trackColor={{ false: theme.textSecondary, true: theme.tint }}
               />
             </ThemedView>
           </Card>
-          {notifStatus && <ThemedText type="small" style={styles.status}>{notifStatus}</ThemedText>}
+          {notifStatus && <ThemedText type="small" style={styles.status} accessibilityLiveRegion="polite">{notifStatus}</ThemedText>}
         </Section>
 
         <Section title="About">

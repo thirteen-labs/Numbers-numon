@@ -62,6 +62,7 @@ export default function JournalDetailScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -79,10 +80,10 @@ export default function JournalDetailScreen() {
               <Card>
                 <RichTextDisplay content={entry.content} />
               </Card>
-              {entry.mood && <Card title="Mood"><ThemedText type="small">{entry.mood}</ThemedText></Card>}
+              {entry.mood && <Card title="Mood"><ThemedText type="small" selectable>{entry.mood}</ThemedText></Card>}
               {entry.tags.length > 0 && (
                 <Card title="Tags">
-                  <ThemedText type="small">{entry.tags.map((t) => `#${t}`).join(' ')}</ThemedText>
+                  <ThemedText type="small" selectable>{entry.tags.map((t) => `#${t}`).join(' ')}</ThemedText>
                 </Card>
               )}
             </Section>

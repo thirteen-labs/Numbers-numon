@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
@@ -10,8 +10,6 @@ import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/lib/store';
 import { setOnboardingDone } from '@/lib/storage';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface Slide {
   title: string;
@@ -49,6 +47,7 @@ const SLIDES: Slide[] = [
 
 export default function OnboardingScreen() {
   const insets = useSafeAreaInsets();
+  const { width: SCREEN_WIDTH } = useWindowDimensions();
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const { setOnboarded } = useAppStore();
@@ -81,6 +80,7 @@ export default function OnboardingScreen() {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        accessibilityRole="tablist"
         contentContainerStyle={styles.scrollContent}
         onMomentumScrollEnd={(e) => {
           const idx = Math.round(e.nativeEvent.contentOffset.x / SCREEN_WIDTH);

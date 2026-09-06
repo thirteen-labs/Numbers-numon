@@ -62,7 +62,7 @@ export default function ProfileDetailScreen() {
   if (!loaded || !profile) {
     return (
       <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ThemedText>{loaded ? 'Profile not found' : 'Loading...'}</ThemedText>
+        <ThemedText selectable>{loaded ? 'Profile not found' : 'Loading...'}</ThemedText>
       </ThemedView>
     );
   }
@@ -117,6 +117,7 @@ export default function ProfileDetailScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -128,25 +129,25 @@ export default function ProfileDetailScreen() {
 
         <Section title="Core Numbers">
           <ThemedView style={styles.numberGrid}>
-            <Pressable onPress={() => goToNumberDetail('life-path', core.lifePath)}>
+            <Pressable onPress={() => goToNumberDetail('life-path', core.lifePath)} accessibilityRole="button" accessibilityLabel={`View Life Path number ${core.lifePath}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.lifePath} label="Life Path" color={colorForNumber(core.lifePath, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('expression', core.expression)}>
+            <Pressable onPress={() => goToNumberDetail('expression', core.expression)} accessibilityRole="button" accessibilityLabel={`View Expression number ${core.expression}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.expression} label="Expression" color={colorForNumber(core.expression, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('soul-urge', core.soulUrge)}>
+            <Pressable onPress={() => goToNumberDetail('soul-urge', core.soulUrge)} accessibilityRole="button" accessibilityLabel={`View Soul Urge number ${core.soulUrge}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.soulUrge} label="Soul Urge" color={colorForNumber(core.soulUrge, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('personality', core.personality)}>
+            <Pressable onPress={() => goToNumberDetail('personality', core.personality)} accessibilityRole="button" accessibilityLabel={`View Personality number ${core.personality}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.personality} label="Personality" color={colorForNumber(core.personality, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('birthday', core.birthday)}>
+            <Pressable onPress={() => goToNumberDetail('birthday', core.birthday)} accessibilityRole="button" accessibilityLabel={`View Birthday number ${core.birthday}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.birthday} label="Birthday" color={colorForNumber(core.birthday, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('attitude', core.attitude)}>
+            <Pressable onPress={() => goToNumberDetail('attitude', core.attitude)} accessibilityRole="button" accessibilityLabel={`View Attitude number ${core.attitude}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.attitude} label="Attitude" color={colorForNumber(core.attitude, theme)} />
             </Pressable>
-            <Pressable onPress={() => goToNumberDetail('maturity', core.maturity)}>
+            <Pressable onPress={() => goToNumberDetail('maturity', core.maturity)} accessibilityRole="button" accessibilityLabel={`View Maturity number ${core.maturity}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={core.maturity} label="Maturity" color={colorForNumber(core.maturity, theme)} />
             </Pressable>
           </ThemedView>
@@ -160,32 +161,32 @@ export default function ProfileDetailScreen() {
         </Section>
 
         <Section title={'Life Path — ' + (LIFE_PATH_INTERPRETATIONS[core.lifePath]?.title ?? NUMBER_MEANINGS[core.lifePath]?.title ?? '')}>
-          <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.overview ?? NUMBER_MEANINGS[core.lifePath]?.description}</ThemedText>
+          <ThemedText type="small" selectable>{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.overview ?? NUMBER_MEANINGS[core.lifePath]?.description}</ThemedText>
           <Card title="Strengths">
             {(LIFE_PATH_INTERPRETATIONS[core.lifePath]?.strengths ?? NUMBER_MEANINGS[core.lifePath]?.positive ?? []).map((s: string) => (
-              <ThemedText key={s} type="small">• {s}</ThemedText>
+              <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
             ))}
           </Card>
           <Card title="Challenges">
             {(LIFE_PATH_INTERPRETATIONS[core.lifePath]?.challenges ?? NUMBER_MEANINGS[core.lifePath]?.negative ?? []).map((s: string) => (
-              <ThemedText key={s} type="small">• {s}</ThemedText>
+              <ThemedText key={s} type="small" selectable>• {s}</ThemedText>
             ))}
           </Card>
           <Card title="Career Paths">
             {(LIFE_PATH_INTERPRETATIONS[core.lifePath]?.career ?? NUMBER_MEANINGS[core.lifePath]?.career ?? []).map((c: string) => (
-              <ThemedText key={c} type="small">• {c}</ThemedText>
+              <ThemedText key={c} type="small" selectable>• {c}</ThemedText>
             ))}
           </Card>
           <Card title="Relationships">
-            <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.relationships}</ThemedText>
+            <ThemedText type="small" selectable>{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.relationships}</ThemedText>
           </Card>
           <Card title="Spiritual Growth">
-            <ThemedText type="small">{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.spiritualGrowth}</ThemedText>
+            <ThemedText type="small" selectable>{LIFE_PATH_INTERPRETATIONS[core.lifePath]?.spiritualGrowth}</ThemedText>
           </Card>
           {LIFE_PATH_INTERPRETATIONS[core.lifePath]?.famousExamples && (
             <Card title="Famous Examples">
               {LIFE_PATH_INTERPRETATIONS[core.lifePath]!.famousExamples.map((name: string) => (
-                <ThemedText key={name} type="small">• {name}</ThemedText>
+                <ThemedText key={name} type="small" selectable>• {name}</ThemedText>
               ))}
             </Card>
           )}
@@ -193,13 +194,13 @@ export default function ProfileDetailScreen() {
 
         <Section title="Today's Numbers">
           <ThemedView style={styles.numberGrid}>
-            <Pressable onPress={() => router.push(`/cycles/personal-day?n=${personal.personalDay}`)}>
+            <Pressable onPress={() => router.push(`/cycles/personal-day?n=${personal.personalDay}`)} accessibilityRole="button" accessibilityLabel={`View Personal Day number ${personal.personalDay}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={personal.personalDay} size={56} label="Personal Day" color={colorForNumber(personal.personalDay, theme)} />
             </Pressable>
-            <Pressable onPress={() => router.push(`/cycles/personal-month?n=${personal.personalMonth}`)}>
+            <Pressable onPress={() => router.push(`/cycles/personal-month?n=${personal.personalMonth}`)} accessibilityRole="button" accessibilityLabel={`View Personal Month number ${personal.personalMonth}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={personal.personalMonth} size={56} label="Personal Month" color={colorForNumber(personal.personalMonth, theme)} />
             </Pressable>
-            <Pressable onPress={() => router.push(`/cycles/personal-year?n=${personal.personalYear}`)}>
+            <Pressable onPress={() => router.push(`/cycles/personal-year?n=${personal.personalYear}`)} accessibilityRole="button" accessibilityLabel={`View Personal Year number ${personal.personalYear}`} android_ripple={{ color: theme.textSecondary }}>
               <NumberCircle number={personal.personalYear} size={56} label="Personal Year" color={colorForNumber(personal.personalYear, theme)} />
             </Pressable>
           </ThemedView>
@@ -207,22 +208,22 @@ export default function ProfileDetailScreen() {
 
         <Section title="Advanced Numbers">
           <Card title={`Balance Number: ${balance}`}>
-            <ThemedText type="smallBold">{BALANCE_INTERPRETATIONS[balance]?.description}</ThemedText>
+            <ThemedText type="smallBold" selectable>{BALANCE_INTERPRETATIONS[balance]?.description}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Under Stress:</ThemedText>
-            <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]?.underStress}</ThemedText>
+            <ThemedText type="small" selectable>{BALANCE_INTERPRETATIONS[balance]?.underStress}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Growth Path:</ThemedText>
-            <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]?.growthPath}</ThemedText>
+            <ThemedText type="small" selectable>{BALANCE_INTERPRETATIONS[balance]?.growthPath}</ThemedText>
           </Card>
           {karmicDebt.length > 0 && (
             <Card title="Karmic Debt">
               {karmicDebt.map((n) => (
-                <ThemedText key={n} type="small">• {n}</ThemedText>
+                <ThemedText key={n} type="small" selectable>• {n}</ThemedText>
               ))}
             </Card>
           )}
           {karmicLessons.length > 0 && (
             <Card title={`Karmic Lessons: ${karmicLessons.join(', ')}`}>
-              <ThemedText type="small">Missing numbers suggesting qualities to develop.</ThemedText>
+              <ThemedText type="small" selectable>Missing numbers suggesting qualities to develop.</ThemedText>
             </Card>
           )}
           <Button title="View All Advanced Numbers" variant="secondary" onPress={goToAdvanced} />

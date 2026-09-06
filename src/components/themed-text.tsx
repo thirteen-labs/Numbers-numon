@@ -4,7 +4,7 @@ import { Fonts, ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'small' | 'smallBold' | 'subtitle' | 'link' | 'linkPrimary' | 'code';
+  type?: 'default' | 'title' | 'heading' | 'small' | 'smallBold' | 'subtitle' | 'link' | 'linkPrimary' | 'code';
   themeColor?: ThemeColor;
 };
 
@@ -18,6 +18,7 @@ export function ThemedText({ style, type = 'default', themeColor, ...rest }: The
         { color: theme[themeColor ?? 'text'] },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
+        type === 'heading' ? styles.heading : undefined,
         type === 'small' ? styles.small : undefined,
         type === 'smallBold' ? styles.smallBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
@@ -26,6 +27,7 @@ export function ThemedText({ style, type = 'default', themeColor, ...rest }: The
         type === 'code' ? styles.code : undefined,
         style,
       ]}
+      maxFontSizeMultiplier={2}
       {...rest}
     />
   );
@@ -47,14 +49,19 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: '500' as const,
   },
+  heading: {
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: '700' as const,
+  },
   title: {
-    fontSize: 48,
-    fontWeight: '600' as const,
-    lineHeight: 52,
+    fontSize: 40,
+    fontWeight: '700' as const,
+    lineHeight: 48,
   },
   subtitle: {
-    fontSize: 32,
-    lineHeight: 44,
+    fontSize: 28,
+    lineHeight: 36,
     fontWeight: '600' as const,
   },
   link: {
@@ -64,7 +71,7 @@ const styles = StyleSheet.create({
   linkPrimary: {
     lineHeight: 30,
     fontSize: 14,
-    color: '#3c87f7',
+    color: '#1a73e8',
   },
   code: {
     fontFamily: Fonts.mono,

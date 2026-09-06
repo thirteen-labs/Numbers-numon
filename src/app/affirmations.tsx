@@ -21,13 +21,19 @@ export default function AffirmationsScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Daily Affirmations" subtitle="Positive affirmations aligned with your numbers">
           <ThemedView style={styles.numberRow}>
             {NUMBER_KEYS.map((n) => (
-              <Pressable key={n} onPress={() => setSelectedNumber(selectedNumber === n ? null : n)}>
+              <Pressable
+                key={n}
+                onPress={() => setSelectedNumber(selectedNumber === n ? null : n)}
+                accessibilityRole="button"
+                accessibilityLabel={`Show affirmations for number ${n}`}
+                android_ripple={{ color: theme.textSecondary }}>
                 <NumberCircle
                   number={n}
                   size={44}
@@ -42,7 +48,7 @@ export default function AffirmationsScreen() {
           <Section title={`Affirmations for ${selectedNumber}`}>
             {AFFIRMATIONS_BY_NUMBER[selectedNumber]?.map((a, i) => (
               <Card key={i}>
-                <ThemedText style={styles.affirmationText}>{'\u201C'}{a}{'\u201D'}</ThemedText>
+                <ThemedText style={styles.affirmationText} selectable>{'\u201C'}{a}{'\u201D'}</ThemedText>
               </Card>
             ))}
           </Section>

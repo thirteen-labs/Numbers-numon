@@ -51,14 +51,15 @@ export default function GoalDetailScreen() {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: theme.background }}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title={goal.title}>
           <Card title="Description">
-            <ThemedText type="small">{goal.description || 'No description'}</ThemedText>
+            <ThemedText type="small" selectable>{goal.description || 'No description'}</ThemedText>
           </Card>
           <Card title={`Status: ${goal.status}`}>
-            <ThemedText type="small">Progress: {goal.progress}%</ThemedText>
+            <ThemedText type="small" selectable>Progress: {goal.progress}%</ThemedText>
           </Card>
           {goal.favorableNumber && (
             <Card title={`Favorable Number: ${goal.favorableNumber}`}>

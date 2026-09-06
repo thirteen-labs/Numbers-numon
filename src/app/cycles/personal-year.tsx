@@ -22,6 +22,7 @@ export default function PersonalYearScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -29,7 +30,7 @@ export default function PersonalYearScreen() {
           <ThemedView style={styles.center}>
             <NumberCircle number={num} size={80} color={colorForNumber(num, theme)} />
             {interpretation && (
-              <ThemedText type="smallBold">{interpretation.overallTheme}</ThemedText>
+              <ThemedText type="smallBold" selectable>{interpretation.overallTheme}</ThemedText>
             )}
           </ThemedView>
         </Section>
@@ -37,20 +38,20 @@ export default function PersonalYearScreen() {
         {interpretation && (
           <>
             <Card title="Love">
-              <ThemedText type="small">{interpretation.love}</ThemedText>
+              <ThemedText type="small" selectable>{interpretation.love}</ThemedText>
             </Card>
             <Card title="Career">
-              <ThemedText type="small">{interpretation.career}</ThemedText>
+              <ThemedText type="small" selectable>{interpretation.career}</ThemedText>
             </Card>
             <Card title="Finance">
-              <ThemedText type="small">{interpretation.finance}</ThemedText>
+              <ThemedText type="small" selectable>{interpretation.finance}</ThemedText>
             </Card>
             <Card title="Health">
-              <ThemedText type="small">{interpretation.health}</ThemedText>
+              <ThemedText type="small" selectable>{interpretation.health}</ThemedText>
             </Card>
             <Card title="Best Actions">
               {interpretation.bestActions.map((a: string) => (
-                <ThemedText key={a} type="small">• {a}</ThemedText>
+                <ThemedText key={a} type="small" selectable>• {a}</ThemedText>
               ))}
             </Card>
           </>

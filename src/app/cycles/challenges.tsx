@@ -28,11 +28,12 @@ export default function ChallengesScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Life Challenges" subtitle="Four challenge periods based on your Life Path number">
-          <ThemedText type="small">
+          <ThemedText type="small" selectable>
             Challenges reveal the lessons and growth opportunities you will encounter during each major life period.
           </ThemedText>
         </Section>
@@ -46,15 +47,15 @@ export default function ChallengesScreen() {
               <ThemedView style={styles.challengeHeader}>
                 <NumberCircle number={num} size={56} color={colorForNumber(num || 0, theme)} />
                 {interpretation && (
-                  <ThemedText type="smallBold" style={styles.theme}>{interpretation.theme}</ThemedText>
+                  <ThemedText type="smallBold" style={styles.theme} selectable>{interpretation.theme}</ThemedText>
                 )}
               </ThemedView>
               {interpretation && (
                 <>
                   <ThemedText type="small" style={styles.subtitle}>Growth Opportunity</ThemedText>
-                  <ThemedText type="small">{interpretation.growthOpportunity}</ThemedText>
+                  <ThemedText type="small" selectable>{interpretation.growthOpportunity}</ThemedText>
                   <ThemedText type="small" style={styles.subtitle}>Coping Strategy</ThemedText>
-                  <ThemedText type="small">{interpretation.copingStrategy}</ThemedText>
+                  <ThemedText type="small" selectable>{interpretation.copingStrategy}</ThemedText>
                 </>
               )}
             </Card>

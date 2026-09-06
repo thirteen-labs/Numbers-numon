@@ -40,6 +40,7 @@ export default function ProfileListScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -64,9 +65,12 @@ export default function ProfileListScreen() {
             <Pressable
               key={profile.id}
               onPress={() => router.push(`/profile/${profile.id}`)}
+              accessibilityRole="button"
+              accessibilityLabel={`Open profile ${profile.name}`}
+              android_ripple={{ color: theme.textSecondary }}
               style={({ pressed }) => [pressed && { opacity: 0.7 }]}>
               <Card title={profile.name}>
-                <ThemedText type="small">
+                <ThemedText type="small" selectable>
                   {profile.person.firstName} {profile.person.lastName}
                   {' — '}
                   {profile.person.dateOfBirth.toLocaleDateString()}

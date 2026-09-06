@@ -35,6 +35,7 @@ export default function GoalsListScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -43,12 +44,12 @@ export default function GoalsListScreen() {
         </Section>
 
         {active.map((goal) => (
-          <Pressable key={goal.id} onPress={() => router.push(`/goals/${goal.id}`)}>
+          <Pressable key={goal.id} onPress={() => router.push(`/goals/${goal.id}`)} accessibilityRole="button" accessibilityLabel={`Open goal ${goal.title}`} android_ripple={{ color: theme.textSecondary }}>
             <Card title={goal.title} style={{ borderLeftColor: STATUS_COLORS[goal.status], borderLeftWidth: 3 }}>
-              <ThemedText type="small" numberOfLines={2}>{goal.description || 'No description'}</ThemedText>
+              <ThemedText type="small" numberOfLines={2} selectable>{goal.description || 'No description'}</ThemedText>
               <ThemedView style={styles.meta}>
-                <ThemedText type="small">Progress: {goal.progress}%</ThemedText>
-                {goal.targetDate && <ThemedText type="small">Due: {goal.targetDate.toLocaleDateString()}</ThemedText>}
+                <ThemedText type="small" selectable>Progress: {goal.progress}%</ThemedText>
+                {goal.targetDate && <ThemedText type="small" selectable>Due: {goal.targetDate.toLocaleDateString()}</ThemedText>}
               </ThemedView>
             </Card>
           </Pressable>

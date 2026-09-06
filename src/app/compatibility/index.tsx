@@ -45,11 +45,12 @@ export default function CompatibilityScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Name Compatibility" subtitle="Compare two names for emotional, romantic, and business harmony">
-          <ThemedText type="small">
+          <ThemedText type="small" selectable>
             Enter two names to see how their expression numbers interact. Based on the difference between their numbers.
           </ThemedText>
         </Section>
@@ -62,7 +63,7 @@ export default function CompatibilityScreen() {
           <Input label="Full Name" value={name2} onChangeText={setName2} placeholder="Enter first name" autoCapitalize="words" />
         </Section>
 
-        {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+        {error && <ThemedText themeColor="error" accessibilityRole="alert" accessibilityLiveRegion="assertive" selectable>{error}</ThemedText>}
         <Button title="Compare Names" onPress={handleCompare} />
 
         {result && (
@@ -76,19 +77,19 @@ export default function CompatibilityScreen() {
 
             <Section title={`Compatibility Score: ${result.comp.score}`}>
               <Card title="Emotional">
-                <ThemedText type="small">{result.comp.emotional}</ThemedText>
+                <ThemedText type="small" selectable>{result.comp.emotional}</ThemedText>
               </Card>
               <Card title="Friendship">
-                <ThemedText type="small">{result.comp.friendship}</ThemedText>
+                <ThemedText type="small" selectable>{result.comp.friendship}</ThemedText>
               </Card>
               <Card title="Romance">
-                <ThemedText type="small">{result.comp.romance}</ThemedText>
+                <ThemedText type="small" selectable>{result.comp.romance}</ThemedText>
               </Card>
               <Card title="Communication">
-                <ThemedText type="small">{result.comp.communication}</ThemedText>
+                <ThemedText type="small" selectable>{result.comp.communication}</ThemedText>
               </Card>
               <Card title="Business">
-                <ThemedText type="small">{result.comp.business}</ThemedText>
+                <ThemedText type="small" selectable>{result.comp.business}</ThemedText>
               </Card>
             </Section>
           </>
@@ -102,5 +103,4 @@ const styles = StyleSheet.create({
   container: { flexDirection: 'row', justifyContent: 'center' },
   inner: { maxWidth: MaxContentWidth, flexGrow: 1, gap: Spacing.five, padding: Spacing.four },
   numberGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.three, justifyContent: 'center' },
-  error: { color: '#ff4444' },
 });

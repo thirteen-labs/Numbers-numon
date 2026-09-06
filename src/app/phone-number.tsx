@@ -26,6 +26,7 @@ export default function PhoneNumberScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -41,7 +42,7 @@ export default function PhoneNumberScreen() {
           <Button title="Analyze" onPress={analyze} />
           {result !== null && (
             <Card title={`Vibration Number: ${result}`}>
-              <ThemedText type="small">Your phone number reduces to {result}.</ThemedText>
+              <ThemedText type="small" selectable>Your phone number reduces to {result}.</ThemedText>
             </Card>
           )}
         </Section>

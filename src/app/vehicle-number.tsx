@@ -59,6 +59,7 @@ export default function VehicleNumberScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -73,10 +74,10 @@ export default function VehicleNumberScreen() {
               <NumberCircle number={result} size={80} color={colorForNumber(result, theme)} />
             </ThemedView>
             <Card title={numberTitle(result)}>
-              <ThemedText type="small">{meaning?.description}</ThemedText>
+              <ThemedText type="small" selectable>{meaning?.description}</ThemedText>
             </Card>
             <Card title="Vehicle Vibration">
-              <ThemedText type="small">{vehicleMeanings[result] ?? 'Unique and individual.'}</ThemedText>
+              <ThemedText type="small" selectable>{vehicleMeanings[result] ?? 'Unique and individual.'}</ThemedText>
             </Card>
           </Section>
         )}

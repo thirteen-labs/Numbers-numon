@@ -21,7 +21,7 @@
         "backgroundImage": "./assets/images/icon.png",
         "monochromeImage": "./assets/images/icon.png"
       },
-      "predictiveBackGestureEnabled": false,
+      "predictiveBackGestureEnabled": true,
       "permissions": [
         "android.permission.POST_NOTIFICATIONS"
       ]

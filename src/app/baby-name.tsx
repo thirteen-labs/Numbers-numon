@@ -72,6 +72,7 @@ export default function BabyNameScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -79,7 +80,7 @@ export default function BabyNameScreen() {
           <Input label="Parent's DOB (MM/DD/YYYY)" value={parentDob} onChangeText={setParentDob} placeholder="MM/DD/YYYY" keyboardType="numbers-and-punctuation" />
           <Input label="Baby's Full Name" value={babyName} onChangeText={setBabyName} placeholder="Baby name" autoCapitalize="words" />
           <Input label="Baby's DOB (MM/DD/YYYY)" value={babyDob} onChangeText={setBabyDob} placeholder="MM/DD/YYYY" keyboardType="numbers-and-punctuation" />
-          {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+          {error && <ThemedText themeColor="error" accessibilityRole="alert" accessibilityLiveRegion="assertive" selectable>{error}</ThemedText>}
           <Button title="Analyze" onPress={handleAnalyze} />
         </Section>
 
@@ -91,10 +92,10 @@ export default function BabyNameScreen() {
               <NumberCircle number={result.parentLP} label="Parent Life Path" color={colorForNumber(result.parentLP, theme)} />
             </ThemedView>
             <Card title="Parent-Child Compatibility">
-              <ThemedText type="small">{result.compatibility}</ThemedText>
+              <ThemedText type="small" selectable>{result.compatibility}</ThemedText>
             </Card>
             <Card title={`Baby's Life Path: ${numberTitle(result.babyLP)}`}>
-              <ThemedText type="small">{NUMBER_MEANINGS[result.babyLP]?.description}</ThemedText>
+              <ThemedText type="small" selectable>{NUMBER_MEANINGS[result.babyLP]?.description}</ThemedText>
             </Card>
           </Section>
         )}
@@ -107,5 +108,4 @@ const styles = StyleSheet.create({
   container: { flexDirection: 'row', justifyContent: 'center' },
   inner: { maxWidth: MaxContentWidth, flexGrow: 1, gap: Spacing.five, padding: Spacing.four },
   numberGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.three, justifyContent: 'center' },
-  error: { color: '#ff4444' },
 });

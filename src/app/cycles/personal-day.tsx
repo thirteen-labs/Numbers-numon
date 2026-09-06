@@ -22,6 +22,7 @@ export default function PersonalDayScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -29,7 +30,7 @@ export default function PersonalDayScreen() {
           <ThemedView style={styles.center}>
             <NumberCircle number={num} size={80} color={colorForNumber(num, theme)} />
             {interpretation && (
-              <ThemedText type="smallBold">{interpretation.energy}</ThemedText>
+              <ThemedText type="smallBold" selectable>{interpretation.energy}</ThemedText>
             )}
           </ThemedView>
         </Section>
@@ -37,10 +38,10 @@ export default function PersonalDayScreen() {
         {interpretation && (
           <>
             <Card title="Guidance">
-              <ThemedText type="small">{interpretation.guidance}</ThemedText>
+              <ThemedText type="small" selectable>{interpretation.guidance}</ThemedText>
             </Card>
             <Card title="Affirmation">
-              <ThemedText type="small" style={styles.affirmation}>{'\u201C'}{interpretation.affirmation}{'\u201D'}</ThemedText>
+              <ThemedText type="small" style={styles.affirmation} selectable>{'\u201C'}{interpretation.affirmation}{'\u201D'}</ThemedText>
             </Card>
           </>
         )}

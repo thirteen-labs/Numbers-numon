@@ -37,6 +37,7 @@ export default function JournalListScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -50,15 +51,15 @@ export default function JournalListScreen() {
         )}
 
         {entries.map((entry) => (
-          <Pressable key={entry.id} onPress={() => router.push(`/journal/${entry.id}`)}>
+          <Pressable key={entry.id} onPress={() => router.push(`/journal/${entry.id}`)} accessibilityRole="button" accessibilityLabel={`Open journal entry ${entry.title}`} android_ripple={{ color: theme.textSecondary }}>
             <Card title={entry.title}>
-              <ThemedText type="small" numberOfLines={2}>{entry.content.replace(/[*#•—]/g, '').slice(0, 100)}</ThemedText>
+              <ThemedText type="small" numberOfLines={2} selectable>{entry.content.replace(/[*#•—]/g, '').slice(0, 100)}</ThemedText>
               <ThemedView style={styles.meta}>
-                {entry.mood && <ThemedText type="small">Mood: {entry.mood}</ThemedText>}
-                <ThemedText type="small">{entry.createdAt.toLocaleDateString()}</ThemedText>
+                {entry.mood && <ThemedText type="small" selectable>Mood: {entry.mood}</ThemedText>}
+                <ThemedText type="small" selectable>{entry.createdAt.toLocaleDateString()}</ThemedText>
               </ThemedView>
               {entry.tags.length > 0 && (
-                <ThemedText type="small">{entry.tags.map((t) => `#${t}`).join(' ')}</ThemedText>
+                <ThemedText type="small" selectable>{entry.tags.map((t) => `#${t}`).join(' ')}</ThemedText>
               )}
             </Card>
           </Pressable>

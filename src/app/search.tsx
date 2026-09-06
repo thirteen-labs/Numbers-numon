@@ -81,8 +81,26 @@ export default function SearchScreen() {
         data={results}
         keyExtractor={(item: SearchResult) => item.id}
         contentContainerStyle={{ paddingBottom: bottomPadding, paddingHorizontal: Spacing.four }}
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardShouldPersistTaps="handled"
+        initialNumToRender={12}
+        maxToRenderPerBatch={12}
+        windowSize={7}
+        removeClippedSubviews
+        ListEmptyComponent={
+          query.trim() ? undefined : (
+            <ThemedView style={styles.empty}>
+              <ThemedText type="small" themeColor="textSecondary">Type to search numbers, angel numbers, zodiac and guides</ThemedText>
+            </ThemedView>
+          )
+        }
         renderItem={({ item }: { item: SearchResult }) => (
-          <Pressable onPress={() => router.push(item.route as never)} style={({ pressed }) => [styles.result, pressed ? { opacity: 0.7 } : undefined]}>
+          <Pressable
+            onPress={() => router.push(item.route as never)}
+            accessibilityRole="button"
+            accessibilityLabel={`Open ${item.title}`}
+            android_ripple={{ color: theme.textSecondary }}
+            style={({ pressed }) => [styles.result, pressed ? { opacity: 0.7 } : undefined]}>
             <ThemedText type="smallBold">{item.title}</ThemedText>
             <ThemedText type="small" themeColor="textSecondary" numberOfLines={2}>{item.subtitle}</ThemedText>
           </Pressable>

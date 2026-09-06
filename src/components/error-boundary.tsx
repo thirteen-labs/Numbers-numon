@@ -57,20 +57,21 @@ function ErrorFallbackContent({
 	return (
 		<ThemedView style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top }]}>
 			<ScrollView
+				contentInsetAdjustmentBehavior="automatic"
 				style={{ flex: 1 }}
 				contentContainerStyle={[styles.inner, { paddingBottom: insets.bottom + Spacing.four }]}>
-				<ThemedText type="subtitle" style={styles.title}>
+				<ThemedText type="subtitle" style={styles.title} selectable>
 					Something went wrong
 				</ThemedText>
-				<ThemedText type="small" style={styles.message}>
+				<ThemedText type="small" style={styles.message} selectable>
 					The app encountered an unexpected error. Your data is safe.
 				</ThemedText>
 				{__DEV__ && info.error ? (
-					<ThemedText type="small" style={styles.errorText}>
+					<ThemedText type="small" themeColor="error" style={styles.errorText} selectable>
 						{info.error.message}
 					</ThemedText>
 				) : null}
-				<Pressable onPress={onReload} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.7 : 1 }]}>
+				<Pressable onPress={onReload} style={({ pressed }) => [styles.button, { backgroundColor: theme.tint, opacity: pressed ? 0.7 : 1 }]} accessibilityRole="button" accessibilityLabel="Try again" accessibilityHint="Retries rendering the screen" android_ripple={{ color: theme.textSecondary }}>
 					<ThemedText type="smallBold" themeColor="background">
 						Try Again
 					</ThemedText>
@@ -103,14 +104,15 @@ const styles = StyleSheet.create({
 	},
 	errorText: {
 		textAlign: 'center',
-		color: '#ff4444',
 		fontFamily: 'monospace',
 	},
 	button: {
-		backgroundColor: '#0a7ea4',
 		paddingVertical: Spacing.two,
 		paddingHorizontal: Spacing.five,
 		borderRadius: Spacing.three,
+		borderCurve: 'continuous',
 		marginTop: Spacing.two,
+		minHeight: 48,
+		justifyContent: 'center',
 	},
 });

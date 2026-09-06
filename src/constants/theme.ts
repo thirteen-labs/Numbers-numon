@@ -14,6 +14,7 @@ export const Colors = {
     textSecondary: '#60646C',
     tint: '#0a7ea4',
     tabBar: '#ffffff',
+    error: '#d32f2f',
   },
   dark: {
     text: '#ffffff',
@@ -23,6 +24,7 @@ export const Colors = {
     textSecondary: '#B0B4BA',
     tint: '#0a7ea4',
     tabBar: '#000000',
+    error: '#ff8a80',
   },
 } as const;
 

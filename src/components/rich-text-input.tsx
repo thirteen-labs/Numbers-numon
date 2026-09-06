@@ -71,12 +71,15 @@ export function RichTextInput({ value, onChangeText, placeholder, minHeight = 20
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={[styles.toolbar, { backgroundColor: theme.backgroundElement }]}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic" style={[styles.toolbar, { backgroundColor: theme.backgroundElement }]}>
         {TOOLBAR_BUTTONS.map((btn) => (
           <Pressable
             key={btn.action}
             style={[styles.toolbarBtn, { borderColor: theme.textSecondary }]}
-            onPress={() => handleToolbar(btn.action)}>
+            onPress={() => handleToolbar(btn.action)}
+            accessibilityRole="button"
+            accessibilityLabel={btn.tooltip}
+            android_ripple={{ color: theme.textSecondary }}>
             <ThemedText style={[styles.toolbarLabel, btn.action === 'bold' ? styles.bold : undefined, btn.action === 'italic' ? styles.italic : undefined] as any}>
               {btn.label}
             </ThemedText>

@@ -7,13 +7,17 @@ import { Spacing } from '@/constants/theme';
 export type CardProps = PropsWithChildren & {
   title?: string;
   style?: ViewStyle;
+  accessibilityLabel?: string;
 };
 
-export function Card({ title, children, style }: CardProps) {
+export function Card({ title, children, style, accessibilityLabel }: CardProps) {
   return (
-    <ThemedView type="backgroundElement" style={[styles.card, style]}>
+    <ThemedView
+      type="backgroundElement"
+      style={[styles.card, style]}
+      accessibilityLabel={accessibilityLabel ?? title}>
       {title && (
-        <ThemedText type="smallBold" style={styles.title}>
+        <ThemedText type="heading" style={styles.title}>
           {title}
         </ThemedText>
       )}
@@ -26,6 +30,7 @@ const styles = StyleSheet.create({
   card: {
     padding: Spacing.four,
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
     gap: Spacing.two,
   },
   title: {

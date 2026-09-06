@@ -27,11 +27,12 @@ export default function PinnaclesScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         <Section title="Life Pinnacles" subtitle="Four major life stages based on your Life Path number">
-          <ThemedText type="small">
+          <ThemedText type="small" selectable>
             Pinnacles represent the four major cycles of your life. Each period has a distinct theme, opportunities, and lessons.
           </ThemedText>
         </Section>
@@ -49,15 +50,15 @@ export default function PinnaclesScreen() {
               <ThemedView style={styles.pinnacleHeader}>
                 <NumberCircle number={num} size={56} color={colorForNumber(num, theme)} />
                 {interpretation && (
-                  <ThemedText type="smallBold" style={styles.theme}>{interpretation.theme}</ThemedText>
+                  <ThemedText type="smallBold" style={styles.theme} selectable>{interpretation.theme}</ThemedText>
                 )}
               </ThemedView>
               {interpretation && (
                 <>
                   <ThemedText type="small" style={styles.subtitle}>Opportunities</ThemedText>
-                  <ThemedText type="small">{interpretation.opportunities}</ThemedText>
+                  <ThemedText type="small" selectable>{interpretation.opportunities}</ThemedText>
                   <ThemedText type="small" style={styles.subtitle}>Lessons</ThemedText>
-                  <ThemedText type="small">{interpretation.lessons}</ThemedText>
+                  <ThemedText type="small" selectable>{interpretation.lessons}</ThemedText>
                 </>
               )}
             </Card>

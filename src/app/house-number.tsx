@@ -49,6 +49,7 @@ export default function HouseNumberScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -63,10 +64,10 @@ export default function HouseNumberScreen() {
               <NumberCircle number={result} size={80} color={colorForNumber(result, theme)} />
             </ThemedView>
             <Card title={numberTitle(result)}>
-              <ThemedText type="small">{meaning?.description}</ThemedText>
+              <ThemedText type="small" selectable>{meaning?.description}</ThemedText>
             </Card>
             <Card title="Home Vibration">
-              <ThemedText type="small">{houseMeanings[result] ?? 'Unique and individual.'}</ThemedText>
+              <ThemedText type="small" selectable>{houseMeanings[result] ?? 'Unique and individual.'}</ThemedText>
             </Card>
           </Section>
         )}

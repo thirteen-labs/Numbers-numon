@@ -22,6 +22,7 @@ export default function AngelNumbersScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -37,31 +38,31 @@ export default function AngelNumbersScreen() {
 
         {filtered.map((angel) => (
           <Card key={angel.number} title={`Angel Number ${angel.number}`}>
-            <ThemedText type="small">{angel.meaning}</ThemedText>
+            <ThemedText type="small" selectable>{angel.meaning}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Love</ThemedText>
-            <ThemedText type="small">{angel.love}</ThemedText>
+            <ThemedText type="small" selectable>{angel.love}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Career</ThemedText>
-            <ThemedText type="small">{angel.career}</ThemedText>
+            <ThemedText type="small" selectable>{angel.career}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Finance</ThemedText>
-            <ThemedText type="small">{angel.finance}</ThemedText>
+            <ThemedText type="small" selectable>{angel.finance}</ThemedText>
             <ThemedText type="small" style={styles.subtitle}>Spirituality</ThemedText>
-            <ThemedText type="small">{angel.spirituality}</ThemedText>
+            <ThemedText type="small" selectable>{angel.spirituality}</ThemedText>
           </Card>
         ))}
 
         {search.trim() && filtered.length === 0 && (
-          <ThemedText themeColor="textSecondary">No angel numbers found for {'\u201C'}{search}{'\u201D'}</ThemedText>
+          <ThemedText themeColor="textSecondary" selectable>No angel numbers found for {'\u201C'}{search}{'\u201D'}</ThemedText>
         )}
 
         {!search.trim() && (
           <>
-            <ThemedText type="small" style={styles.hint}>
+            <ThemedText type="small" style={styles.hint} selectable>
               Enter a number or keyword above to search. There are {ANGEL_NUMBERS.length} angel number interpretations available.
             </ThemedText>
             <ThemedView style={styles.recentGrid}>
               {['111', '222', '333', '444', '555', '666', '777', '888', '999', '1111', '1212', '2222'].map((n) => (
                 <Card key={n} title={n} style={styles.recentCard}>
-                  <ThemedText type="small" numberOfLines={2}>{ANGEL_NUMBERS.find((a) => a.number === n)?.meaning}</ThemedText>
+                  <ThemedText type="small" numberOfLines={2} selectable>{ANGEL_NUMBERS.find((a) => a.number === n)?.meaning}</ThemedText>
                 </Card>
               ))}
             </ThemedView>

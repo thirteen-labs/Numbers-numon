@@ -91,14 +91,21 @@ export default function HomeScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.background }}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
         {activeProfile ? (
           <Section title={'Welcome, ' + activeProfile.person.firstName}>
             {profiles.length > 1 && (
-              <ThemedView style={styles.profileRow}>
+              <ThemedView style={styles.profileRow} accessibilityRole="tablist">
                 {profiles.map((p) => (
-                  <Pressable key={p.id} onPress={() => switchProfile(p.id)}>
+                  <Pressable
+                    key={p.id}
+                    onPress={() => switchProfile(p.id)}
+                    accessibilityRole="tab"
+                    accessibilityLabel={`Switch to profile ${p.person.firstName}`}
+                    accessibilityState={{ selected: p.id === activeProfile.id }}
+                    android_ripple={{ color: theme.textSecondary }}>
                     <ThemedView
                       type={p.id === activeProfile.id ? 'backgroundSelected' : 'backgroundElement'}
                       style={styles.profileChip}>
@@ -108,9 +115,13 @@ export default function HomeScreen() {
                 ))}
               </ThemedView>
             )}
-            <Pressable onPress={() => router.push(`/profile/${activeProfile.id}`)}>
+            <Pressable
+              onPress={() => router.push(`/profile/${activeProfile.id}`)}
+              accessibilityRole="button"
+              accessibilityLabel={`Open profile for ${activeProfile.person.firstName} ${activeProfile.person.lastName}`}
+              android_ripple={{ color: theme.textSecondary }}>
               <Card>
-                <ThemedText type="small">
+                <ThemedText type="small" selectable>
                   {activeProfile.person.firstName} {activeProfile.person.lastName}
                   {' — '}
                   {activeProfile.person.dateOfBirth.toLocaleDateString()}
@@ -163,12 +174,12 @@ export default function HomeScreen() {
 
         <Section title="Daily Affirmation">
           <Card>
-            <ThemedText style={styles.affirmationText}>{dailyAffirmation}</ThemedText>
+            <ThemedText style={styles.affirmationText} selectable>{dailyAffirmation}</ThemedText>
           </Card>
         </Section>
 
         <Section title={'Personal Day — ' + PERSONAL_DAY_INTERPRETATIONS[personal.personalDay]?.energy}>
-          <ThemedText type="small">{PERSONAL_DAY_INTERPRETATIONS[personal.personalDay]?.guidance}</ThemedText>
+          <ThemedText type="small" selectable>{PERSONAL_DAY_INTERPRETATIONS[personal.personalDay]?.guidance}</ThemedText>
         </Section>
 
         <Section title={'Personal Year — ' + PERSONAL_YEAR_INTERPRETATIONS[personal.personalYear]?.overallTheme}>
@@ -246,9 +257,12 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.three,
   },
   profileChip: {
-    paddingVertical: Spacing.one,
+    paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.three,
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
+    minHeight: 44,
+    justifyContent: 'center',
   },
   luckyRow: {
     flexDirection: 'row',

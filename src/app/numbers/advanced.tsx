@@ -58,6 +58,7 @@ export default function AdvancedNumbersScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -77,12 +78,12 @@ export default function AdvancedNumbersScreen() {
                   {ki && (
                     <>
                       <ThemedText type="small" style={styles.subtitle}>Historical Meaning</ThemedText>
-                      <ThemedText type="small">{ki.historicalMeaning}</ThemedText>
+                      <ThemedText type="small" selectable>{ki.historicalMeaning}</ThemedText>
                       <ThemedText type="small" style={styles.subtitle}>Modern Interpretation</ThemedText>
-                      <ThemedText type="small">{ki.modernInterpretation}</ThemedText>
+                      <ThemedText type="small" selectable>{ki.modernInterpretation}</ThemedText>
                       <ThemedText type="small" style={styles.subtitle}>Practical Advice</ThemedText>
                       {ki.practicalAdvice.map((a: string) => (
-                        <ThemedText key={a} type="small">• {a}</ThemedText>
+                        <ThemedText key={a} type="small" selectable>• {a}</ThemedText>
                       ))}
                     </>
                   )}
@@ -94,7 +95,7 @@ export default function AdvancedNumbersScreen() {
 
         {karmicLessons.length > 0 && (
           <Section title={`Karmic Lessons — ${karmicLessons.join(', ') || 'None'}`}>
-            <ThemedText type="small">
+            <ThemedText type="small" selectable>
               {karmicLessons.length === 0
                 ? 'All numbers 1–9 are present in your name. No missing qualities.'
                 : `Missing numbers: ${karmicLessons.join(', ')}. These represent qualities you need to develop in this lifetime.`}
@@ -112,7 +113,7 @@ export default function AdvancedNumbersScreen() {
                   <>
                     <ThemedText type="small" style={styles.subtitle}>Dominant Abilities</ThemedText>
                     {hi.dominantAbilities.map((a: string) => (
-                      <ThemedText key={a} type="small">• {a}</ThemedText>
+                      <ThemedText key={a} type="small" selectable>• {a}</ThemedText>
                     ))}
                   </>
                 )}
@@ -126,11 +127,11 @@ export default function AdvancedNumbersScreen() {
             <NumberCircle number={balance} size={48} color={colorForNumber(balance, theme)} />
             {BALANCE_INTERPRETATIONS[balance] && (
               <ThemedView style={{ flex: 1, gap: Spacing.two }}>
-                <ThemedText type="smallBold">{BALANCE_INTERPRETATIONS[balance]!.description}</ThemedText>
+                <ThemedText type="smallBold" selectable>{BALANCE_INTERPRETATIONS[balance]!.description}</ThemedText>
                 <ThemedText type="small" style={styles.subtitle}>Under Stress:</ThemedText>
-                <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]!.underStress}</ThemedText>
+                <ThemedText type="small" selectable>{BALANCE_INTERPRETATIONS[balance]!.underStress}</ThemedText>
                 <ThemedText type="small" style={styles.subtitle}>Growth Path:</ThemedText>
-                <ThemedText type="small">{BALANCE_INTERPRETATIONS[balance]!.growthPath}</ThemedText>
+                <ThemedText type="small" selectable>{BALANCE_INTERPRETATIONS[balance]!.growthPath}</ThemedText>
               </ThemedView>
             )}
           </ThemedView>
@@ -140,8 +141,8 @@ export default function AdvancedNumbersScreen() {
           <ThemedView style={styles.numberRow}>
             <NumberCircle number={rationalThought} size={48} color={colorForNumber(rationalThought, theme)} />
             <ThemedView style={{ flex: 1, gap: Spacing.two }}>
-              <ThemedText type="smallBold">{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.description}</ThemedText>
-              <ThemedText type="small">{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.thinkingPattern}</ThemedText>
+              <ThemedText type="smallBold" selectable>{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.description}</ThemedText>
+              <ThemedText type="small" selectable>{RATIONAL_THOUGHT_INTERPRETATIONS[rationalThought]?.thinkingPattern}</ThemedText>
             </ThemedView>
           </ThemedView>
         </Section>
@@ -150,8 +151,8 @@ export default function AdvancedNumbersScreen() {
           <ThemedView style={styles.numberRow}>
             <NumberCircle number={subconsciousSelf} size={48} color={colorForNumber(subconsciousSelf, theme)} />
             <ThemedView style={{ flex: 1, gap: Spacing.two }}>
-              <ThemedText type="smallBold">{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.confidenceLevel}</ThemedText>
-              <ThemedText type="small">{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.description}</ThemedText>
+              <ThemedText type="smallBold" selectable>{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.confidenceLevel}</ThemedText>
+              <ThemedText type="small" selectable>{SUBCONSCIOUS_SELF_INTERPRETATIONS[subconsciousSelf]?.description}</ThemedText>
             </ThemedView>
           </ThemedView>
         </Section>
@@ -161,8 +162,8 @@ export default function AdvancedNumbersScreen() {
             const cm = getCornerstoneMeaning(cornerstone);
             return (
               <Card title={`Cornerstone — ${cornerstone}`}>
-                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
-                <ThemedText type="small">{cm.trait}</ThemedText>
+                <ThemedText type="smallBold" selectable>{cm.meaning}</ThemedText>
+                <ThemedText type="small" selectable>{cm.trait}</ThemedText>
               </Card>
             );
           })()}
@@ -170,8 +171,8 @@ export default function AdvancedNumbersScreen() {
             const cm = getCapstoneMeaning(capstone);
             return (
               <Card title={`Capstone — ${capstone}`}>
-                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
-                <ThemedText type="small">{cm.trait}</ThemedText>
+                <ThemedText type="smallBold" selectable>{cm.meaning}</ThemedText>
+                <ThemedText type="small" selectable>{cm.trait}</ThemedText>
               </Card>
             );
           })()}
@@ -179,8 +180,8 @@ export default function AdvancedNumbersScreen() {
             const vm = getFirstVowelMeaning(firstVowel);
             return (
               <Card title={`First Vowel — ${firstVowel}`}>
-                <ThemedText type="smallBold">{vm.meaning}</ThemedText>
-                <ThemedText type="small">{vm.emotionalTendency}</ThemedText>
+                <ThemedText type="smallBold" selectable>{vm.meaning}</ThemedText>
+                <ThemedText type="small" selectable>{vm.emotionalTendency}</ThemedText>
               </Card>
             );
           })()}
@@ -188,8 +189,8 @@ export default function AdvancedNumbersScreen() {
             const cm = getFirstConsonantMeaning(firstConsonant);
             return (
               <Card title={`First Consonant — ${firstConsonant}`}>
-                <ThemedText type="smallBold">{cm.meaning}</ThemedText>
-                <ThemedText type="small">{cm.outwardPersonality}</ThemedText>
+                <ThemedText type="smallBold" selectable>{cm.meaning}</ThemedText>
+                <ThemedText type="small" selectable>{cm.outwardPersonality}</ThemedText>
               </Card>
             );
           })()}

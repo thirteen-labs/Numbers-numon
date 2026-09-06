@@ -22,6 +22,7 @@ export default function PersonalMonthScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -29,7 +30,7 @@ export default function PersonalMonthScreen() {
           <ThemedView style={styles.center}>
             <NumberCircle number={num} size={80} color={colorForNumber(num, theme)} />
             {interpretation && (
-              <ThemedText type="smallBold">{interpretation.focus}</ThemedText>
+              <ThemedText type="smallBold" selectable>{interpretation.focus}</ThemedText>
             )}
           </ThemedView>
         </Section>
@@ -38,12 +39,12 @@ export default function PersonalMonthScreen() {
           <>
             <Card title="Opportunities">
               {interpretation.opportunities.map((o: string) => (
-                <ThemedText key={o} type="small">• {o}</ThemedText>
+                <ThemedText key={o} type="small" selectable>• {o}</ThemedText>
               ))}
             </Card>
             <Card title="Warnings">
               {interpretation.warnings.map((w: string) => (
-                <ThemedText key={w} type="small">• {w}</ThemedText>
+                <ThemedText key={w} type="small" selectable>• {w}</ThemedText>
               ))}
             </Card>
           </>

@@ -8,10 +8,12 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonProps = PressableProps & {
   variant?: ButtonVariant;
   title: string;
+  loading?: boolean;
 };
 
-export function Button({ variant = 'primary', title, style, disabled, ...rest }: ButtonProps) {
+export function Button({ variant = 'primary', title, style, disabled, loading, accessibilityLabel, accessibilityHint, ...rest }: ButtonProps) {
   const theme = useTheme();
+  const isDisabled = disabled || loading;
 
   const bgColor: ViewStyle =
     variant === 'primary' ? { backgroundColor: theme.text } :
@@ -20,14 +22,19 @@ export function Button({ variant = 'primary', title, style, disabled, ...rest }:
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel ?? title}
+      accessibilityHint={accessibilityHint}
+      accessibilityState={{ disabled: !!isDisabled, busy: !!loading }}
+      android_ripple={{ color: theme.textSecondary }}
       style={({ pressed }) => [
         styles.base,
         bgColor,
         pressed ? { opacity: 0.7 } : undefined,
-        disabled ? { opacity: 0.4 } : undefined,
+        isDisabled ? { opacity: 0.4 } : undefined,
         style as ViewStyle,
       ] as any}
-      disabled={disabled}
+      disabled={isDisabled}
       {...rest}>
       <ThemedText
         // @ts-expect-error style array with conditional undefined
@@ -36,7 +43,7 @@ export function Button({ variant = 'primary', title, style, disabled, ...rest }:
           variant === 'primary' ? { color: theme.background } : undefined,
           variant === 'ghost' ? { color: theme.text } : undefined,
         ]}>
-        {title}
+        {loading ? 'Loading…' : title}
       </ThemedText>
     </Pressable>
   );
@@ -47,8 +54,10 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.three,
     paddingHorizontal: Spacing.four,
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: 48,
   },
   text: {
     fontSize: 16,

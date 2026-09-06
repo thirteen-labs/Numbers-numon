@@ -31,6 +31,7 @@ export default function StatsScreen() {
 
   return (
     <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
       style={{ flex: 1, backgroundColor: theme.background }}
       contentContainerStyle={[styles.container, { paddingBottom: bottomPadding }]}>
       <ThemedView style={styles.inner}>
@@ -58,7 +59,7 @@ export default function StatsScreen() {
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
     <Card style={styles.statCard}>
-      <ThemedText type="subtitle" style={styles.statValue}>{value}</ThemedText>
+      <ThemedText type="subtitle" style={styles.statValue} selectable>{value}</ThemedText>
       <ThemedText type="small" themeColor="textSecondary">{label}</ThemedText>
     </Card>
   );

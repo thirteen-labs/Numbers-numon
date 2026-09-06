@@ -65,10 +65,11 @@ export default function ExploreScreen() {
     <ScrollView
       style={[styles.scrollView, { backgroundColor: theme.background }]}
       contentInset={insets}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
       <ThemedView style={styles.container}>
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="subtitle">Explore</ThemedText>
+          <ThemedText type="title">Explore</ThemedText>
           <ThemedText style={styles.centerText} themeColor="textSecondary">
             All numerology tools and references
           </ThemedText>
@@ -79,6 +80,10 @@ export default function ExploreScreen() {
             <Pressable
               key={tool.route}
               onPress={() => router.push(tool.route as any)}
+              accessibilityRole="button"
+              accessibilityLabel={`${tool.title}: ${tool.description}`}
+              accessibilityHint="Opens tool"
+              android_ripple={{ color: theme.textSecondary }}
               style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
               <ThemedView type="backgroundElement" style={[styles.cardInner, { borderLeftColor: tool.color }]}>
                 <ThemedText type="smallBold">{tool.title}</ThemedText>
@@ -120,6 +125,8 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: Spacing.three,
+    borderCurve: 'continuous',
+    minHeight: 44,
   },
   pressed: {
     opacity: 0.7,
